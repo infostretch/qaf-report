@@ -148,6 +148,7 @@ function loadList(loadmethods) {
 		var size = treports.reports.length;
 		$.each(treports.reports, function(i, item) {
 			item['jobid'] = size--;
+			item['anchor_id'] = item.startTime;
 			$("#listTemplate").tmpl(item).appendTo("#reportlist");
 		});
 		$('#reportlist li').click(function() {
@@ -430,7 +431,7 @@ function createStepGraph(ele) {
 		series : [ {
 			color : '#0000FF'
 		}, {
-			color : '#f89a22'
+			color : '#6dff49'
 		} ],
 		legend : {
 			show : true,

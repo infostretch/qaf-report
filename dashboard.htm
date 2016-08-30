@@ -83,7 +83,7 @@
 		<script src="./dashboard/jquery/jqueryFileTree/jquery.easing.js"></script>
 		<script src="./dashboard/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script id="listTemplate" type="text/x-jquery-tmpl">
-			<a href="#${jobid}" title="${name}" id="job_${jobid}">
+			<a href="#${anchor_id}" title="${name}" id="job_${anchor_id}">
 			<li class="active" dir="${dir}" title="${name}">
 			<span class="jobid ${jobid}">${jobid}</span>
 			<p>${name}</p>
@@ -278,7 +278,7 @@
 			{{/if}}
 			{{if duration}}
 			[{{if threshold}}
-			{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#f89a22" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}
+			{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#484747" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}
 			<span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span>
 			{{/if}}
 			{{else}}${duration/1000.0}s
@@ -299,7 +299,7 @@
 			<div style="min-width: 450px;width: calc(100% - 355px); height: 300px;" class="fleft">
 			{{each(i, item) $data}}
 			<div class="collapse collapsible" style="background-color: #D2D2C2;margin-top:5px;">
-			<div class="accordien_arrow" style="background-color: #525252;float: left;border:5px solid #525252;"></div>
+			<div class="accordien_arrow" style="background-color: #484747;float: left;border:5px solid #484747;"></div>
 			<div class="key" style="padding:6px;">${i} <div class="value_count">${item.length}</div></div>
 			</div>
 			<div>
@@ -362,7 +362,7 @@
 			}
 
 			#method-results .mehodheader {
-				background-color: #525252;
+				background-color: #484747;
 				font: large;
 				color: #fff;
 				padding: 3px 3px 3px 0px;
@@ -521,13 +521,9 @@
 	<body>
 
 		<div class="ui-layout-north ">
-			<div class="logo_area">
-				<img src="./dashboard/images/title.png" width="27%" height="27%"
+			<div class="logo_area" style="padding:0 0px 11000px 0px;">
+				<img src="./dashboard/images/title.svg" width="34%" height="34%"
 				alt="">
-			</div>
-			<div class="info_stretch">
-				<img src="./dashboard/images/info_stretch_logo.png" width="57%"
-				height="57%" alt="">
 			</div>
 		</div>
 

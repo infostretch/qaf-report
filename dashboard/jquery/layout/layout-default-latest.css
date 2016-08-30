@@ -29,7 +29,7 @@ body {
  */
 .ui-layout-pane { /* all 'panes' */
 	background:	#FFF; 
-	border:		1px solid #F89A22;
+	border:		1px solid #f89a22;
 	padding:	10px; 
 	overflow:	auto;
 	/* DO NOT add scrolling (or padding) to 'panes' that have a content-div,
@@ -70,7 +70,7 @@ body {
  */
 .ui-layout-resizer	{ /* all 'resizer-bars' */
 	background:		#DDD;
-	border:			1px solid #F89A22;
+	border:			1px solid #f89a22;
 	border-width:	0;
 	
 	}
@@ -85,7 +85,7 @@ body {
 		background: #C4E1A4;
 	}
 	.ui-layout-resizer-dragging {	/* CLONED resizer being dragged */
-		border: 	 1px solid #F89A22;
+		border: 	 1px solid #f89a22;
 	}
 	.ui-layout-resizer-north-dragging,
 	.ui-layout-resizer-south-dragging {
@@ -122,8 +122,8 @@ body {
  *	TOGGLER-BUTTONS
  */
 .ui-layout-toggler {
-	border: 1px solid #F89A22; /* match pane-border */
-	background-color: #F89A22;
+	border: 1px solid #f89a22; /* match pane-border */
+	background-color: #f89a22;
 	}
 	.ui-layout-resizer-hover .ui-layout-toggler {
 		opacity: .60;

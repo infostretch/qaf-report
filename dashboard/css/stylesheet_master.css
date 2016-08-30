@@ -114,7 +114,7 @@ a {
 }
 
 .nav-toggle-active {
-	background: #F89A22 url(../images/ajax-loader-fff.gif) no-repeat 10px 8px;
+	background: #f89a22 url(../images/ajax-loader-fff.gif) no-repeat 10px 8px;
 	background-position: center;
 }
 
@@ -213,7 +213,7 @@ a {
 	font: normal 18px/34px Arial, Helvetica, sans-serif;
 	color: #FFF;
 	border-right: 2px solid;
-	border-color: #F89A22;
+	border-color: #f89a22;
 }
 
 #data_area .data_cont .cont_data {
@@ -439,7 +439,7 @@ ul.tabs li a:hover {
 }
 
 html ul.tabs li.active, html ul.tabs li.active a:hover {
-	background: #F89A22;
+	background: #f89a22;
 }
 
 .tab_container {
@@ -489,7 +489,7 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 }
 
 .report .tool_cont {
-	background-color: #F89A22;
+	background-color: #f89a22;
 	display: block;
 	float: left;
 	height: 66px;
@@ -677,7 +677,7 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 }
 
 .environment_info .title_bg {
-	background-color: #525252;
+	background-color: #484747;
 	height: 45px;
 	cursor: pointer;
 }
