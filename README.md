@@ -1,6 +1,6 @@
 ## QAF Report 
 
-This is QAF reporting to start with. Please refer [Online documentation](https://infostretch.github.io/qaf/) for more help.
+This is QAF reporting to start with. Please refer [Online documentation](https://qmetry.github.io/qaf/) for more help.
  
 <ul>
 <li>A powerful and customizable reporting engine ensures that you have access to all relevant test data like test results,check points,test case time, test step time and environment information.use powerful filters to slice and dice the data to drill down to exact result you seek.</li>
