@@ -431,7 +431,7 @@ function createStepGraph(ele) {
 		series : [ {
 			color : '#0000FF'
 		}, {
-			color : '#6dff49'
+			color : '#f89a22'
 		} ],
 		legend : {
 			show : true,
