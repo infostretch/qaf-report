@@ -290,7 +290,8 @@ function drawPIChart(report) {
 			// Make this a pie chart.
 			renderer : jQuery.jqplot.PieRenderer,
 			rendererOptions : {
-				seriesColors : [ '#D10707', '#8FC400', '#FFD800' ],
+				seriesColors : [ '#e63c20', '#23a347', '#f3b600' ],
+				//                  RED       GREEN     YELLOW
 				// Put data labels on the pie slices.
 				// By default, labels show the percentage of the
 				// slice.
@@ -431,7 +432,7 @@ function createStepGraph(ele) {
 		series : [ {
 			color : '#0000FF'
 		}, {
-			color : '#f89a22'
+			color : '#6dff49'
 		} ],
 		legend : {
 			show : true,
@@ -1010,7 +1011,7 @@ function drawTrendChart(reports) {
 	chained.done(function() {
 		var plot1b = $.jqplot('trends-chart', [ pass, fail, skip ], {
 			stackSeries : true,
-			seriesColors : [ "#8FC400", "#D10707", "#FFD800" ],
+			seriesColors : [ '#23a347','#e63c20','#f3b600' ],
 			seriesDefaults : {
 				rendererOptions : {
 					smooth : true
