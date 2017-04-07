@@ -192,8 +192,8 @@ function selectReport() {
 	split = url.split("#");
 	length = split.length;
 	if (length > 1) {
-		if ($('#job_' + split[1]).children('li').length) {
-			$('#job_' + split[1]).children('li').trigger('click');
+		if ($('#job_' + split[1]).parent('li').length) {
+			$('#job_' + split[1]).parent('li').trigger('click');
 		} else {
 			$("#reportlist li:first").trigger('click');
 		}
