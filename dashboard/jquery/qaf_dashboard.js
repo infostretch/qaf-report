@@ -622,7 +622,7 @@ function previewImage(uri) {
 	uriParts = uri.split("/");
 
 	// append dir if not absolute path
-	if (uri.indexOf('http') != 0)
+	if (uri.indexOf('http') != 0 && uri.startsWith('\.'))
 		uri = curResultDir + "/" + uri;
 
 	// Set the image src
