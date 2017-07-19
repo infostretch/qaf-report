@@ -217,7 +217,7 @@
 			{{/if}}
 			{{if duration}}
 			[{{if threshold}}
-			{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#484747" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}
+			{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#FF9900" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}
                 <span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span> {{/if}} {{else}}${duration/1000.0}s {{/if}}] {{/if}}
                 </span>
             </div>
