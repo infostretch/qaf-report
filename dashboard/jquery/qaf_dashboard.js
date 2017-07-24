@@ -32,6 +32,267 @@ var errorBuckets = {
 
 };
 
+var listTemplate=
+    '<li class="active" dir="${dir}" title="${name}">'+
+        '<a href="#${anchor_id}" title="${name}" id="job_${anchor_id}">'+
+            '<span class="jobid ${jobid}">${jobid}</span>'+
+            '<div class="details">'+
+                '<p>${name}</p>'+
+                '<span>${msToFormatedDateStr(startTime, "dd-MM-yy HH:MM")}</span>'+
+            '</div>'+
+        '</a>'+
+    '</li>';
+
+var overviewTemplate = 
+'<div class="title_bg">${name}</div>'+
+'<div class="cont_data">'+
+'<div id="overview-sec">'+
+    '<div class="top_area">'+
+        '<div class="left_area" id="pichart" style="width: 430px; height: 217px;"></div>'+
+        '<div class="right_area">'+
+            '<div class="colum colum_one_mrgin">'+
+                '<ul>'+
+                    '<li class="title text-center">&nbsp;</li>'+
+                    '<li class="title text-center"><a dir="all" class="link" href="#" onclick="loadListAll();">View all results</a></li>'+
+                    '<li class="result text-center">Passed</li>'+
+                    '<li class=""><div class="green_bg" style="margin:0 auto;">${pass}</div></li>'+
+                '</ul>'+
+            '</div>'+
+            '<div class="colum colum_two_mrgin">'+
+                '<ul>'+
+                    '<li class="title text-center">Duration</li>'+
+                    '<li class="number text-center" title="[${msToFormatedDateStr(startTime, \"dd-MM-yy HH:MM\")} - ${msToFormatedDateStr(endTime, \"dd-MM-yy HH:MM\")}]">${getDuration(endTime-startTime)}</li>'+
+                    '<li class="result text-center">Skipped</li>'+
+                    '<li class=""><div class="yellow_bg" style="margin:0 auto;">${skip}</div></li>'+
+                '</ul>'+
+            '</div>'+
+            '<div class="colum colum_three_mrgin">'+
+                '<ul>'+
+                    '<li class="title text-center">Total</li>'+
+                    '<li class="number text-center">${total}</li>'+
+                    '<li class="result text-center">Failed</li>'+
+                    '<li class=""><div class="red_bg" style="margin:0 auto;">${fail}</div></li>'+
+                '</ul>'+
+            '</div>'+
+        '</div>'+
+    '</div>'+
+    '<div class="clear"></div>'+
+    '<div class="bottom_area">'+
+        '<table border="0" cellspacing="0" cellpadding="0" id="test_report">'+
+            '<thead>'+
+                '<tr>'+
+                    '<th scope="col" width=20%>Test</th>'+
+                    '<th scope="col" width=10%>Duration</th>'+
+                    '<th scope="col" width=10%>Passed</th>'+
+                    '<th scope="col" width=10%>Skipped</th>'+
+                    '<th scope="col" width=10%>Failed</th>'+
+                    '<th scope="col" width=10%>Total</th>'+
+                    '<th scope="col" width=10%>Pass Rate</th>'+
+                '</tr>'+
+            '</thead>'+
+            '<tbody id="tests">'+
+            '</tbody>'+
+        '</table>'+
+    '</div>'+
+    '<!-- end overview-->'+
+'</div>'+
+'</div>';
+
+
+var testOverviewTemplate =
+'<tr>'+
+'<td class="test_col"><a href="${window.location.href}#${name}" id="result_${name}" onclick="loaResult(\'${name}\');" class="reportlink">${name}</a></td>'+
+'<td title="[${msToFormatedDateStr(startTime, \'dd-MM-yy HH:MM\')} - ${msToFormatedDateStr(endTime, \'dd-MM-yy HH:MM\')}]">${getDuration(endTime-startTime)}</td>'+
+'<td>${pass}</td>'+
+'<td>${skip}</td>'+
+'<td>${fail}</td>'+
+'<td>${total}</td>'+
+'<td>'+
+    '<div class="passrate_col"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div>'+
+'</td>'+
+'</tr>';
+
+
+var methodHeaderTemplate =
+'<div class="mehod ${result} ${type}" id="${result}_cont">'+
+'<div class="mehodheader" onclick="mehodheaderClick(this)">'+
+    '<span class="statusicon ${result}"> &nbsp;<span class="status" style="display:none">${result}</span></span>'+
+    '<b class="ui-icon-text">{{if (typeof metaData != \'undefined\') }} {{each(i,v) metaData}} {{if (i == \'name\')}}${v} {{/if}}{{/each}} {{else}} ${name} {{/if}}</b> {{if ((typeof args != \'undefined\') && args.length>0)}}'+
+   ' <span class="mehod-args"> ${args[0][\'tcId\']} ${args[0][\'recId\']}</span> {{/if}}'+
+    '<div style="float: right; ">'+
+		'{{if typeof retryCount != \'undefined\' && retryCount>0}}'+
+		'<span class=\'rerunCount\' title="Retried Failed Execution">${retryCount}</span>{{/if}}'+
+		'<span class="duration">${getDuration(duration)}</span>'+
+    	'<span class="ui-icon time_icon oexecution" style="float: right;" title="Duration">${startTime}</span>'+
+    '</div>'+
+'</div>'+
+'<div class="details data_cont" data-file="${datafile}" style="display:none; position: relative;"></div>'+
+'<div class="meta-info tab-content" style="display:none;padding:0px;width:100%;">'+
+    '<table cellspacing="1" cellpadding="0" border="0" style="display:block;">'+
+        '<tbody>'+
+            '{{if ((typeof args != \'undefined\') && args.length>0)}}'+
+            '<tr>'+
+                '<th>Test Data:</th>'+
+                '<td colspan="3">${parseArray(args)}</td>'+
+            '</tr>'+
+            '{{/if}} {{if (typeof metaData != \'undefined\') }} {{each(i,v) getMetaDataToDisplay(metaData)}} {{if (v!= \'undefined\' && v.length>0)}}'+
+            '<tr>'+
+                '<th>${i.capitalizeFirstLetter()}:</th>'+
+                '<td>'+
+                    '{{html displayMetaData(v)}}'+
+                '</td>'+
+            '</tr>'+
+            '{{/if}} {{/each}} {{/if}} {{if dependsOn.length>0}}'+
+            '<tr>'+
+                '<th>Depends On:</th>'+
+                '<td colspan="3">{{each dependsOn}}'+
+                    '<span class="group">${$value}</span> {{/each}}'+
+                '</td>'+
+            '</tr>'+
+            '{{/if}}'+
+            '<tr>'+
+                '<th>Start Time:</th>'+
+                '<td>${msToDateStr( startTime)}</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<th>End&nbsp;Time:</th>'+
+                '<td>${msToDateStr(startTime+duration)}</td>'+
+            '</tr>'+
+            '<tr id="totalTime" style="display:none;">'+
+                '<th>Actual&nbsp;Time:</th>'+
+                '<td></td>'+
+            '</tr>'+
+            '<tr>'+
+                '<th valign="top">Check Points:</th>'+
+                '<td class="check-points-details" style="word-wrap: break-word;">'+
+                '</td>'+
+            '</tr>'+
+        '</tbody>'+
+    '</table>'+
+'</div>'+
+'</div>';
+
+
+var methodDetailsTemplate =
+'<span class="toolbar">'+
+'{{if errorTrace}}'+
+'<span class="ui-icon ui-icon-alert error-trace action" style="float: right; margin-right: .3em;" title="Error trace"></span> {{/if}} {{if seleniumLog.length>0}}'+
+'<span class="ui-icon ui-icon-document selenium-log action" style="float: right; margin-right: .3em;" title="Command log"></span> {{/if}} {{if (checkPoints.length>0 && checkPoints[0].duration)}}'+
+'<span class="ui-icon ui-icon-chart step-analysis action" style="float: right; margin-right: .3em;" title="Step Time Analysis"></span> {{/if}}'+
+'<span class="ui-icon ui-icon-clipboard meta-info-check-points  action" style="float: right; margin-right: .3em;" title="Check Points"></span>'+
+'</span>'+
+'<div class="detailsContainer">'+
+'<div class="check-points tab-content" style="display:none;word-wrap: break-word;">'+
+    '{{tmpl(checkPoints) "checkpointTemplate"}}'+
+'</div>'+
+'<div class="selenium-log tab-content " style="display:none;padding-top:5px;">'+
+    '<table width="100%">'+
+        '<tbody>'+
+            '{{tmpl(seleniumLog) "seleniumLogTemplate"}}</tbody>'+
+    '</table>'+
+'</div>'+
+'{{if errorTrace}}'+
+'<div class="error-trace tab-content" style="display:none;margin-top:15px;">'+
+    '<pre>{{html errorTrace}}</pre>'+
+'</div>'+
+'{{/if}} {{if (checkPoints.length>0 && checkPoints[0].duration)}}'+
+'<div class="step-analysis tab-content" style="position:relative;margin-left:20px;margin-top:20px;margin-bottom:40px;margin-right:20px;height:300px;display:none;" data="${getStepTimes(checkPoints)}" </div>'+
+    '{{/if}}'+
+'</div>';
+
+
+
+var checkpointTemplate =
+'<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'+
+'<div {{if subCheckPoints}}onclick="$(this).closest(\'.checkpoint\').children(\'.subcheckpoints\').toggle();$(this).children(\'span\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');" {{/if}}>'+
+    '<span class="ui-icon {{if subCheckPoints.length > 0}} ui-icon-triangle-1-e {{else}} ${getIcon(type)} {{/if}}" style="float:left;margin-top:0.0em;margin-left:5px;" title="${type}"></span>'+
+    '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html message}}'+
+'{{if screenshot}}<a class="screenshot" href="${screenshot}" style="width:auto;margin-top:0.0em;vertical-align:middle;" title="Screenshot"></a>'+
+'{{/if}}'+
+'{{if duration}}'+
+'[{{if threshold}}'+
+'{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#FF9900" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}'+
+    '<span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span> {{/if}} {{else}}${duration/1000.0}s {{/if}}] {{/if}}'+
+    '</span>'+
+'</div>'+
+'{{if subCheckPoints}}'+
+'<div style="display:none;" class="subcheckpoints">'+
+    '{{tmpl(subCheckPoints) "checkpointTemplate"}}'+
+'</div>'+
+'{{/if}}'+
+'</div>';
+
+
+var errorAnalysisTemplate =
+'<div id="error_analysis_chart" style="width:25%; max-width:350px; height: 300px;" class="fleft"></div>'+
+'<div style="min-width: 450px;width: 71%; height: 300px;" class="fleft">'+
+'{{each(i, item) $data}}'+
+'<div class="collapse collapsible" style="background-color: #D2D2C2;margin-top:5px; width:100%; float:left;">'+
+    '<div class="accordien_arrow" style="background-color: transparent;float: left;border:5px solid transparent;"></div>'+
+    '<div class="key" style="padding:6px;">${i}'+
+        '<div class="value_count">${item.length}</div>'+
+    '</div>'+
+'</div>'+
+'<div>'+
+    '<ul style="list-style-type: square; padding-left:15px;" class="ui-state-active ui-widget-content">'+
+        '{{each item}} {{html dspTCLink($value)}} {{/each}}'+
+    '</ul>'+
+'</div>'+
+'{{/each}}'+
+'</div>'+
+'<div style="clear:left;"></div>';
+
+
+var seleniumLogTemplate =
+'<tr>'+
+'{{if subLogs.length>0}}'+
+'<td colspan="4">'+
+    '<div class="selenium-log" style="padding-top:5px;font-size:13px">'+
+        '<table width="100%">'+
+            '<thead onclick="$(this).closest(\'table\').children(\'tbody\').toggle();" style="border:1px solid #000;">'+
+                '<tr>'+
+                    '<th align="left" width="20%">${commandName}</th>'+
+                    '<th align="left" width="37%">${args}</th>'+
+                    '<th align="left" width="37%">${result}</th>'+
+                    '<td width="4%">${getTotalDuration(subLogs)}</td>'+
+                '</tr>'+
+            '</thead>'+
+            '<tbody style="display:none;">'+
+                '{{tmpl(subLogs) "seleniumLogTemplate"}}</tbody>'+
+        '</table>'+
+    '</div>'+
+'</td>'+
+'{{else}}'+
+'<td width="19%">${commandName}</td>'+
+'<td width="37%">${args}</td>'+
+'<td width="37%"><pre class="prettyprint">${result}</pre></td>'+
+'{{if duration}}'+
+'<td width="4%">${duration/1000}</td>'+
+'{{/if}} {{/if}}'+
+'</tr>';
+
+
+var envInfoTemplate = 
+'<ul>'+
+'{{each(i, item) $data}} {{if typeof item== \'object\'}}'+
+'<li><span class="key">${i}</span>:${JSON.stringify(item)}</li>'+
+'{{else}} {{if item.toString().length > 0}}'+
+'<li><span class="key">${i}</span>:${item}</li>'+
+'{{/if}} {{/if}} {{/each}}'+
+'</ul>';
+
+
+
+$.template( "listTemplate", listTemplate);
+$.template( "overviewTemplate", overviewTemplate);
+$.template( "testOverviewTemplate", testOverviewTemplate);
+$.template( "methodHeaderTemplate", methodHeaderTemplate);
+$.template( "methodDetailsTemplate", methodDetailsTemplate);
+$.template( "checkpointTemplate", checkpointTemplate);
+$.template( "errorAnalysisTemplate", errorAnalysisTemplate);
+$.template( "seleniumLogTemplate", seleniumLogTemplate);
+$.template( "envInfoTemplate", envInfoTemplate);
+
 var resultRootDir = "test-results";
 var curResultDir = "";
 var layout;
@@ -149,7 +410,7 @@ function loadList(loadmethods) {
 		$.each(treports.reports, function(i, item) {
 			item['jobid'] = size--;
 			item['anchor_id'] = item.startTime;
-			$("#listTemplate").tmpl(item).appendTo("#reportlist");
+			$.tmpl(listTemplate,item).appendTo("#reportlist");
 		});
 		$('#reportlist li').click(function() {
 			$('#details').html('');
@@ -240,12 +501,12 @@ function loadOverview(dir) {
 		$("#overview-tab-content").show();
 
 		$("#overview-tab-content").html('');
-		$("#overview-template").tmpl(data).appendTo("#overview-tab-content");
+		$.tmpl(overviewTemplate,data).appendTo("#overview-tab-content");
 
 		$.each(data.tests, function(i, item) {
 			$.getJSON(dir + "/" + item + "/overview.json", function(data1) {
 				data1["name"] = item;
-				$("#test-overview-template").tmpl(data1).appendTo("#tests");
+				$.tmpl(testOverviewTemplate,data1).appendTo("#tests");
 			});
 		});
 
@@ -361,9 +622,8 @@ function loadMethods(cresultRoot, testDir) {
 																								+ mdata.name
 																								+ ".json";
 																					}
-																					$(
-																							"#method-header-Template")
-																							.tmpl(
+																					$
+																							.tmpl(methodHeaderTemplate,
 																									mdata)
 																							.appendTo(
 																									"#method-results");
@@ -376,20 +636,20 @@ function loadMethods(cresultRoot, testDir) {
 						$("#actual-capabilities").html('');
 						$("#run-parameters").html('');
 
-						$("#env-info-template").tmpl(
+						$.tmpl(envInfoTemplate,
 								data.envInfo['execution-env-info']).appendTo(
 								"#execution_env_info");
-						$("#env-info-template").tmpl(
+						$.tmpl(envInfoTemplate,
 								data.envInfo['isfw-build-info']).appendTo(
 								"#isfw_build_info");
 						;
-						$("#env-info-template").tmpl(
+						$.tmpl(envInfoTemplate,
 								data.envInfo['browser-desired-capabilities'])
 								.appendTo("#desired_capabilities");
-						$("#env-info-template").tmpl(
+						$.tmpl(envInfoTemplate,
 								data.envInfo['browser-actual-capabilities'])
 								.appendTo("#actual-capabilities");
-						$("#env-info-template").tmpl(
+						$.tmpl(envInfoTemplate,
 								data.envInfo['run-parameters']).appendTo(
 								"#run-parameters");
 
@@ -510,7 +770,7 @@ function displayMetaData(value) {
 
 }
 function loadDetailsTemplate(data, container) {
-	$("#method-details-Template").tmpl(data).appendTo(container);
+	$.tmpl(methodDetailsTemplate,data).appendTo(container);
 	applyUi(container);
 	displayTotalTime(container, data);
 
@@ -868,7 +1128,7 @@ function populateErrorBucket() {
 	$.ajaxQueue.run();
 	$.ajaxQueue.done = function() {
 		$('#error_analysis_details').html('');
-		$("#error-analysis-template").tmpl(errorMap).appendTo(
+		$.tmpl(errorAnalysisTemplate,errorMap).appendTo(
 				$('#error_analysis_details'));
 
 		$("#error_analysis_details .collapsible").click(function(event) {
@@ -1173,26 +1433,49 @@ function wait(forTask, timeout) {
 
 function doFilter(cssClass) {
 	interuptLoading = true;
-	var expr = '.mehod.' + cssClass;
+	var expr = '';
 
-	if (cssClass === 'pass' || cssClass === 'fail' || cssClass === 'skip') {
-		expr = expr + (!isChecked('#fconfig') ? ':not(.config)' : '')
-				+ (!isChecked('#ftest') ? ':not(.test)' : '');
-	} else {
-		expr = expr + (!isChecked('#fpass') ? ':not(.pass)' : '')
-				+ (!isChecked('#ffail') ? ':not(.fail)' : '')
-				+ (!isChecked('#fskip') ? ':not(.skip)' : '');
+	expr = expr + (!isChecked('#fconfig') ? ':not(.config)' : '')
+			+ (!isChecked('#ftest') ? ':not(.test)' : '');
 
-	}
-	$(expr).toggle();
+	expr = expr + (!isChecked('#fpass') ? ':not(.pass)' : '')
+			+ (!isChecked('#ffail') ? ':not(.fail)' : '')
+			+ (!isChecked('#fskip') ? ':not(.skip)' : '');
+
+	$('.mehod:has(' + expr + ')').show();
+	$('.mehod:not(' + expr + ')').hide();
+
 	setChecked('#ocollapse', false);
 	setChecked('#oexpand', false);
-	
+
 	if (cssClass === 'fail' || cssClass === 'skip') {
 		showErrorBucket();
 	}
+	var searchTerm = $('#inputSerach').val().trim();
+	if (searchTerm.length > 0) {
+		var expr = ".mehod:not(:has(.group:Contains('" + searchTerm + "')))";
+		$(expr).hide();
+	}
+	setFilterResultCount();
+}
+
+function setFilterResultCount() {
+	var tot = $(".mehod").length;
+	if (tot > 0) {
+		$('#filterResultCnt').text($(".mehod:not(:hidden)").length);
+		$('#allResultCnt').text("/" + tot);
+	} else {
+		$('#filterResultCnt').text("");
+		$('#allResultCnt').text("");
+	}
 
 }
+
+jQuery.expr[':'].Contains = function(a, i, m) {
+
+	var pattern = new RegExp(m[3], "ig");
+	return pattern.test(jQuery(a).text());
+};
 
 function showErrorBucket(){
 	if(!$("#ffail").is(":checked") &&  !$("#fskip").is(":checked")){

@@ -948,3 +948,180 @@ pre {
 #error_analysis_details .ui-widget-content li { width:100%; float:left; margin:5px 0; }
 #error_analysis_details .ui-widget-content a { width:100%; float:left; border:0 !important; padding: 0; font-size: 16px; }
 /*.jqplot-table-legend { top:276px !important; }*/
+
+  .dataloading {
+        margin: 5px;
+        background-image: url(../images/progress-dots.gif);
+        background-repeat: no-repeat;
+    }
+    
+    #method-results .mehodheader {
+        background-color: #484747;
+        font: large;
+        color: #fff;
+        padding: 5px;
+        /*height: 25px;*/
+        vertical-align: middle;
+        cursor: pointer;
+        position: relative;
+    }
+    #method-results .mehodheader .ui-icon-text { display: inline-block; margin-top:3px; padding-left: 13px; }
+    #method-results .mehodheader .duration { display: inline-block; margin-top:2px; }
+
+    
+    .mehod.config {
+        display: none;
+    }
+    
+    #method-results .mehodheader .statusicon {
+        position: absolute;
+        top:0; left:0;
+        height: 100%;
+        float: left;
+        margin-right: .3em;
+        width: 8px;
+        display: block;
+    }
+    
+    .statusicon.pass {
+        background-color: #6dc849;/* other green colour #23a347*/
+    }
+    
+    .statusicon.fail {
+        background-color: #eb0a0a;
+    }
+    
+    .statusicon.skip {
+        background-color: #ffd800;
+    }
+    
+    .detailsContainer {
+        border: solid 1px #AFAFAF;
+    }
+    
+    .detailsContainer .error-trace {
+        color: #cd0000;
+        padding-top: 5px;
+        padding-left: 5px;
+        word-wrap: break-word;
+    }
+    
+    .selenium-log,
+    .error-trace {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+    }
+    
+    .selenium-log td,
+    .selenium-log th {
+        word-wrap: break-word;
+    }
+    
+    .selenium-log table {
+        table-layout: fixed;
+    }
+    
+    .check-points .checkpoint {
+        margin: 0px;
+        padding: 0px;
+        display: block;
+        clear: both;
+        font-size: 14px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .checkpoint .checkpoint {
+        margin-left: 20px;
+    }
+    
+    .checkpoint {
+        display: block;
+        clear: both;
+        background: none;
+    }
+    
+    .ui-state-highlight {
+        color: #666;
+    }
+    
+    .detailsContainer .meta-info {
+        margin-right: 80px;
+    }
+    
+    .meta-info td,
+    .meta-info th {
+        text-align: left;
+        font-size: 14px;
+        word-wrap: break-word;
+        padding: 3px 5px 3px 15px;
+    }
+    
+    .meta-info th {
+        width: 12%;
+        background: #DFDFDF;
+    }
+    
+    .meta-info table {
+        background-color: #FFF;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+        border-collapse: separate;
+        display: compact;
+        /* safari*/
+    }
+    
+    .warn.ui-state-warn .ui-icon {
+        background-image: url(../jquery/ui/css/smoothness/images/ui-icons_orange.png);
+    }
+    
+    .ui-icon.ui-icon-check,
+    .ui-state-pass .ui-icon,
+    .ui-state-pass-text .ui-icon,
+    .ui-state-teststeppass .ui-icon,
+    .ui-state-pass-teststeppass .ui-icon {
+        background-image: url(../jquery/ui/css/smoothness/images/ui-icons_green.png) !important;
+    }
+    
+    .ui-state-pass {
+        color: #000;
+    }
+    
+    .ui-state-warn {
+        color: #FF8000;
+    }
+    
+    .ui-layout-east,
+    .ui-layout-content {
+        padding: 0;
+        overflow: auto !important;
+        /* prevent scrollbars auto-added by Layout */
+    }
+    
+    .scrolling-content {
+        height: 100%;
+        padding: 0 15px 10px;
+        /* extra paddingTop being added by scrollpane? */
+        padding-right: 0;
+        /* for pseudo-scrollbar on right */
+    }
+    
+    .environment_tab td {
+        text-align: left;
+        vertical-align: top;
+        list-style: none;
+    }
+    
+    .environment_tab li {
+        list-style: none;
+        font: small monospace;
+    }
+    
+    .hide_loading {
+        display: none;
+    }
+    
+    .environment_tab li .key {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
