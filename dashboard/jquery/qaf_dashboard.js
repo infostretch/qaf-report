@@ -48,51 +48,56 @@ var overviewTemplate =
 '<div class="cont_data">'+
 '<div id="overview-sec">'+
     '<div class="top_area">'+
-        '<div class="left_area" id="pichart" style="width: 430px; height: 217px;"></div>'+
-        '<div class="right_area">'+
+		'<div style="margin-left:25px;font-size:14px;"><a dir="all" class="link" href="#" onclick="loadListAll();">View all results</a></div><div class="left_area" id="pichart" style="width: 430px; height: 221px;border : 1px solid black"></div>'+
+		'<div class="right_area">'+
             '<div class="colum colum_one_mrgin">'+
-                '<ul>'+
-                    '<li class="title text-center">&nbsp;</li>'+
-                    '<li class="title text-center"><a dir="all" class="link" href="#" onclick="loadListAll();">View all results</a></li>'+
-                    '<li class="result text-center">Passed</li>'+
-                    '<li class=""><div class="green_bg" style="margin:0 auto;">${pass}</div></li>'+
-                '</ul>'+
-            '</div>'+
-            '<div class="colum colum_two_mrgin">'+
-                '<ul>'+
-                    '<li class="title text-center">Duration</li>'+
-                    '<li class="number text-center" title="[${msToFormatedDateStr(startTime, \"dd-MM-yy HH:MM\")} - ${msToFormatedDateStr(endTime, \"dd-MM-yy HH:MM\")}]">${getDuration(endTime-startTime)}</li>'+
-                    '<li class="result text-center">Skipped</li>'+
-                    '<li class=""><div class="yellow_bg" style="margin:0 auto;">${skip}</div></li>'+
-                '</ul>'+
-            '</div>'+
-            '<div class="colum colum_three_mrgin">'+
-                '<ul>'+
-                    '<li class="title text-center">Total</li>'+
-                    '<li class="number text-center">${total}</li>'+
-                    '<li class="result text-center">Failed</li>'+
-                    '<li class=""><div class="red_bg" style="margin:0 auto;">${fail}</div></li>'+
+                '<ul style="padding:0">'+
+					'<li class="result listItem"><span> Total Test Cases Passed: </span><span class="green_bg bold"> ${pass} </span><hr/></li>'+
+					'<li class="result listItem"><span>Total Test Cases Skipped: </span><span class="yellow_bg bold"> ${skip}</span><hr/></li>'+
+					'<li class="result listItem"><span>Total Test Cases Failed: </span><span class="red_bg bold"> ${fail}</span><hr/></li>'+
+					'<li class="result"><span>Total Test Cases Executed:</span><span class="bold"> ${total}</span><hr/></li>'+
+					'<li class="result"><span>Total Duration: </span><span class="bold"> ${getDuration(endTime-startTime)}</span></li>'+
                 '</ul>'+
             '</div>'+
         '</div>'+
     '</div>'+
+	'</div>'+
     '<div class="clear"></div>'+
-    '<div class="bottom_area">'+
-        '<table border="0" cellspacing="0" cellpadding="0" id="test_report">'+
-            '<thead>'+
-                '<tr>'+
-                    '<th scope="col" width=20%>Test</th>'+
-                    '<th scope="col" width=10%>Duration</th>'+
-                    '<th scope="col" width=10%>Passed</th>'+
-                    '<th scope="col" width=10%>Skipped</th>'+
-                    '<th scope="col" width=10%>Failed</th>'+
-                    '<th scope="col" width=10%>Total</th>'+
-                    '<th scope="col" width=10%>Pass Rate</th>'+
-                '</tr>'+
-            '</thead>'+
-            '<tbody id="tests">'+
-            '</tbody>'+
-        '</table>'+
+    '<div class="bottom_area" style="padding-left: 48px;padding-right: 25px;padding-top: 30px;">'+
+        // '<table border="0" cellspacing="0" cellpadding="0" id="test_report" style="padding-bottom:30px;">'+
+        //     '<thead>'+
+        //         '<tr>'+
+        //             '<th scope="col" width=20%>Test</th>'+
+        //             '<th scope="col" width=15%>Duration</th>'+
+        //             '<th scope="col" width=5%>Passed</th>'+
+        //             '<th scope="col" width=5%>Skipped</th>'+
+        //             '<th scope="col" width=5%>Failed</th>'+
+        //             '<th scope="col" width=10%>Total</th>'+
+		// 			'<th scope="col" width=15%>Pass Rate</th>'+
+		// 			'<th scope="col" width=2%></th>'+
+        //         '</tr>'+
+        //     '</thead>'+
+        //     '<tbody id="tests">'+
+        //     '</tbody>'+
+		// '</table>'+
+		// '<div class="row"><div class="col-sm-8" style="background-color:lavender;">.col-sm-8<div class="row"> <div class="col-sm-6" style="background-color:lightcyan;">.col-sm-6</div><div class="col-sm-6" style="background-color:lightgray;">.col-sm-6</div></div></div><div class="col-sm-4" style="background-color:lavenderblush;">.col-sm-4</div></div>'+		
+		'<div class="rTable">'+
+			'<div class="rTableRow">'+
+				'<div class="rTableHead w-20">Test</div>'+
+				'<div class="rTableHead w-15">Duration</div>'+
+				'<div class="rTableHead w-5">Passed</div>'+
+				'<div class="rTableHead w-5">Skipped</div>'+
+				'<div class="rTableHead w-5">Failed</div>'+
+				'<div class="rTableHead w-15">Total</div>'+
+				'<div class="rTableHead w-20">Pass Rate</div>'+
+			'</div>'+			
+			'<div class="rTableRow" style="margin-bottom:10px;">'+		
+			'</div>'+
+			'<div class="rTableRow showShadow" style="margin-bottom:15px;" id="tests">'+
+			'</div>'+
+			'<div class="rTableRow" style="margin-bottom:10px;">'+		
+			'</div>'+
+		'</div>'+
     '</div>'+
     '<!-- end overview-->'+
 '</div>'+
@@ -100,17 +105,15 @@ var overviewTemplate =
 
 
 var testOverviewTemplate =
-'<tr>'+
-'<td class="test_col"><a href="${window.location.href}#${name}" id="result_${name}" onclick="loaResult(\'${name}\');" class="reportlink">${name}</a></td>'+
-'<td title="[${msToFormatedDateStr(startTime, \'dd-MM-yy HH:MM\')} - ${msToFormatedDateStr(endTime, \'dd-MM-yy HH:MM\')}]">${getDuration(endTime-startTime)}</td>'+
-'<td>${pass}</td>'+
-'<td>${skip}</td>'+
-'<td>${fail}</td>'+
-'<td>${total}</td>'+
-'<td>'+
-    '<div class="passrate_col"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div>'+
-'</td>'+
-'</tr>';
+'<div class="rTableCell w-20"><a href="${window.location.href}#${name}" id="result_${name}" onclick="loaResult(\'${name}\');" class="reportlink">${name}</a></div>'+
+'<div class="rTableCell w-15" title="[${msToFormatedDateStr(startTime, \'dd-MM-yy HH:MM\')} - ${msToFormatedDateStr(endTime, \'dd-MM-yy HH:MM\')}]">${getDuration(endTime-startTime)}</div>'+
+'<div class="rTableCell w-5">${pass}</div>'+
+'<div class="rTableCell w-5">${skip}</div>'+
+'<div class="rTableCell w-5">${fail}</div>'+
+'<div class="rTableCell w-15">${total}</div>'+
+'<div class="rTableCell w-20">'+
+    '<div class="${percentageClassName}"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div>'+
+'</div>';
 
 
 var methodHeaderTemplate =
@@ -496,20 +499,26 @@ function loaResult(dir) {
 }
 
 function loadOverview(dir) {
-
+	var percentage = 0;
 	$.getJSON(dir + "/meta-info.json", function(data) {
 		$("#overview-tab-content").show();
 
 		$("#overview-tab-content").html('');
 		$.tmpl(overviewTemplate,data).appendTo("#overview-tab-content");
-
 		$.each(data.tests, function(i, item) {
 			$.getJSON(dir + "/" + item + "/overview.json", function(data1) {
 				data1["name"] = item;
+				percentage = calcPassRate(data1.pass,data1.fail,data1.skip);
+				if(percentage > 80)
+						data1["percentageClassName"] ="passrate_col";
+				else if(percentage > 50 && percentage < 80)
+						data1["percentageClassName"] ="mediumrate_col";
+				else
+						data1["percentageClassName"] ="failrate_col";								
 				$.tmpl(testOverviewTemplate,data1).appendTo("#tests");
 			});
 		});
-
+		
 		if (length > 2) {
 			setTimeout(function() {
 				$('#result_' + split[2]).click()
@@ -543,27 +552,46 @@ function loadAllMethods(dir) {
 }
 
 function drawPIChart(report) {
-	var data = [ [ 'Fail', report.fail ], [ 'Pass', report.pass ],
-			[ 'Skip', report.skip ] ];
+	var data = [ [ 'Passed', report.pass ], [ 'Failed', report.fail],
+			[ 'Skipped', report.skip ] ];
+	var pass = report.pass / (report.pass + report.fail + report.skip) * 100,
+	fail = report.fail / (report.pass + report.fail + report.skip) * 100
+	skip = report.skip / (report.pass + report.fail + report.skip) * 100;
+	var tl_labels = [
+		["Passed<span style='float:right;font-weight:bold'>" + pass + "%</span>"],
+        ["Failed<span style='float:right;font-weight:bold'>" + fail + "%</span>"],
+        ["Skipped<span style='float:right;font-weight:bold'>" + skip + "%</span>"]    
+      ];
 
 	jQuery.jqplot("pichart", [ data ], {
 		seriesDefaults : {
 			// Make this a pie chart.
-			renderer : jQuery.jqplot.PieRenderer,
+			renderer : jQuery.jqplot.DonutRenderer,
 			rendererOptions : {
-				seriesColors : [ '#e63c20', '#23a347', '#f3b600' ],
+				seriesColors : [ '#23a347', '#e63c20', '#f3b600' ],
+				 startAngle: -90,
 				//                  RED       GREEN     YELLOW
 				// Put data labels on the pie slices.
 				// By default, labels show the percentage of the
 				// slice.
-				showDataLabels : true
+				showDataLabels : false,
+				dataLabels: tl_labels,
+				totalLabel: true,
+				edgeTolerance: -100
 			}
 		},
 		legend : {
-			show : false,
-			location : 'e'
-		}
+			show : true,
+			location : 'e',
+			background: '#ffffff',
+			position: 'relative',
+			border: 'none',
+			labels: tl_labels,
+		},
+		grid: {borderColor: 'white', shadow: false, drawBorder: true,background:'transparent'},
+
 	});
+	$("td.jqplot-table-legend:nth-child(2)","#pichart").width(100);
 }
 
 function loadMethods(cresultRoot, testDir) {
