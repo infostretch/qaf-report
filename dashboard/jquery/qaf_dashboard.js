@@ -48,22 +48,85 @@ var overviewTemplate =
 '<div class="cont_data">'+
 '<div id="overview-sec">'+
     '<div class="top_area">'+
-		'<div style="margin-left:25px;font-size:14px;"><a dir="all" class="link" href="#" onclick="loadListAll();">View all results</a></div><div class="left_area" id="pichart" style="width: 430px; height: 221px;border : 1px solid black"></div>'+
+		'<div class="left_area" id="pichart" style="width: 430px; height: 221px;border : 1px solid darkgray"></div>'+
 		'<div class="right_area">'+
-            '<div class="colum colum_one_mrgin">'+
-                '<ul style="padding:0">'+
-					'<li class="result listItem"><span> Total Test Cases Passed: </span><span class="green_bg bold"> ${pass} </span><hr/></li>'+
-					'<li class="result listItem"><span>Total Test Cases Skipped: </span><span class="yellow_bg bold"> ${skip}</span><hr/></li>'+
-					'<li class="result listItem"><span>Total Test Cases Failed: </span><span class="red_bg bold"> ${fail}</span><hr/></li>'+
-					'<li class="result"><span>Total Test Cases Executed:</span><span class="bold"> ${total}</span><hr/></li>'+
-					'<li class="result"><span>Total Duration: </span><span class="bold"> ${getDuration(endTime-startTime)}</span></li>'+
-                '</ul>'+
+			'<div class="colum colum_one_mrgin">'+
+					'<div class="row">'+
+						'<div class="col-md-6 p-t-10">'+
+							'<div class="card-group">'+
+								'<div class="card card-rounded card-inverse card-info">'+
+									'<div class="card-block">'+
+											'<div class="text-right">'+
+												'<i class="fa fa-3x fa-th"></i>'+
+											'</div>'+
+											'<h4 class="actionFontSize">${total}</h4>'+
+											'<small class="text-muted text-uppercase bold">Total Test Cases</small>'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+						'<div class="col-md-6 p-t-10">'+
+							'<div class="card-group">'+
+								'<div class="card card-rounded card-inverse card-info">'+
+									'<div class="card-block license-details">'+
+										'<div class="text-right">'+
+											'<i class="fa fa-3x fa-clock-o"></i>'+
+										'</div>'+
+										'<h4 class="actionFontSize">${getDuration(endTime-startTime)}</h4>'+
+										'<small class="text-muted text-uppercase bold">Total Duration</small>'+
+									'</div>'+
+								'</div>'+
+						   '</div>'+
+					   '</div>'+
+					'</div>'+
+				   '<div class="row">'+
+						'<div class="col-md-4 p-t-10">'+
+							'<div class="card-group">'+
+								'<div class="card card-rounded card-inverse card-success">'+
+									'<div class="card-block">'+
+											'<div class="text-right">'+
+												'<i class="fa fa-3x fa-check-circle-o"></i>'+
+											'</div>'+
+											'<h4 class="actionFontSize">${pass}</h4>'+
+											'<small class="text-muted text-uppercase bold">Passed</small>'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+						'<div class="col-md-4 p-t-10">'+
+							'<div class="card-group">'+
+								'<div class="card card-rounded card-inverse card-warning">'+
+									'<div class="card-block license-details">'+
+										'<div class="text-right">'+
+											'<i class="fa fa-3x fa-exclamation-circle"></i>'+
+										'</div>'+
+										'<h4 class="actionFontSize">${skip}</h4>'+
+										'<small class="text-muted text-uppercase bold">Skipped</small>'+
+									'</div>'+
+								'</div>'+
+						   '</div>'+
+					   '</div>'+
+						'<div class="col-md-4 p-t-10">'+
+								'<div class="card-group">'+
+									'<div class="card card-rounded card-inverse card-danger">'+
+										'<div class="card-block">'+
+												'<div class="text-right">'+
+													'<i class="fa fa-3x fa-times-circle-o"></i>'+
+												'</div>'+
+												'<h4 class="actionFontSize">${fail}</h4>'+
+												'<small class="text-muted text-uppercase bold">Failed</small>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+					'</div>'+
+					//end row
             '</div>'+
         '</div>'+
     '</div>'+
 	'</div>'+
     '<div class="clear"></div>'+
-    '<div class="bottom_area" style="padding-left: 48px;padding-right: 25px;padding-top: 30px;">'+
+    '<div class="bottom_area" style="padding-left:36px;padding-right: 25px;padding-top: 30px;">'+
         // '<table border="0" cellspacing="0" cellpadding="0" id="test_report" style="padding-bottom:30px;">'+
         //     '<thead>'+
         //         '<tr>'+
@@ -81,21 +144,27 @@ var overviewTemplate =
         //     '</tbody>'+
 		// '</table>'+
 		// '<div class="row"><div class="col-sm-8" style="background-color:lavender;">.col-sm-8<div class="row"> <div class="col-sm-6" style="background-color:lightcyan;">.col-sm-6</div><div class="col-sm-6" style="background-color:lightgray;">.col-sm-6</div></div></div><div class="col-sm-4" style="background-color:lavenderblush;">.col-sm-4</div></div>'+		
-		'<div class="rTable">'+
-			'<div class="rTableRow">'+
-				'<div class="rTableHead w-20">Test</div>'+
-				'<div class="rTableHead w-15">Duration</div>'+
-				'<div class="rTableHead w-5">Passed</div>'+
-				'<div class="rTableHead w-5">Skipped</div>'+
-				'<div class="rTableHead w-5">Failed</div>'+
-				'<div class="rTableHead w-15">Total</div>'+
-				'<div class="rTableHead w-20">Pass Rate</div>'+
-			'</div>'+			
-			'<div class="rTableRow" style="margin-bottom:10px;">'+		
-			'</div>'+
-			'<div class="rTableRow showShadow" style="margin-bottom:15px;" id="tests">'+
-			'</div>'+
-			'<div class="rTableRow" style="margin-bottom:10px;">'+		
+		'<div class="card-block no-border">'+
+			'<div class="session-list">'+
+				'<section class="card-group">'+
+					'<div class="card no-border">'+
+						'<table class="table table-middle table-hover">'+
+							'<thead>'+
+								'<tr>'+
+									'<th class="w-30">Test</th>'+
+									'<th class="w-15">Duration</th>'+
+									'<th class="w-5">Passed</th>'+
+									'<th class="w-5">Skipped</th>'+
+									'<th class="w-5">Failed</th>'+
+									'<th class="w-5">Total</th>'+
+									'<th class="w-20">Pass Rate</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody id="tests">'+
+        				    '</tbody>'+
+						'</table>'+
+					'</div>'+
+				'</section>'+
 			'</div>'+
 		'</div>'+
     '</div>'+
@@ -105,15 +174,17 @@ var overviewTemplate =
 
 
 var testOverviewTemplate =
-'<div class="rTableCell w-20"><a href="${window.location.href}#${name}" id="result_${name}" onclick="loaResult(\'${name}\');" class="reportlink">${name}</a></div>'+
-'<div class="rTableCell w-15" title="[${msToFormatedDateStr(startTime, \'dd-MM-yy HH:MM\')} - ${msToFormatedDateStr(endTime, \'dd-MM-yy HH:MM\')}]">${getDuration(endTime-startTime)}</div>'+
-'<div class="rTableCell w-5">${pass}</div>'+
-'<div class="rTableCell w-5">${skip}</div>'+
-'<div class="rTableCell w-5">${fail}</div>'+
-'<div class="rTableCell w-15">${total}</div>'+
-'<div class="rTableCell w-20">'+
-    '<div class="${percentageClassName}"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div>'+
-'</div>';
+'<tr class="class="session-box">'+
+'<td class="w-30"><div title="${name}"><a class="testCaseName" href="${window.location.href}#${name}" id="result_${name}" onclick="loaResult(\'${name}\');" class="reportlink">${name}</a></div></td>'+
+'<td class="w-15"><div title="[${msToFormatedDateStr(startTime, \'dd-MM-yy HH:MM\')} - ${msToFormatedDateStr(endTime, \'dd-MM-yy HH:MM\')}]">${getDuration(endTime-startTime)}</div></td>'+
+'<td class="w-5"><div>${pass}</div></td>'+
+'<td class="w-5"><div>${skip}</div></td>'+
+'<td class="w-5"><div>${fail}</div></td>'+
+'<td class="w-5"><div>${total}</div></td>'+
+'<td class="w-20">'+
+    '<div class="${percentageClassName}"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div></td>'+
+'</td>'+
+'</tr>';
 
 
 var methodHeaderTemplate =
@@ -558,17 +629,18 @@ function drawPIChart(report) {
 	fail = report.fail / (report.pass + report.fail + report.skip) * 100
 	skip = report.skip / (report.pass + report.fail + report.skip) * 100;
 	var tl_labels = [
-		["Passed<span style='float:right;font-weight:bold'>" + pass + "%</span>"],
-        ["Failed<span style='float:right;font-weight:bold'>" + fail + "%</span>"],
-        ["Skipped<span style='float:right;font-weight:bold'>" + skip + "%</span>"]    
+		["Passed<span style='float:right;font-weight:bold'>" + pass.toFixed(2) + "%</span>"],
+        ["Failed<span style='float:right;font-weight:bold'>" + fail.toFixed(2) + "%</span>"],
+        ["Skipped<span style='float:right;font-weight:bold'>" + skip.toFixed(2) + "%</span>"]    
       ];
 
 	jQuery.jqplot("pichart", [ data ], {
+		title: '<a dir="all" class="view-all-results" href="#">View All Results</a>',
 		seriesDefaults : {
 			// Make this a pie chart.
 			renderer : jQuery.jqplot.DonutRenderer,
 			rendererOptions : {
-				seriesColors : [ '#23a347', '#e63c20', '#f3b600' ],
+				seriesColors : [ '#4dbd74', '#f86c6b' , '#f8cb00' ],
 				 startAngle: -90,
 				//                  RED       GREEN     YELLOW
 				// Put data labels on the pie slices.
@@ -591,7 +663,13 @@ function drawPIChart(report) {
 		grid: {borderColor: 'white', shadow: false, drawBorder: true,background:'transparent'},
 
 	});
-	$("td.jqplot-table-legend:nth-child(2)","#pichart").width(100);
+	$("td.jqplot-table-legend:nth-child(2)","#pichart").width(120);
+	$(".jqplot-title")
+    .css({
+        cursor: "pointer",
+        zIndex: "1"
+    })
+    .click(function(){ loadListAll(); });
 }
 
 function loadMethods(cresultRoot, testDir) {
