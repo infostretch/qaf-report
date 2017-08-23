@@ -242,7 +242,7 @@ a {
 #data_area .data_cont .cont_data .top_area .right_area {
 	/* border: 1px solid #032545; */
 	float: left;
-	width:61.5%;
+	width:60%;
 	/*margin-left: 27px;
 	margin-top: 27px;
 	padding: 0 1px 7px 16px;*/
@@ -983,7 +983,7 @@ pre {
 .ui-layout-content ul li a p { margin: 0 0 3px 0; line-height:16px; }
 
 .text-center { text-align: center; }
-#pichart canvas { width:100%; }
+#pichart canvas {  }
 .jqplot-data-label { color:#fff; }
 
 #error_analysis_details .ui-widget-content { padding: 5px 0 5px 25px !important; list-style-position: outside; width:100%; float:left; box-sizing: border-box; }
@@ -1680,7 +1680,7 @@ table {
 
 .actionFontSize{
    font-size: 28px!important;
-   margin-top: -15px;
+   margin-top:-15px;
    margin-left: 10px;
 }
 

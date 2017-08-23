@@ -48,7 +48,7 @@ var overviewTemplate =
 '<div class="cont_data">'+
 '<div id="overview-sec">'+
     '<div class="top_area">'+
-		'<div class="left_area" id="pichart" style="width: 430px; height: 221px;border : 1px solid darkgray"></div>'+
+		'<div class="left_area" style="width: 36%; height:221px;border : 1px solid darkgray"><div id="pichart" style="width: 100%;height:221px"></div></div>'+
 		'<div class="right_area">'+
 			'<div class="colum colum_one_mrgin">'+
 					'<div class="row">'+
@@ -636,6 +636,7 @@ function drawPIChart(report) {
 
 	jQuery.jqplot("pichart", [ data ], {
 		title: '<a dir="all" class="view-all-results" href="#">View All Results</a>',
+		gridPadding: {top:5, bottom:0, left:0, right:0},
 		seriesDefaults : {
 			// Make this a pie chart.
 			renderer : jQuery.jqplot.DonutRenderer,
@@ -663,7 +664,7 @@ function drawPIChart(report) {
 		grid: {borderColor: 'white', shadow: false, drawBorder: true,background:'transparent'},
 
 	});
-	$("td.jqplot-table-legend:nth-child(2)","#pichart").width(120);
+	$("td.jqplot-table-legend:nth-child(2)","#pichart").width(115);
 	$(".jqplot-title")
     .css({
         cursor: "pointer",
