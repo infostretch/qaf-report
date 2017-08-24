@@ -301,9 +301,9 @@ var errorAnalysisTemplate =
 '<div id="error_analysis_chart" style="width:25%; max-width:350px; height: 300px;" class="fleft"></div>'+
 '<div style="min-width: 450px;width: 71%; height: 300px;" class="fleft">'+
 '{{each(i, item) $data}}'+
-'<div class="collapse collapsible" style="background-color: #D2D2C2;margin-top:5px; width:100%; float:left;">'+
-    '<div class="accordien_arrow" style="background-color: transparent;float: left;border:5px solid transparent;"></div>'+
-    '<div class="key" style="padding:6px;">${i}'+
+'<div class="collapse collapsible" style="background-color: #D2D2C2;margin-top:10px; width:100%; float:left;">'+
+    '<div class="accordien_arrow" style="background-color: transparent;float: left;border:2px solid transparent;margin-top: 4px;margin-left: 4px;"></div>'+
+    '<div class="key" style="padding-left:30px;">${i}'+
         '<div class="value_count">${item.length}</div>'+
     '</div>'+
 '</div>'+

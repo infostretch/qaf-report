@@ -188,8 +188,7 @@ a {
 
 #data_area {
 	float: left;
-	width: 98%;
-	padding-right: 1%;
+	width:100%;
 	padding-left: 1%;
 }
 
@@ -535,9 +534,9 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 .report {
 	float: left;
 	padding-left: 1%;
-	padding-right: 1%;
+	/* padding-right: 1%; */
 	padding-top: 0.9%;
-	width: 98%;
+	width: 100%;
 }
 
 .report .tool_cont {
@@ -730,8 +729,8 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 .environment_info {
 	float: left;
 	padding-left: 1%;
-	padding-right: 1%;
-	width: 98%;
+	/* padding-right: 1%; */
+	width: 100%;
 	margin-top: 15px;
 }
 
@@ -902,7 +901,7 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 	float: right;
 	height: 16px;
 	line-height: 17px;
-	margin: 4px 0 0 15px;
+	margin: 2px 0 0 15px;
 	width: 21px;
 }
 
@@ -920,12 +919,12 @@ html ul.tabs li.active, html ul.tabs li.active a:hover {
 }
 .group {
 	position: relative;
-	padding: 2px 5px;
+	padding: 1px 5px;
 	background-color: #dde;
 	-moz-border-radius: 10px; /* Firefox */
 	-webkit-border-radius: 10px; /* Webkit */
 	border-radius: 5px;
-	margin: 0px 5px;
+	margin: 0px 4px;
 }
 .tiny-blue {
 
@@ -1095,7 +1094,7 @@ pre {
         text-align: left;
         font-size: 14px;
         word-wrap: break-word;
-        padding: 3px 5px 3px 15px;
+        padding: 4px 5px 4px 15px;
     }
     
     .meta-info th {
