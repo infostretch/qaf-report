@@ -182,7 +182,7 @@ var testOverviewTemplate =
 '<td class="w-5"><div>${fail}</div></td>'+
 '<td class="w-5"><div>${total}</div></td>'+
 '<td class="w-20">'+
-    '<div class="${percentageClassName}"><span style="width:${calcPassRate(pass,fail,skip)}%;">${calcPassRate(pass,fail,skip)}%</span></div></td>'+
+	'<div title="Pass : ${calcPassRate(pass,fail,skip)}% &#013;Fail : ${calcFailRate(pass,fail,skip)}% &#013;Skip : ${calcSkipRate(pass,fail,skip)}%" id="${multiprogressbarid}" style="height:20px;width: 100%;"></div>'+
 '</td>'+
 '</tr>';
 
@@ -571,6 +571,7 @@ function loaResult(dir) {
 
 function loadOverview(dir) {
 	var percentage = 0;
+	var multiprogressbar = 0;
 	$.getJSON(dir + "/meta-info.json", function(data) {
 		$("#overview-tab-content").show();
 
@@ -579,14 +580,18 @@ function loadOverview(dir) {
 		$.each(data.tests, function(i, item) {
 			$.getJSON(dir + "/" + item + "/overview.json", function(data1) {
 				data1["name"] = item;
-				percentage = calcPassRate(data1.pass,data1.fail,data1.skip);
-				if(percentage > 80)
-						data1["percentageClassName"] ="passrate_col";
-				else if(percentage > 50 && percentage < 80)
-						data1["percentageClassName"] ="mediumrate_col";
-				else
-						data1["percentageClassName"] ="failrate_col";								
+				percentagePass = calcPassRate(data1.pass,data1.fail,data1.skip);
+				percentageFail = calcFailRate(data1.pass,data1.fail,data1.skip);
+				percentageSkip = calcSkipRate(data1.pass,data1.fail,data1.skip);
+				// if(percentage > 80)
+				// 		data1["percentageClassName"] ="passrate_col";
+				// else if(percentage > 50 && percentage < 80)
+				// 		data1["percentageClassName"] ="mediumrate_col";
+				// else
+				// 		data1["percentageClassName"] ="failrate_col";	
+				data1["multiprogressbarid"]	= "id" + (multiprogressbar++);
 				$.tmpl(testOverviewTemplate,data1).appendTo("#tests");
+				calcProgressBar(percentagePass,percentageFail, percentageSkip,data1["multiprogressbarid"]);	
 			});
 		});
 		
@@ -641,7 +646,7 @@ function drawPIChart(report) {
 			// Make this a pie chart.
 			renderer : jQuery.jqplot.DonutRenderer,
 			rendererOptions : {
-				seriesColors : [ '#4dbd74', '#f86c6b' , '#f8cb00' ],
+				seriesColors : [ '#4dbd74', '#e63c20' , '#f3b600' ],
 				 startAngle: -90,
 				//                  RED       GREEN     YELLOW
 				// Put data labels on the pie slices.
@@ -1680,6 +1685,24 @@ function getDuration(ms) {
 
 function calcPassRate(pass, fail, skip) {
 	return Math.round(pass / (pass + fail + skip) * 100);
+}
+
+function calcFailRate(pass, fail, skip) {
+	return Math.round(fail / (pass + fail + skip) * 100);
+}
+
+function calcSkipRate(pass, fail, skip) {
+	return Math.round(skip / (pass + fail + skip) * 100);
+}
+
+function calcProgressBar(pass, fail, skip, id) {
+	var rowId = '#' + id;
+	$(rowId).multiprogressbar({
+		parts: [
+           {value: pass,barClass: "pass",text : true},
+           {value: skip,barClass: "skip", text : true},
+		   {value: fail,barClass: "fail", text  :true}]
+	});
 }
 
 String.prototype.capitalizeFirstLetter = function() {
