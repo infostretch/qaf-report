@@ -8,19 +8,20 @@
     <link rel="stylesheet" href="./dashboard/jquery/jqplot/jquery.jqplot.min.css" />
     <link rel="stylesheet" href="./dashboard/jquery/ui/css/smoothness/jquery-ui-1.9.0.custom.min.css" />
     <link rel="stylesheet" href="./dashboard/jquery/layout/layout-default-latest.css" />
-    <link rel="stylesheet" type="text/css" href="./dashboard/jquery/jqplot/examples.min.css" />
+    <link rel="stylesheet" href="./dashboard/css/font-awesome.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./dashboard/jquery/jqplot/examples.min.css" /> -->
     <link type="text/css" rel="stylesheet" href="./dashboard/jquery/jqplot/syntaxhighlighter/styles/shCoreDefault.min.css" />
     <link type="text/css" rel="stylesheet" href="./dashboard/jquery/jqplot/syntaxhighlighter/styles/shThemejqPlot.min.css" />
     <link href="./dashboard/css/stylesheet_master.css" media="screen" rel="stylesheet" type="text/css">
     <link href="./dashboard/css/sunburst.css" media="screen" rel="stylesheet" type="text/css">
-    <script src="./dashboard/jquery/jquery-1.8.2.min.js"></script>
+     <script src="./dashboard/jquery/jquery-1.8.2.min.js"></script> 
     <script src="./dashboard/jquery/jquery.tinysort.min.js"></script>
     <script src="./dashboard/jquery/prettify.js"></script>
     <script src="./dashboard/jquery/jquery.timer.js"></script>
     <script src="./dashboard/jquery/ui/jquery-ui-1.9.0.custom.min.js"></script>
     <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmpl.min.js"></script>
     <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmplPlus.min.js"></script>
-    <script src="./dashboard/jquery/layout/jquery.layout-latest.min.js"></script>
+     <script src="./dashboard/jquery/layout/jquery.layout-latest.min.js"></script> 
     <script src="./dashboard/jquery/jqplot/jquery.jqplot.min.js"></script>
     <script src="./dashboard/jquery/jqplot/plugins/jqplot.pieRenderer.min.js"></script>
     <script src="./dashboard/jquery/jqplot/plugins/jqplot.donutRenderer.min.js"></script>
@@ -42,9 +43,12 @@
     <script src="./dashboard/jquery/qaf_dashboard.js"></script>
     
     <link href="./dashboard/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
-    <script src="./dashboard/jquery/jqueryFileTree/jquery.easing.js"></script>
+    <!-- <script src="./dashboard/jquery/jqueryFileTree/jquery.easing.js"></script> -->
     <script src="./dashboard/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
 
+    <script src="./dashboard/jquery/multiprogressbar/jquery.ui.multiprogressbar.js"></script>
+    <script src="./dashboard/jquery/multiprogressbar/jquery.outerhtml.js"></script>
+    <link rel="stylesheet" href="./dashboard/jquery/multiprogressbar/jquery.ui.multiprogressbar.css"></link>
 </head>
 
 <body>
@@ -125,9 +129,9 @@
                         <div class="filter_cont">
                             <ul>
                                 <li class="topic_title">
-                                    Order
+                                    Order:
                                 </li>
-                                <li class="topic_data">
+                                <li class="topic_data" style="margin-top:7px;">
                                     <input name="order" type="radio" value="pass" id="opass" onclick="doSort('pass')" />
                                     <label for="opass">Pass</label>
                                     <input name="order" type="radio" value="fail" id="ofail" onclick="doSort('fail')" />
@@ -144,7 +148,7 @@
                         <div class="details_cont">
                             <ul>
                                 <li class="topic_title">
-                                    Details <span id="loading-info"> <span id="progress" class="tiny-green"> </span> <span class="tiny-blue"> <button id="stop" style="height: 20px;"></button> </span> </span>
+                                    Details: <span id="loading-info"> <span id="progress" class="tiny-green"> </span> <span class="tiny-blue"> <button id="stop" style="height: 20px;"></button> </span> </span>
                                 </li>
                                 <li class="topic_data">
                                     <input value="true" id="oexpand" name="expandcollapse" onclick="expandCollapseAll(true)" type="radio" />
