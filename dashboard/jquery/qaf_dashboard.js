@@ -646,7 +646,7 @@ function drawPIChart(report) {
 			// Make this a pie chart.
 			renderer : jQuery.jqplot.DonutRenderer,
 			rendererOptions : {
-				seriesColors : [ '#4dbd74', '#e63c20' , '#f3b600' ],
+				seriesColors : [ '#4dbd74', '#e63c20' , '#ffd800' ],
 				 startAngle: -90,
 				//                  RED       GREEN     YELLOW
 				// Put data labels on the pie slices.
@@ -1272,7 +1272,6 @@ function populateErrorBucket() {
 				// Make this a pie chart.
 				renderer : $.jqplot.DonutRenderer,
 				rendererOptions : {
-					sliceMargin : 1,
 					startAngle : -90,
 					seriesColors : scolors,
 					// Put data labels on the pie slices.
@@ -1699,9 +1698,9 @@ function calcProgressBar(pass, fail, skip, id) {
 	var rowId = '#' + id;
 	$(rowId).multiprogressbar({
 		parts: [
-           {value: pass,barClass: "pass",text : true},
-           {value: skip,barClass: "skip", text : true},
-		   {value: fail,barClass: "fail", text  :true}]
+           {value: pass,barClass: "progressPass",text : true},
+           {value: skip,barClass: "progressSkip", text : true},
+		   {value: fail,barClass: "progressFail", text  :true}]
 	});
 }
 

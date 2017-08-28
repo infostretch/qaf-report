@@ -1338,12 +1338,12 @@ pre {
   color: #fff;
 }
 .card-warning:not(.no-bg) {
-  background: #f3b600;  /* #f8cb00*/
+  background: #ffd800;  /* #f8cb00*/
       padding-top: 10px;
     padding-bottom: 10px;
 }
 .card-warning:not(.no-border) {
-  border-color: #f3b600;
+  border-color: #ffd800;
 }
 .card-group {
   display: table;
@@ -1706,14 +1706,14 @@ table {
 	font-size:14px;
 }
 
-.fail {
+.progressFail {
 			background: #e63c20;;
 }
-.pass {
-			background: #23a347;
+.progressPass {
+			background:#4dbd74/* #23a347;*/
 }
-.skip {
-			background: #f3b600;
+.progressSkip {
+			background: #ffd800;
 }
 .ui-progressbar .ui-progressbar-value{
 	margin : 0;
