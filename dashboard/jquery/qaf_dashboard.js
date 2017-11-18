@@ -273,13 +273,13 @@ var seleniumLogTemplate =
 
 
 var envInfoTemplate = 
-'<ul>'+
+'<ol>'+
 '{{each(i, item) $data}} {{if typeof item== \'object\'}}'+
 '<li><span class="key">${i}</span>:${JSON.stringify(item)}</li>'+
 '{{else}} {{if item.toString().length > 0}}'+
-'<li><span class="key">${i}</span>:${item}</li>'+
+'<li><span class="key">${i}</span>:{{html item}}</li>'+
 '{{/if}} {{/if}} {{/each}}'+
-'</ul>';
+'</ol>';
 
 
 
