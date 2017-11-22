@@ -293,7 +293,14 @@ $.template( "errorAnalysisTemplate", errorAnalysisTemplate);
 $.template( "seleniumLogTemplate", seleniumLogTemplate);
 $.template( "envInfoTemplate", envInfoTemplate);
 
-var resultRootDir = "test-results";
+function getUrlVar(key){
+
+	var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search); 
+
+	return (result && unescape(result[1]+"/test-results")) || "test-results"; 
+
+}
+var resultRootDir = getUrlVar("job");//"test-results";
 var curResultDir = "";
 var layout;
 var treports;
@@ -431,9 +438,11 @@ function loadList(loadmethods) {
 
 		if (loadmethods) {
 			$('#details').html('');
+
 			var curSelceteReport = $('#reportlist li.selected');
 			if (curSelceteReport) {
 				$(curSelceteReport).removeClass("selected");
+
 				$(curSelceteReport).addClass("active");
 			}
 			$("#reportlist li:first").addClass("selected");
@@ -465,8 +474,10 @@ function selectReport() {
 }
 
 function removePrefixOfResultRootDir(dir) {
-	var index = dir.indexOf(resultRootDir);
-	return dir.substr(index, dir.length);
+// 	var index = dir.indexOf(resultRootDir);
+// 	return dir.substr(index, dir.length);
+	var index = dir.indexOf("test-results");
+	return dir.substr(index, dir.length).replace("test-results",resultRootDir);
 }
 
 function loadListAll() {
