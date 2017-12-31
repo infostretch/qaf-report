@@ -174,7 +174,7 @@ var methodDetailsTemplate = '<span class="toolbar">'
 		+ '</div>'
 		+ '{{if errorTrace}}'
 		+ '<div class="error-trace tab-content" style="display:none;margin-top:15px;">'
-		+ '<pre class="prettyprint lang-html linenums">{{html errorTrace}}</code></pre>'
+		+ '<pre class="prettyprint linenums">{{html errorTrace}}</pre>'
 		+ '</div>'
 		+ '{{/if}} {{if (checkPoints.length>0 && checkPoints[0].duration)}}'
 		+ '<div class="step-analysis tab-content" style="position:relative;margin-left:20px;margin-top:20px;margin-bottom:40px;margin-right:20px;height:300px;display:none;" data="${getStepTimes(checkPoints)}" </div>'
@@ -223,9 +223,9 @@ var seleniumLogTemplate =
 		+ '<table width="100%">'
 		+ '<thead onclick="$(this).closest(\'table\').children(\'tbody\').toggle();" style="border:1px solid #000;">'
 		+ '<tr valign="top">'
-		+ '<th align="left" width="20%"><pre class="prettyprint lang-html">{{html trunck(commandName)}}</pre></th>'
-		+ '<th align="left" width="37%"><pre class="prettyprint lang-html">{{html trunck(args)}}</pre></th>'
-		+ '<th align="left" width="37%"><pre class="prettyprint lang-html">{{html trunck(result)}}</pre></th>'
+		+ '<th align="left" width="20%"><pre class="prettyprint">{{html trunck(commandName)}}</pre></th>'
+		+ '<th align="left" width="37%"><pre class="prettyprint">{{html trunck(args)}}</pre></th>'
+		+ '<th align="left" width="37%"><pre class="prettyprint">{{html trunck(result)}}</pre></th>'
 		+ '<td width="4%"><pre class="prettyprint">${getTotalDuration(subLogs)}</pre></td>'
 		+ '</tr>'
 		+ '</thead>'
@@ -237,13 +237,18 @@ var seleniumLogTemplate =
 		+ '{{else}}'
 		+ '{{if commandName}}'
 		+ '<tr valign="top">'
+		+ '<td width="19%"><pre class="prettyprint">${commandName}</pre></td>'
+		+ '<td width="37%"><pre class="prettyprint">${args}</pre></td>'
+		+ '<td width="37%"><pre class="prettyprint">${formatedRes(result)}</pre></td>'
 		+ '{{else}}'
 		+ '<tr onclick="showDialog(this)" valign="top">'
-		+ '{{/if}}'
-		+ '<td width="19%"><pre class="prettyprint lang-html">${commandName}</pre></td>'
+		+ '<td width="19%">${commandName}</td>'
 		+ '<td width="37%"><pre class="prettyprint lang-html">${args}</pre></td>'
 		+ '<td width="37%"><pre class="prettyprint lang-html">${formatedRes(result)}</pre></td>'
-		+ '{{if duration}}' + '<td width="4%"><pre class="prettyprint lang-html">${duration/1000}</pre></td>'
+		+ '{{/if}}'
+
+		+ '{{if duration}}'
+		+ '<td width="4%"><pre class="prettyprint">${duration>0?(duration/1000):duration}</pre></td>'
 		+ '{{/if}} {{/if}}' + '</tr>';
 
 var envInfoTemplate = '<ol>'
@@ -439,7 +444,9 @@ function selectReport() {
 	split = url.split("#");
 	length = split.length;
 	if (length > 1) {
-		if ($('#job_' + split[1]).parent('li').length) {
+		if ($('#' + split[1]).length) {
+			$('#' + split[1]).trigger('click');
+		} else if ($('#job_' + split[1]).parent('li').length) {
 			$('#job_' + split[1]).parent('li').trigger('click');
 		} else {
 			$("#reportlist li:first").trigger('click');
@@ -485,6 +492,7 @@ function loadListAll() {
 function loaResult(dir) {
 	tmp = curResultDir + "/" + dir;
 	loadMethods(curResultDir, dir);
+	currSuite = dir;
 	resetFilterAndOrder();
 	$("#report_details").show();
 	$("#overview-tab-content").hide();
@@ -528,6 +536,7 @@ function loadOverview(dir) {
 function loadAllMethods(dir) {
 	$("#overview-tab-content").hide();
 	$("#method-results").html('');
+	dir = removePrefixOfResultRootDir(dir);
 	chained1 = $.getJSON(dir + "/meta-info.json", function(data) {
 
 		$.each(data.tests, function(i, item) {
@@ -804,12 +813,19 @@ function displayMetaData(value) {
 }
 function loadDetailsTemplate(data, container) {
 	$.tmpl(methodDetailsTemplate, data).appendTo(container);
-//	PR.prettyPrint();
 
-	$(container).find('pre.prettyprint').each(function() {
-		$(this).html(PR.prettyPrintOne($(this).html(),'',$(this).hasClass('linenums')));
-		$(this).addClass('prettyprinted');
-	});
+	$(container).find('pre.prettyprint').each(
+			function() {
+				var lang = '';
+				if($(this).is('[class*=lang-]')){
+					var lang = this.className.split('lang-')[1].split(' ')[0];
+					console.log("class name" + lang);
+				}
+				$(this).html(
+						PR.prettyPrintOne($(this).html(), lang, $(this).hasClass(
+								'linenums')));
+				$(this).addClass('prettyprinted');
+			});
 	applyUi(container);
 	displayTotalTime(container, data);
 }
@@ -923,7 +939,7 @@ function formatedRes(res) {
 		var results = [];
 		extractJSON(res, results);
 		$(results).each(function(index, value) {
-			res = result.replace(value, vkbeautify.json(value));
+			res = res.replace(value, vkbeautify.json(value));
 		});
 	} catch (e) {
 		console.log(e);
@@ -938,16 +954,16 @@ function extractJSON(str, results) {
 	firstOpen = str.indexOf('{', firstOpen + 1);
 	do {
 		firstClose = str.lastIndexOf('}');
-		//console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose);
+		// console.log('firstOpen: ' + firstOpen, 'firstClose: ' + firstClose);
 		if (firstClose <= firstOpen) {
 			return results;
 		}
 		do {
 			candidate = str.substring(firstOpen, firstClose + 1);
-			//console.log('candidate: ' + candidate);
+			// console.log('candidate: ' + candidate);
 			try {
 				var res = JSON.parse(candidate);
-				//console.log('...found');
+				// console.log('...found');
 				results.push(candidate);
 				// return [res, firstOpen, firstClose + 1];
 				return extractJSON(str.slice(firstClose + 1), results)
@@ -965,7 +981,7 @@ function showDialog(ele) {
 	$('#request-details').html($(ele).find("td:nth(1)").html());
 	$('#response-details').html($(ele).find("td:nth(2)").html());
 
-	$('#cmdDialog').dialog(
+	$(cmdDialog).dialog(
 			{
 				modal : true,
 				resizable : true,
@@ -1170,9 +1186,10 @@ function mehodheaderClick(ele) {
 	var dataFile = $(details).attr('data-file');
 	var tcLink = dataFile.slice(dataFile.lastIndexOf('/') + 1, dataFile
 			.lastIndexOf('.'));
-	var index = dataFile.indexOf("json") + "json/".length;
-	var currSuite = dataFile.substring(index).split("/")[0];
-
+	var stIndex = dataFile.indexOf(curResultDir) + curResultDir.length + 1;
+	if (stIndex > 0) {
+		currSuite = dataFile.slice(stIndex).split("/")[0];
+	}
 	window.location.href = $("#reportlist li.selected a").attr('href') + "#"
 			+ currSuite + "#" + tcLink;
 }
