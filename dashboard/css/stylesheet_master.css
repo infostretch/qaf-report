@@ -1125,3 +1125,8 @@ pre {
         font-weight: bold;
         text-transform: uppercase;
     }
+    
+    #reportlist li.selected {
+    background-color: #dcdcdc;
+    }
+    
