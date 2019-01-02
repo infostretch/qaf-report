@@ -105,7 +105,7 @@ var testOverviewTemplate = '<tr>'
 var methodHeaderTemplate = '<div class="mehod ${result} ${type}" id="${result}_cont">'
 		+ '<div class="mehodheader" onclick="mehodheaderClick(this);">'
 		+ '<span class="statusicon ${result}"> &nbsp;<span class="status" style="display:none">${result}</span></span>'
-		+ '<b class="ui-icon-text">{{if (typeof metaData != \'undefined\') }} {{each(i,v) metaData}} {{if (i == \'name\')}}${v} {{/if}}{{/each}} {{else}} ${name} {{/if}}</b> {{if ((typeof args != \'undefined\') && args.length>0)}}'
+		+ '<b class="ui-icon-text">{{if (typeof metaData != \'undefined\') }} {{each(i,v) metaData}} {{if (i == \'name\')}}${v} {{/if}}{{/each}} {{else}} ${name} {{/if}}</b> {{if ((typeof args != \'undefined\') && args.length>0 && isMap(args[0]))}}'
 		+ ' <span class="mehod-args"> ${args[0][\'tcId\']} ${args[0][\'recId\']}</span> {{/if}}'
 		+ '<div style="float: right; ">'
 		+ '{{if typeof retryCount != \'undefined\' && retryCount>0}}'
@@ -1698,6 +1698,15 @@ function jsonToString(value) {
 isString = function(o) {
 	return o == null || typeof o == "string"
 			|| (typeof o == "object" && o.constructor === String);
+}
+
+function isMap(o) {
+    try {
+        Map.prototype.has.call(o); // throws if o is not an object or has no [[MapData]]
+        return true;
+    } catch(e) {
+        return false;
+    }
 }
 
 function msToDateStr(ms) {
