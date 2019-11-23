@@ -1,3 +1,4 @@
+[![live demo](https://img.shields.io/static/v1?label=Dashboard&message=Live%20Demo&color=pista)](https://qmetry.github.io/qaf/latest/dashboard.htm)
 ## QAF Report 
 
 This is QAF reporting to start with. Please refer [Online documentation](https://qmetry.github.io/qaf/latest/qaf_reporting.html) for more help.
