@@ -178,7 +178,7 @@ var checkpointTemplate = '<pre class="prettyprint" style="border: none !importan
 		+ '<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'
 		+ '<div {{if subCheckPoints}}onclick="$(this).closest(\'.checkpoint\').children(\'.subcheckpoints\').toggle();$(this).children(\'span\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');" {{/if}}>'
 		+ '<span class="ui-icon {{if subCheckPoints.length > 0}} ui-icon-triangle-1-e {{else}} ${getIcon(type)} {{/if}}" style="float:left;margin-top:0.0em;margin-left:5px;" title="${type}"></span>'
-		+ '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html message}}'
+		+ '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html escapHtml(message)}}'
 		+ '{{if screenshot}}<a class="screenshot" href="${screenshot}" style="width:auto;margin-top:0.0em;vertical-align:middle;" title="Screenshot"></a>'
 		+ '{{/if}}'
 		+ '{{if duration}}'
@@ -924,6 +924,10 @@ function trunck(str) {
 				+ '...</span>';
 	}
 	return str;
+}
+
+function escapHtml(str){
+	return str.replace(/<(?!(a |\/a))/gi,"&lt;");
 }
 
 function formatedRes(res) {
