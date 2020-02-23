@@ -18,3 +18,20 @@ To add your project/company logo in dashboard, add image file named `app-logo.pn
 <li>Get Detailed Reporting including Trending,root cause analysis and Automated screen capture.</li>
 <li>QAF generates the report in JSON format. You can customize the report as per your requirements by modifying this dashboard.</li>
 </ul>
+
+### Local report access
+When you are opening report dashboard from local file system, your browser may have local file access restrictions. In that case, you can do following seetings:
+
+##### Firefox:
+ - go to about:config
+ - set security.fileuri.strict_origin_policy:false. 
+##### Safari:
+ - Click on the Develop menu in the menu bar. 
+ - Select Disable Local File Restrictions.
+ 
+If develop menu is not available, Click on the Edit > Preferences > Advanced tab. Check "Show Develop menu in the menu bar.
+
+##### chrome:
+ - Close down your Chrome browser (make sure you close all instances if you have multiple windows open)
+ - Go to Run and type the following command: chrome.exe --allow-file-access-from-file.
+ - Hit enter.
