@@ -1716,10 +1716,13 @@ function isMap(o) {
 function getRecordSummary(args){
     try {
         if((typeof args != 'undefined') && args.length>0){
-            for(val of ['summary','recId','tcId']){
-                if(args[0][val]){return args[0][val];}
+            const flds = ['recid','summary','tcid','testcaseid'];
+            for(var p in args[0]){
+                if(args[0].hasOwnProperty(p) && flds.includes((p+ "").replace(/[^a-z]/gi, '').toLowerCase())){
+                    return args[0][p];
+                }
+            }
         }
-       }
     } catch(e) {}
     return "";
 }
