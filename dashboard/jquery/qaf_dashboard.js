@@ -117,7 +117,7 @@ var methodHeaderTemplate = '<div class="mehod ${result} ${type}" id="${result}_c
 		+ '<th>Test Data:</th>'
 		+ '<td colspan="3">${parseArray(args)}</td>'
 		+ '</tr>'
-		+ '{{/if}} {{if (typeof metaData != \'undefined\') }} {{each(i,v) getMetaDataToDisplay(metaData)}} {{if (v!= \'undefined\' && v.length>0)}}'
+		+ '{{/if}} {{if (typeof metaData != \'undefined\') }} {{each(i,v) getMetaDataToDisplay(metaData)}} {{if (v && v!= \'undefined\' && v.length>0)}}'
 		+ '<tr>'
 		+ '<th>${i.capitalizeFirstLetter()}:</th>'
 		+ '<td>'
@@ -934,7 +934,10 @@ function trunck(str) {
 }
 
 function escapHtml(str){
-	return str.replace(/<(?!(a |\/a))/gi,"&lt;");
+	if(str){
+		return str.replace(/<(?!(a |\/a))/gi,"&lt;");
+	}
+	return "";
 }
 
 function formatedRes(res) {
