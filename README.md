@@ -35,3 +35,12 @@ If develop menu is not available, Click on the Edit > Preferences > Advanced tab
  - Close down your Chrome browser (make sure you close all instances if you have multiple windows open)
  - Go to Run and type the following command: chrome.exe --allow-file-access-from-file.
  - Hit enter.
+
+### Jenkins
+If you are facing issues viewing report in Jenkins, it may be because of restrictions applied by [content-security-policy](https://www.jenkins.io/doc/book/security/configuring-content-security-policy/).
+In order to view reports from jenkins, You need to start Jenkins with directory browser support or you can run following line from Jenkins script console:
+
+```
+System.setProperty("hudson.model.DirectoryBrowserSupport.CSP","sandbox allow-scripts allow-same-origin; default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-eval' 'unsafe-inline';")
+```
+After that clear browser cache and try again. Refer [content-security-policy](https://www.jenkins.io/doc/book/security/configuring-content-security-policy/) for more details.
