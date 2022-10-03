@@ -50,7 +50,8 @@ After that clear browser cache and try again. Refer [content-security-policy](ht
 Prerequisites:
  - Java 8 or later
  - Maven
- 
+
+[Download](https://github.com/infostretch/qaf-report/archive/refs/heads/master.zip), extrect and start using repository editor for webservices call and grpc call. If you have exiting automation project extract to your automation project directory.
 From command line execute
 
 ```
@@ -64,4 +65,5 @@ Available end-points:
  - /repo-editor
  - /browse
  - /
+<img width="1439" alt="Screen Shot 2022-10-02 at 11 51 39 PM" src="https://user-images.githubusercontent.com/110619/193645905-411e8c90-782a-40d7-9384-84c4f9797c32.png">
 
