@@ -51,7 +51,7 @@ Prerequisites:
  - Java 8 or later
  - Maven
 
-[Download](https://github.com/infostretch/qaf-report/archive/refs/heads/master.zip), extrect and start using repository editor for webservices call and grpc call. If you have exiting automation project extract to your automation project directory.
+[Download](https://github.com/infostretch/qaf-report/archive/refs/heads/master.zip), extrect and start using repository editor for webservices call and grpc call. If you have existing automation project extract to your automation project directory.
 From command line execute
 
 ```
