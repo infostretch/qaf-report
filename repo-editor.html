@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>QAF Repository Editor</title>
+<style type="text/css">
+body {
+font-size: 11pt;
+}
+.wscTable{
+border-collapse: separate; 
+border-spacing: 8px;
+}
+
+table[id^="tbl"] td{
+padding: 2px;
+}
+#wsc-tabs{
+min-height: 325px;
+}
+.ui-tabs-nav li a{
+font-size:10pt;
+}
+a.ui-icon {
+display: inline-flex;
+cursor: pointer;
+margin: 5px;
+margin-left: 10px;	
+border: 1px solid #eee;
+padding: 8px;
+vertical-align: bottom;
+float: right;
+
+}
+
+.ui-icon{
+transform: scale(1.8);
+margin-left: 10px;
+}
+a.ui-icon:hover{
+border: 1px solid #ccc;
+margin-left: 10px;
+}
+#req-call-actions{
+display: inline;
+float: right;
+}
+button.ui-state-default{
+background-color: #fff;
+}
+
+/* #tree { float:left; min-width:279px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
+ */
+#tree .file { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png') -32px -96px no-repeat; transform: scale(1.8);}
+#tree .folder { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_orange.png') 0 -96px no-repeat; transform: scale(1.8);}
+
+#tree .file-wsc, #tree .file-proto, #tree .file-loc { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png') -64px -96px no-repeat;  transform: scale(1.8);}
+#tree .node { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -112px -80px no-repeat; transform: scale(1.8);}
+/*
+#tree .file-loc { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -160px -112px no-repeat; transform: scale(1.8);}
+*/
+</style>
+<link rel="shortcut icon" href="./dashboard/images/favicon.ico" />
+
+<link rel="stylesheet"
+	href="./dashboard/jquery/layout/layout-default-latest.css" />
+	
+    <link href="./dashboard/css/stylesheet_master.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./dashboard/jquery/ui/css/smoothness/jquery-ui-1.9.0.custom.min.css" />
+
+<!--[if lt IE 9]><script src="//static.jstree.com/3.3.12/assets/html5.js"></script><![endif]-->
+
+	<link rel="stylesheet" href="http://static.jstree.com/3.3.12/assets/dist/themes/default/style.min.css" />
+	<!-- 	<link rel="stylesheet" href="//static.jstree.com/3.3.12/assets/bootstrap/css/bootstrap.min.css" />
+	
+	<link rel="stylesheet" href="//static.jstree.com/3.3.12/assets/docs.css" />  -->
+	
+<!--  <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" /> 
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
+	
+	<script type="text/javascript" src="./dashboard/jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="./dashboard/jquery/ui/jquery-ui-1.9.1.min.js"></script>
+    <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmplPlus.min.js"></script>
+    <script type="text/javascript" src="./dashboard/jquery/layout/jquery.layout-latest.min.js"></script>
+	<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+
+	<!--[if lt IE 9]><script src="//static.jstree.com/3.3.12/assets/respond.js"></script><![endif]-->
+	
+    
+    <!-- json editor   -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css" />
+    <script type="text/javascript" src="./dashboard/jquery/json-table-editor/jsoneditor.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+    <!-- json editor -->
+
+
+<script type="text/javascript" src="./dashboard/jquery/qaf_repoeditor.js"></script>
+
+</head>
+<body>
+	<div class="ui-layout-west">
+
+		<div id="tree"></div>
+	</div>
+	<div class="ui-layout-north">
+	  <div class="logo_area">
+		<img src="./dashboard/images/logo_qaf_icon.svg" alt="QAF Logo" onerror="this.src='./dashboard/images/logo.png'">
+	</div>
+	<div class="my_logo_area">
+		<img src="app-logo.png" height="60px" onerror="this.height='0px'">
+	</div>
+	</div>
+	<div class="ui-layout-center content" id="editor" style="margin-left: 1px;">
+				
+	</div>
+	<div class="ui-layout-south">
+		<div id="console"></div>			
+	</div>
+</body>
+</html>
