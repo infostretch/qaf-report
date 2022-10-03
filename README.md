@@ -44,3 +44,24 @@ In order to view reports from jenkins, You need to start Jenkins with directory 
 System.setProperty("hudson.model.DirectoryBrowserSupport.CSP","sandbox allow-scripts allow-same-origin; default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-eval' 'unsafe-inline';")
 ```
 After that clear browser cache and try again. Refer [content-security-policy](https://www.jenkins.io/doc/book/security/configuring-content-security-policy/) for more details.
+
+## QAF repository editor
+
+Prerequisites:
+ - Java 8 or later
+ - Maven
+ 
+From command line execute
+
+```
+mvn -f repo-editor-runner.xml exec:java
+
+```
+
+Once server started, Open `http://localhost:2612/repo-editor` in browser.
+
+Available end-points:
+ - /repo-editor
+ - /browse
+ - /
+
