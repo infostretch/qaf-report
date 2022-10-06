@@ -11,7 +11,9 @@ font-size: 11pt;
 border-collapse: separate; 
 border-spacing: 8px;
 }
-
+ui-icon.ajax-loading{
+background-image: url("./dashboard/images/ajax-loader-000.gif");
+}
 table[id^="tbl"] td{
 padding: 2px;
 }
@@ -32,7 +34,17 @@ vertical-align: bottom;
 float: right;
 
 }
+#clear-console{
+position:fixed;
+right:10px;
+padding: 0px;
+margin:0;
+opacity: 0.8;
 
+}
+#clear-console:hover{
+opacity: 1;
+}
 .ui-icon{
 transform: scale(1.8);
 margin-left: 10px;
@@ -122,7 +134,15 @@ background-color: #fff;
 				
 	</div>
 	<div class="ui-layout-south">
-		<div id="console"></div>			
+		<!-- <input style="position:fixed;right:5px;bottom:2px;" size="45" id="bddstep" />
+		<span id="executeStepBtn" style="position:fixed;right:5px; bottom:2px;margin: 5px;" title="execute" class="ui-icon ui-icon-play" onclick="executeStep();"></span>
+	 -->
+		<div id="console">
+		<span id="clear-console" title="Clear" class="ui-icon ui-icon-trash" onclick="clearConsole();"></span>
+		
+		<div id="logs"></div>
+		</div>
+					
 	</div>
 </body>
 </html>
