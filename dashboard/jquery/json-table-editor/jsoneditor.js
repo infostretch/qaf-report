@@ -165,13 +165,14 @@ $(function() {
             obj_clicked_col[current_counter_id] = $(this).index();
             obj_clicked_row[current_counter_id] = $(this).closest('tr').index();
 
-            console.log('target:', e.target);
+            /*
+			console.log('target:', e.target);
             
             console.log('Col: ' + obj_clicked_col[current_counter_id]);
             console.log('Row: ' + obj_clicked_row[current_counter_id]);
             console.log('Counter id: '+counter_id);
             console.log("table depth: " + $(this).parents('table').length);
-
+			*/
     }); 
     
 });
@@ -290,6 +291,72 @@ function makeTable(obj_for_table, counter = 1){
             $(td_v).attr('td_attr','value');
         }
     });
+
+	$(table_html).keydown(function(e){
+ 			counter_id = $(e.target).closest("tr").attr("counter-id");
+            current_counter_id = $(e.currentTarget).attr("counter-id")
+            obj_clicked_col[current_counter_id] = $(e.target).index();
+            obj_clicked_row[current_counter_id] = $(e.target).closest('tr').index();
+
+			clicked_col = obj_clicked_col[counter_id];
+            clicked_row = obj_clicked_row[counter_id];
+            
+			var currRow = e.target.offsetParent.parentElement
+			nextRow =  $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+2);
+			nextCell = $( e.target.offsetParent.nextSibling).children()[0];
+
+		switch(e.key){ 
+			case 'Enter':
+			event.preventDefault();
+
+			if($(nextRow).length){
+				$( nextRow).find('div:first').trigger( "focus" );
+			}else{
+				if(currRow.innerText.trim().length>0){
+					td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
+	                new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
+	               	$(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).after(new_tr);
+					nextRow =  $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+2);
+					$( nextRow).find('div:first').trigger( "focus" );
+				}
+			}
+			break;
+			/*
+			case 'ArrowRight':
+				$( nextCell).trigger( "focus" );
+			break;
+			case 'ArrowLeft':
+				var target = $( e.target.offsetParent.previousSibling).children()[0];
+				$( target).trigger( "focus" );
+			break;
+			*/
+			case 'Tab':
+				if($(nextRow).length==0 && $(nextCell).length==0 && currRow.innerText.trim().length>0){
+					td_length = $(`#json_table_${counter_id} tr[counter-id=${counter_id}] th[counter-id=${counter_id}]`).length;
+                	new_tr = `<tr counter-id=${counter_id}>` + `<td counter-id=${counter_id} td_attr="value"><div contenteditable="true"></div></td>`.repeat(td_length) + "</tr>" ;     
+               		$(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).after(new_tr);
+					nextRow =  $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+2);
+				}
+			break;
+			case 'ArrowUp':
+				var targetRow = currRow.previousSibling;
+				var cellIndex = e.target.offsetParent.cellIndex
+				if($(targetRow).length){
+					var targetCell=targetRow.children[cellIndex].children[0];
+					$(targetCell).trigger( "focus" );
+				}
+			break;
+			case 'ArrowDown':
+				var targetRow = currRow.nextSibling;
+				var cellIndex = e.target.offsetParent.cellIndex
+
+				if($(targetRow).length){
+					var targetCell=targetRow.children[cellIndex].children[0];
+					$(targetCell).trigger( "focus" );
+				}
+			break;
+		}  
+	});
     
     return table_html;
 

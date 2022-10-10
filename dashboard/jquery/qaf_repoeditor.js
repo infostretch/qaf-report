@@ -409,25 +409,25 @@ $(document).ready(function() {
 	ga('require', 'linkid');
 	ga('send', 'pageview');
 
-		/*var availableSteps = [
-			"get '{url}'",
-			"tear down driver",
-			"sendKeys '{text}' into '{loc}'",
-			"click on '{loc}'"
-			];
-		$("#bddstep").autocomplete({
-			source: availableSteps
-		});
-		//
-		$( "#bddstep").keypress(function() {
-  			console.log( "Handler for .keypress() called.");
-	 	 	if ( event.which == 13 ) {
-   				event.preventDefault();
-				executeStep();
-  			}
-		});*/
-		//
+	/*var availableSteps = [
+		"get '{url}'",
+		"tear down driver",
+		"sendKeys '{text}' into '{loc}'",
+		"click on '{loc}'"
+		];
+	$("#bddstep").autocomplete({
+		source: availableSteps
 	});
+	//
+	$( "#bddstep").keypress(function() {
+			console.log( "Handler for .keypress() called.");
+			  if ( event.which == 13 ) {
+					event.preventDefault();
+			executeStep();
+			}
+	});*/
+	//
+});
 function clearConsole() {
 	$('#clear-console').animate({ opacity: 0.4 }, 0);
 	$('#console #logs').html('');
@@ -526,7 +526,45 @@ function createGrpcReqForm(data, node, path) {
 
 	}
 }
+var headerSugessions = {
+	"Accept": ["text/html", "text/xml", "text/json"], "Accept-Charset": ["utf-8"], "Accept-Encoding": ["gzip", "deflate"], "Accept-Datetime": [], "Accept-Language": [], "Access-Control-Request-Method": [], "Access-Control-Request-Headers": [],
+	"Authorization": ["Basic <credentials>","Bearer <token>"], "Cache-Control": ["no-cache"], "Connection": ["keep-alive", "Upgrade"], "Content-Encoding": ["gzip"],
+	"Content-Type": ["text/plain", "text/json","text/css", "text/csv", "text/html", "text/xml",
+		"application/vnd.android.package-archive","application/vnd.oasis.opendocument.text",
+		"application/vnd.oasis.opendocument.spreadsheet","application/vnd.oasis.opendocument.presentation",
+		"application/vnd.oasis.opendocument.graphics","application/vnd.ms-excel",
+		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		"application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation",
+		"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		"application/vnd.mozilla.xul+xml",
+		"multipart/mixed","multipart/alternative","multipart/form-data",
+		"application/java-archive","application/EDI-X12","application/EDIFACT",
+		"application/javascript","application/octet-stream","application/ogg","application/pdf","application/xhtml+xml",
+		"application/x-shockwave-flash","application/json",
+		"application/ld+json","application/xml","application/zip",
+		"application/x-www-form-urlencoded"
+	],
+	"Content-MD5": [],
+	"X-API-Key":[]
+}
+function setAutocomplete(keyInput, valInput) {
+	console.log(Object.keys(headerSugessions));
+	console.log($(keyInput));
 
+	$(keyInput).autocomplete({
+		source: Object.keys(headerSugessions)
+	});
+	$(valInput).autocomplete({
+		source: function(request, response) {
+			//response(headerSugessions[$(keyInput).val()]);
+			
+		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term ), "i" );
+          response( $.grep( headerSugessions[$(keyInput).val()], function( item ){
+              return matcher.test( item );
+          }) );
+		}
+	});
+}
 //form functions
 function createReqForm(data, node, path) {
 	resetContentPane();
@@ -546,6 +584,11 @@ function createReqForm(data, node, path) {
 		window['innerLayout'] = $("#editor").layout(layoutSettings_Inner);
 		$('#wsc-tabs').tabs();
 		$('#editor button').each(function() { $(this).button(); });
+
+		$('table#tblheaders > tbody  > tr').each(function(index, tr) {
+			var keyVal = $(tr).find('input');
+			setAutocomplete(keyVal[0], keyVal[1]);
+		});
 
 		loadWSCView(data);
 
@@ -582,9 +625,9 @@ function loadWSCView(data) {
 function executeStep() {
 	var bddstep = $('input#bddstep').val().trim();
 	var ignore = $("input#bddstep").is(":disabled") || bddstep.length <= 0;
-	if(!ignore){
-		$("input#bddstep").prop( "disabled", true);
-		$( "#executeStepBtn" ).toggleClass('ajax-loading' );
+	if (!ignore) {
+		$("input#bddstep").prop("disabled", true);
+		$("#executeStepBtn").toggleClass('ajax-loading');
 
 		log('Executing Step:: ' + bddstep);
 
@@ -593,7 +636,7 @@ function executeStep() {
 			args: []
 		}
 		ajaxMaskUI({
-			maskUI:true,
+			maskUI: true,
 			type: "POST",
 			url: "/executeStep",
 			data: JSON.stringify(stepcall),
@@ -605,13 +648,13 @@ function executeStep() {
 				} else {
 					log('response: ' + JSON.stringify(res));
 				}
-				$( "input#bddstep").prop( "disabled", false );
-				$( "#executeStepBtn" ).toggleClass( 'ajax-loading' );
+				$("input#bddstep").prop("disabled", false);
+				$("#executeStepBtn").toggleClass('ajax - loading');
 			},
 			failure: function(errMsg) {
 				log('Error:: ' + errMsg);
-				$( "input#bddstep").prop( "disabled", false );
-				$( "#executeStepBtn" ).toggleClass( 'ajax-loading' );
+				$("input#bddstep").prop("disabled", false);
+				$("#executeStepBtn").toggleClass('ajax-loading');
 			}
 		});
 	}
@@ -643,7 +686,7 @@ function createRepoEditor(data, path) {
 	$.tmpl(locRepoEditorTmpl).appendTo("#editor");
 	if (!data || data.length <= 0) {
 		data = [{
-			key: '', locator: ''
+			key: '', locator: '', desc: ''
 		}];
 	}
 
@@ -713,7 +756,7 @@ function getFormData() {
 
 function execute() {
 	var reqcall = getFormData();
-	$( "#execute span" ).toggleClass('ajax-loading' );
+	$("#execute span").toggleClass('ajax-loading');
 	ajaxMaskUI({
 		maskUI: true,
 		type: "POST",
@@ -730,11 +773,11 @@ function execute() {
 			} else {
 				log(data);
 			}
-			$( "#execute span" ).toggleClass('ajax-loading' );
+			$("#execute span").toggleClass('ajax-loading');
 		},
 		failure: function(errMsg) {
 			log(errMsg);
-			$( "#execute span" ).toggleClass('ajax-loading' );
+			$("#execute span").toggleClass('ajax-loading');
 		}
 	});
 }
@@ -750,7 +793,7 @@ function executeGrpc() {
 		step: 'callGrpcMethodUsingData',
 		args: [endpoint, reqcall['body'], reqcall['run-parameters'] || {}]
 	}
-		$( "#executeGrpc span" ).toggleClass('ajax-loading' );
+	$("#executeGrpc span").toggleClass('ajax-loading');
 	ajaxMaskUI({
 		maskUI: true,
 		type: "POST",
@@ -767,11 +810,11 @@ function executeGrpc() {
 			} else {
 				log(data);
 			}
-			$( "#executeGrpc span" ).toggleClass('ajax-loading' );
+			$("#executeGrpc span").toggleClass('ajax-loading');
 		},
 		failure: function(errMsg) {
 			log(errMsg);
-			$( "#executeGrpc span" ).toggleClass('ajax-loading' );
+			$("#executeGrpc span").toggleClass('ajax-loading');
 		}
 	});
 }
@@ -780,57 +823,57 @@ function executeGrpc() {
 // if settings.maskUI is other than true, it's value will be used as the color value while bloking (i.e settings.maskUI='rgba(176,176,176,0.7)'
 // in addition an hourglass is displayed while ajax in progress
 function ajaxMaskUI(settings) {
-    function maskPageOn(color) { // color can be ie. 'rgba(176,176,176,0.7)' or 'transparent'
-        var div = $('#maskPageDiv');
-        if (div.length === 0) {
-            $(document.body).append('<div id="maskPageDiv" style="position:fixed;width:100%;height:100%;left:0;top:0;display:none"></div>'); // create it
-            div = $('#maskPageDiv');
-        }
-        if (div.length !== 0) {
-            div[0].style.zIndex = 2147483647;
-            div[0].style.backgroundColor=color;
-            div[0].style.display = 'inline';
-        }
-    }
-    function maskPageOff() {
-        var div = $('#maskPageDiv');
-        if (div.length !== 0) {
-            div[0].style.display = 'none';
-            div[0].style.zIndex = 'auto';
-        }
-    }
-    function hourglassOn() {
-        if ($('style:contains("html.hourGlass")').length < 1) $('<style>').text('html.hourGlass, html.hourGlass * { cursor: wait !important; }').appendTo('head');
-        $('html').addClass('hourGlass');
-    }
-    function hourglassOff() {
-        $('html').removeClass('hourGlass');
-    }
+	function maskPageOn(color) { // color can be ie. 'rgba(176,176,176,0.7)' or 'transparent'
+		var div = $('#maskPageDiv');
+		if (div.length === 0) {
+			$(document.body).append('<div id="maskPageDiv" style="position:fixed;width:100%;height:100%;left:0;top:0;display:none"></div>'); // create it
+			div = $('#maskPageDiv');
+		}
+		if (div.length !== 0) {
+			div[0].style.zIndex = 2147483647;
+			div[0].style.backgroundColor = color;
+			div[0].style.display = 'inline';
+		}
+	}
+	function maskPageOff() {
+		var div = $('#maskPageDiv');
+		if (div.length !== 0) {
+			div[0].style.display = 'none';
+			div[0].style.zIndex = 'auto';
+		}
+	}
+	function hourglassOn() {
+		if ($('style:contains("html.hourGlass")').length < 1) $('<style>').text('html.hourGlass, html.hourGlass * { cursor: wait !important; }').appendTo('head');
+		$('html').addClass('hourGlass');
+	}
+	function hourglassOff() {
+		$('html').removeClass('hourGlass');
+	}
 
-    if (settings.maskUI===true) settings.maskUI='transparent';
+	if (settings.maskUI  == true) settings.maskUI = 'transparent';
 
-    if (!!settings.maskUI) {
-        maskPageOn(settings.maskUI);
-        hourglassOn();
-    }
+	if (!!settings.maskUI) {
+		maskPageOn(settings.maskUI);
+		hourglassOn();
+	}
 
-    var dfd = new $.Deferred();
-    $.ajax(settings)
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            if (!!settings.maskUI) {
-                maskPageOff();
-                hourglassOff();
-            }
-            dfd.reject(jqXHR, textStatus, errorThrown);
-        }).done(function(data, textStatus, jqXHR) {
-            if (!!settings.maskUI) {
-                maskPageOff();
-                hourglassOff();
-            }
-            dfd.resolve(data, textStatus, jqXHR);
-        });
+	var dfd = new $.Deferred();
+	$.ajax(settings)
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			if (!!settings.maskUI) {
+				maskPageOff();
+				hourglassOff();
+			}
+			dfd.reject(jqXHR, textStatus, errorThrown);
+		}).done(function(data, textStatus, jqXHR) {
+			if (!!settings.maskUI) {
+				maskPageOff();
+				hourglassOff();
+			}
+			dfd.resolve(data, textStatus, jqXHR);
+		});
 
-    return dfd.promise();
+	return dfd.promise();
 }
 function log(message) {
 	if (typeof message === 'object')
@@ -907,6 +950,15 @@ function addEntries(m, f) {
 
 function addEntry(f) {
 	$.tmpl(kvTemplate, { "": "" }).appendTo("#" + f);
+	if (f === "tblheaders") {
+		$('table#tblheaders > tbody  > tr:last').each(function(index, tr) {
+			console.log(index);
+			console.log(tr);
+			var keyVal = $(tr).find('input');
+			setAutocomplete(keyVal[0], keyVal[1]);
+		});
+	}
+
 }
 function removeEntry(f) {
 	$(f).parent().parent().remove();
