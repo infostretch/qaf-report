@@ -121,7 +121,7 @@ var methodHeaderTemplate = '<div class="mehod ${result} ${type}" id="${result}_c
 		+ '<tr>'
 		+ '<th>${i.capitalizeFirstLetter()}:</th>'
 		+ '<td>'
-		+ '{{html displayMetaData(v)}}'
+		+ '{{html displayMetaData(i,v)}}'
 		+ '</td>'
 		+ '</tr>'
 		+ '{{/if}} {{/each}} {{/if}} {{if dependsOn.length>0}}'
@@ -291,6 +291,7 @@ var timer = $.timer(function() {
 }, refreshInterval, false);
 
 var pageLayout;
+var metadata_formats = [];
 
 $(document).ready(function() {
 	//Fix XML Parsing Error: not well-formed
@@ -312,6 +313,9 @@ $(document).ready(function() {
 			updateOnBrowserResize : false
 		}
 	});
+	//load meta data formats
+	$.getJSON('./metadata_formats.json', function (response){metadata_formats = response});
+
 	// create page layout
 	pageLayout = $('body').layout({
 		// west__onresize : initPaneScrollbar,
@@ -801,12 +805,35 @@ function getMetaDataToDisplay(metadata) {
 	return metadata;
 }
 
-function displayMetaData(value) {
+// JS format string
+
+String.prototype.format = function () {
+  // store arguments in an array
+  var args = arguments;
+  // use replace to iterate over the string
+  // select the match and check if the related argument is present
+  // if yes, replace the match with the argument
+  return this.replace(/{([0-9]+)}/g, function (match, index) {
+    // check if the argument is present
+    return typeof args[index] == 'undefined' ? match : args[index];
+  });
+};
+function formatMetaData(key,value) {
+	try{
+		var formatStr = metadata_formats[key]||"{0}";
+		return formatStr.format(value);
+	}catch(e){
+		console.log(e);
+		return value;
+	}
+}
+
+function displayMetaData(key,value) {
 	if (isString(value))
-		return "<span class='group'>" + value + "</span>";
+		return "<span class='group'>" + formatMetaData(key,value) + "</span>";
 	var blkstr = [];
 	$.each(value, function(idx, val) {
-		var str = "<span class='group'>" + val + "</span>";
+		var str = "<span class='group'>" + formatMetaData(key,val) + "</span>";
 		blkstr.push(str);
 	});
 	return blkstr.valueOf();
