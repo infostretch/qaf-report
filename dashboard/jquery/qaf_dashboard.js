@@ -100,7 +100,7 @@ var methodHeaderTemplate = '<div class="mehod ${result} ${type}" id="${result}_c
 		+ '<div class="mehodheader" onclick="mehodheaderClick(this);">'
 		+ '<span class="statusicon ${result}"> &nbsp;<span class="status" style="display:none">${result}</span></span>'
 		+ '<b class="ui-icon-text">{{if (typeof metaData != \'undefined\') }} {{each(i,v) metaData}} {{if (i == \'name\')}}${v} {{/if}}{{/each}} {{else}} ${name} {{/if}}</b> '
-		+ '<span class="mehod-args">${getRecordSummary(args)}</span>'
+		+ '<span class="mehod-args">${getRecordSummary(metaData,args)}</span>'
 		+ '<div style="float: right; ">'
 		+ '{{if typeof retryCount != \'undefined\' && retryCount>0}}'
 		+ '<span class=\'rerunCount\' title="Retried Failed Execution">${retryCount}</span>{{/if}}'
@@ -1743,12 +1743,19 @@ function isMap(o) {
         return false;
     }
 }
-function getRecordSummary(args){
+function getRecordSummary(metaData,args){
     try {
+		var name="";
+		if((typeof metaData != 'undefined') && metaData["name"]){
+			name=metaData["name"];
+		}
         if((typeof args != 'undefined') && args.length>0){
             const flds = ['recid','summary','tcid','testcaseid'];
             for(var p in args[0]){
                 if(args[0].hasOwnProperty(p) && flds.includes((p+ "").replace(/[^a-z]/gi, '').toLowerCase())){
+					if(name.indexOf(args[0][p])>0){
+						return "";
+					}
                     return args[0][p];
                 }
             }
