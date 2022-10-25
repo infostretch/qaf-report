@@ -427,6 +427,11 @@ $(document).ready(function() {
 			}
 	});*/
 	//
+	if (!Array.prototype.last){
+    Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
+};
 });
 function clearConsole() {
 	$('#clear-console').animate({ opacity: 0.4 }, 0);
@@ -526,10 +531,7 @@ function createGrpcReqForm(data, node, path) {
 
 	}
 }
-var headerSugessions = {
-	"Accept": ["text/html", "text/xml", "text/json"], "Accept-Charset": ["utf-8"], "Accept-Encoding": ["gzip", "deflate"], "Accept-Datetime": [], "Accept-Language": [], "Access-Control-Request-Method": [], "Access-Control-Request-Headers": [],
-	"Authorization": ["Basic <credentials>","Bearer <token>"], "Cache-Control": ["no-cache"], "Connection": ["keep-alive", "Upgrade"], "Content-Encoding": ["gzip"],
-	"Content-Type": ["text/plain", "text/json","text/css", "text/csv", "text/html", "text/xml",
+var contentTypes=["text/plain", "text/json","text/css", "text/csv", "text/html", "text/xml",
 		"application/vnd.android.package-archive","application/vnd.oasis.opendocument.text",
 		"application/vnd.oasis.opendocument.spreadsheet","application/vnd.oasis.opendocument.presentation",
 		"application/vnd.oasis.opendocument.graphics","application/vnd.ms-excel",
@@ -543,7 +545,11 @@ var headerSugessions = {
 		"application/x-shockwave-flash","application/json",
 		"application/ld+json","application/xml","application/zip",
 		"application/x-www-form-urlencoded"
-	],
+	]
+var headerSugessions = {
+	"Accept": contentTypes, "Accept-Charset": ["utf-8"], "Accept-Encoding": ["gzip", "deflate","compress","identity","br","*"], "Accept-Datetime": [], "Accept-Language": [], "Access-Control-Request-Method": [], "Access-Control-Request-Headers": [],
+	"Authorization": ["Basic <credentials>","Bearer <token>"], "Cache-Control": ["no-cache"], "Connection": ["keep-alive", "Upgrade"], "Content-Encoding": ["gzip"],
+	"Content-Type": contentTypes,
 	"Content-MD5": [],
 	"X-API-Key":[]
 }
@@ -558,7 +564,7 @@ function setAutocomplete(keyInput, valInput) {
 		source: function(request, response) {
 			//response(headerSugessions[$(keyInput).val()]);
 			
-		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term ), "i" );
+		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term), "i" );
           response( $.grep( headerSugessions[$(keyInput).val()], function( item ){
               return matcher.test( item );
           }) );
@@ -761,7 +767,7 @@ function execute() {
 		maskUI: true,
 		type: "POST",
 		url: "/executeRequest",
-		data: JSON.stringify([reqcall, reqcall['run-parameters'] || {}]),
+		data: JSON.stringify([JSON.stringify(reqcall), JSON.stringify(reqcall['run-parameters'] || {})]),
 		contentType: "application/json; charset=utf-8",
 		//dataType : "json",
 		success: function(data, status, xhr) {
