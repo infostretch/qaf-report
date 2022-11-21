@@ -60,6 +60,13 @@ float: right;
 button.ui-state-default{
 background-color: #fff;
 }
+.ui-autocomplete {
+		max-height: 300px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+		z-index: 10 !important;
+	}
 
 /* #tree { float:left; min-width:279px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
  */
@@ -70,7 +77,12 @@ background-color: #fff;
 #tree .node { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -112px -80px no-repeat; transform: scale(1.8);}
 /*
 #tree .file-loc { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -160px -112px no-repeat; transform: scale(1.8);}
+#logs *:nth-child(even) {background: #CDCDCD27}
 */
+.pass,.teststeppass{color: #090;}
+.fail,.teststepfail{color: #900;}
+.teststep{color: #009;}
+
 </style>
 <link rel="shortcut icon" href="./dashboard/images/favicon.ico" />
 
@@ -115,7 +127,10 @@ background-color: #fff;
 
 
 <script type="text/javascript" src="./dashboard/jquery/qaf_repoeditor.js"></script>
-
+<script type="text/javascript" src="./dashboard/jquery/qaf_common.js"></script>
+    <link href="./dashboard/css/prettify.css"  rel="stylesheet" />
+    <script src="./dashboard/jquery/prettify.js"></script>
+    <script src="./dashboard/jquery/vkbeautify.0.99.00.beta.js"></script>
 </head>
 <body>
 	<div class="ui-layout-west">
@@ -134,9 +149,9 @@ background-color: #fff;
 				
 	</div>
 	<div class="ui-layout-south">
-		<!-- <input style="position:fixed;right:5px;bottom:2px;" size="45" id="bddstep" />
+		<input style="position:fixed;right:5px;bottom:2px;" size="45" id="bddstep" />
 		<span id="executeStepBtn" style="position:fixed;right:5px; bottom:2px;margin: 5px;" title="execute" class="ui-icon ui-icon-play" onclick="executeStep();"></span>
-	 -->
+	<!--  -->
 		<div id="console">
 		<span id="clear-console" title="Clear" class="ui-icon ui-icon-trash" onclick="clearConsole();"></span>
 		

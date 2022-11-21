@@ -74,6 +74,7 @@
 				<version>1.2.1</version>
 				<executions>
 					<execution>
+					    <id>repo-editor</id>
 						<goals>
 							<goal>java</goal>
 						</goals>
@@ -81,6 +82,7 @@
 				</executions>
 				<configuration>
 					<mainClass>com.qmetry.qaf.automation.tools.RepoEditor</mainClass>
+					<classpathScope>test</classpathScope>
 				</configuration>
 			</plugin>
 			<plugin>
