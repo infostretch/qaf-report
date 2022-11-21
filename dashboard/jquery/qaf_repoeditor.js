@@ -28,6 +28,35 @@
  ******************************************************************************/
 
 var pageLayout;
+var stpesList;
+var checkpointTemplate = '<pre class="prettyprint" style="border: none !important; margin-bottom:0">'
+		+ '<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'
+		+ '<div {{if subCheckPoints}}onclick="$(this).closest(\'.checkpoint\').children(\'.subcheckpoints\').toggle();$(this).children(\'span\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');" {{/if}}>'
+		+ '<span class="ui-icon {{if subCheckPoints.length > 0}} ui-icon-triangle-1-e {{else}} ${getIcon(type)} {{/if}}" style="float:left;margin-top:0.0em;margin-left:5px;" title="${type}"></span>'
+		+ '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html escapHtml(message)}}'
+		+ '{{if screenshot}}<a class="screenshot" href="${screenshot}" target="_blank" style="width:auto;margin-top:0.0em;vertical-align:middle;" title="Screenshot">📷</a>'
+		+ '{{/if}}'
+		+ '{{if duration}}'
+		+ '[{{if threshold}}'
+		+ '{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#FF9900" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}'
+		+ '<span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span> {{/if}} {{else}}${duration/1000.0}s {{/if}}] {{/if}}'
+		+ '</span>'
+		+ '</div>'
+		+ '{{if subCheckPoints}}'
+		+ '<div style="display:none;" class="subcheckpoints">'
+		+ '{{tmpl(subCheckPoints) "checkpointTemplate"}}'
+		+ '</div>'
+		+ '{{/if}}' + '</div>' + '</pre>';
+
+var commandLogTemplate =
+		'<div class="command-log" style="display:block;margin-left: 30px;font-size:small; color:gray" {{if subLogs.length > 0}}onclick="$(this).children(\'.command-log\').toggle();$(this).children(\'span.ui-icon\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');"{{/if}}>'
+		+ '{{if subLogs.length > 0}}<span class="ui-icon ui-icon-triangle-1-s" style="float:left;margin-top:0.0em;margin-left:5px;"></span>{{/if}}'
+		+ '<b>${commandName}</b> : ${args} : <span style="color:gray;">${result}</span>'
+		+ '{{if subLogs}}{{tmpl(subLogs) "commandLogTemplate"}}{{/if}}'
+		+ '</div>';
+
+$.template("checkpointTemplate", checkpointTemplate);
+$.template("commandLogTemplate", commandLogTemplate);
 var grpcMethodDetailsTemplate = '<div class="ui-layout-south">'
 	+ '<div id="response"></div>'
 	+ '</div><div class="ui-layout-east"><div id="wsc-view"><pre></pre></div></div>'
@@ -54,8 +83,9 @@ var grpcMethodDetailsTemplate = '<div class="ui-layout-south">'
 
 	// layout
 	+ '</div></div>';
+var checkpointsInputTemplate = '<tr><td><input type="text" value="${checkpoint}" style="width:450px;"/><a title="Remove" class="ui-icon ui-icon-minus" onclick="removeEntry(this)"></a></td></tr>';
 
-var methodDetailsTemplate = '<div class="ui-layout-south">'
+var wscFormTemplate = '<div class="ui-layout-south">'
 	+ '<div id="response"></div>'
 	+ '</div><div class="ui-layout-east"><div id="wsc-view"><pre></pre></div></div>'
 	+ '<div class="ui-layout-center content"><div id="wsc-editor">'
@@ -80,7 +110,8 @@ var methodDetailsTemplate = '<div class="ui-layout-south">'
 	+ '<li><a href="#tabs-3">Form Params</a></li>'
 	+ '<li><a href="#tabs-4">Body</a></li>'
 	+ '<li><a href="#tabs-5">Default values</a></li>'
-	+ '<li><a href="#tabs-6">Run Params</a></li></ul>'
+	+ '<li><a href="#tabs-6">Run Params</a></li>'
+	+ '<li><a href="#tabs-7">Checkpoints</a></li></ul>'
 
 	+ getKVTmpl('Headers', 'headers', 1)
 	+ getKVTmpl('Query Params', 'query-parameters', 2)
@@ -88,13 +119,20 @@ var methodDetailsTemplate = '<div class="ui-layout-south">'
 	+ '<div  id="tabs-4"><textarea cols="50" rows="5" name="body" title="request body" onchange="updateWSCView()">${body}</textarea></div>'
 	+ getKVTmpl('Default values', 'parameters', 5)
 	+ getKVTmpl('Run Params', 'run-parameters', 6)
-
+	+ '<div  id="tabs-7">'
+	+'<table id="tblcheckpoints"><tbody>'
+	+ '{{if (typeof $data["post-steps"] != \'undefined\') }}'
+	+ '{{each(i,checkpoint) $data["post-steps"]}}'
+	+ checkpointsInputTemplate
+	+ '{{/each}}'
+	+ '{{/if}}'
+	+ '</tbody> <tfoot><tr><td><a title="Add" class="ui-icon ui-icon-plus" onclick="addCheckpoint()"></a></td></tr></tfoot>'
+	+ '</table></div>'
 	//end tabs
 	+ '</div>'
 
 	// layout
 	+ '</div></div>';
-
 var kvTemplate = '{{each(k,v) $data}} <tr>'
 	+ '<td><input type="text" name="${k}" value="${k}" class="key" onchange="updateWSCView()"/></td>'
 	+ '<td><input type="text" name="${k}-value" value="${v}" class="value" onchange="updateWSCView()"/><a title="Remove" class="ui-icon ui-icon-minus" onclick="removeEntry(this)"></a></td>'
@@ -176,6 +214,29 @@ $(document).ready(function() {
 			'contextmenu': {
 				'items': function(node) {
 					var tmp = $.jstree.defaults.contextmenu.items();
+					if (this.get_type(node) === "folder"){
+						tmp.load={
+							"label": "Load",
+							"action":function(data) {
+								console.log(data);
+								var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+								$.get('/repo-editor?operation=load_resource', {'path': inst.get_path(node, "/")});
+							}
+						};
+					}else{
+						tmp.duplicate={
+							"label": "Duplicate",
+							"action":function(data) {
+								console.log(data);
+								var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+								$.get('/repo-editor?operation=duplicate_node', {'path': obj.id }).done(function() {
+									inst.refresh_node(obj.parent);
+								});
+							}
+						};
+					}
 					if (this.get_type(node) === "node-grpc") {
 						return null;
 					}
@@ -383,7 +444,7 @@ $(document).ready(function() {
 						var path = data.instance.get_path(node, "/");
 						var btns = '<button id="save" onclick="saveFile(\'' + path + '\');" disabled="true">Save</button>';
 						if (path.endsWith(".properties")) {
-							btns = btns + ' <button id="loadFile(\'' + path + '\')" onclick="loadFile(\'' + path + '\');" >Load</button>';
+							btns = btns + ' <button id="loadFile" onclick="loadFile(\'' + path + '\');" >Load</button>';
 						}
 						var html = btns + '<br/><textarea cols="100" id="file-editor" onchange="$(\'#save\').removeAttr(\'disabled\')"></textarea>';
 						$('#editor').html(html);
@@ -408,25 +469,18 @@ $(document).ready(function() {
 	ga('create', 'UA-83031490-1', 'auto');
 	ga('require', 'linkid');
 	ga('send', 'pageview');
-
-	/*var availableSteps = [
-		"get '{url}'",
-		"tear down driver",
-		"sendKeys '{text}' into '{loc}'",
-		"click on '{loc}'"
-		];
-	$("#bddstep").autocomplete({
-		source: availableSteps
-	});
-	//
-	$( "#bddstep").keypress(function() {
+	$.get('/repo-editor?operation=step_list')
+		.done(function(res) {
+			stpesList = res;
+			$("#bddstep").autocomplete({source: (stpesList),position: {  collision: "flip"  }});
+		});
+	/* $( "#bddstep").keypress(function() {
 			console.log( "Handler for .keypress() called.");
 			  if ( event.which == 13 ) {
 					event.preventDefault();
 			executeStep();
 			}
 	});*/
-	//
 	if (!Array.prototype.last){
     Array.prototype.last = function(){
         return this[this.length - 1];
@@ -439,7 +493,7 @@ function clearConsole() {
 	$('#clear-console').animate({ 'opacity': 0.8 }, 500);
 }
 function loadFile(path) {
-	$.ajax("/repo-editor?operation=save_file&path=" + path);
+	$.ajax("/repo-editor?operation=load_resource&path=" + path);
 }
 
 function saveFile(path) {
@@ -462,7 +516,6 @@ function saveFile(path) {
 }
 
 //tab functions
-
 function loadTab(tab_id) { //tab_id - contains some id, title and text for tab content.
 	//var tab_id = thisI;
 	if (!$('.ui-tabs-nav li#' + tab_id).is('*')) {
@@ -564,7 +617,7 @@ function setAutocomplete(keyInput, valInput) {
 		source: function(request, response) {
 			//response(headerSugessions[$(keyInput).val()]);
 			
-		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term), "i" );
+		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term ), "i" );
           response( $.grep( headerSugessions[$(keyInput).val()], function( item ){
               return matcher.test( item );
           }) );
@@ -576,7 +629,7 @@ function createReqForm(data, node, path) {
 	resetContentPane();
 
 	try {
-		$.tmpl(methodDetailsTemplate, data).appendTo("#editor");
+		$.tmpl(wscFormTemplate, data).appendTo("#editor");
 		if (node) {
 			$('#save').removeAttr('disabled');
 			$("#save").click(function() { saveReqForm(node, path); });
@@ -595,7 +648,7 @@ function createReqForm(data, node, path) {
 			var keyVal = $(tr).find('input');
 			setAutocomplete(keyVal[0], keyVal[1]);
 		});
-
+		$("table#tblcheckpoints input").each(function(){$(this).autocomplete({source: (stpesList),position: {  collision: "flip"  }});});
 		loadWSCView(data);
 
 	} catch (e) {
@@ -628,17 +681,20 @@ function loadWSCView(data) {
 		}
 	});
 }
+
 function executeStep() {
 	var bddstep = $('input#bddstep').val().trim();
+	executeBddSteps([bddstep]);
+}
+function executeBddSteps(bddstep) {
+	//var bddstep = $('input#bddstep').val().trim();
 	var ignore = $("input#bddstep").is(":disabled") || bddstep.length <= 0;
 	if (!ignore) {
 		$("input#bddstep").prop("disabled", true);
 		$("#executeStepBtn").toggleClass('ajax-loading');
-
 		log('Executing Step:: ' + bddstep);
-
 		var stepcall = {
-			step: bddstep,
+			step: bddstep.shift(),
 			args: []
 		}
 		ajaxMaskUI({
@@ -649,13 +705,33 @@ function executeStep() {
 			contentType: "application/json; charset=utf-8",
 			//dataType : "json",
 			success: function(res) {
-				if (res.result) {
-					log('result:: ' + JSON.stringify(res.result, null, '  '));
-				} else {
-					log('response: ' + JSON.stringify(res));
+				try {
+					if (res.result) {
+						log('result:: ' + JSON.stringify(res.result, null, '  '));
+						//log(res.result,true);
+						if (res.checkPoints) {
+							$.tmpl(checkpointTemplate, res.checkPoints).appendTo('#console #logs');
+							//$("#logs div.checkpoint:last")[0]
+							$.tmpl(commandLogTemplate, res.seleniumLog[0].subLogs).appendTo('#console #logs div.checkpoint:last');
+						}
+					}else if (res.checkPoints) {
+						$.tmpl(checkpointTemplate, res.checkPoints).appendTo('#console #logs');
+						$.tmpl(commandLogTemplate, res.seleniumLog[0].subLogs).appendTo('#console #logs div.checkpoint:last');
+					} else {
+						if (res.error) {
+							log('<span class="fail">[ERROR]: ' + res.error+"</span>", true);
+						}else{
+							log('response: ' + JSON.stringify(res));
+						}
+					}
+					$("input#bddstep").prop("disabled", false);
+					$("#executeStepBtn").toggleClass('ajax-loading');
+					if(bddstep.length>0){
+						executeBddSteps(bddstep);
+					}
+				} catch (e) {
+					console.log(e);
 				}
-				$("input#bddstep").prop("disabled", false);
-				$("#executeStepBtn").toggleClass('ajax - loading');
 			},
 			failure: function(errMsg) {
 				log('Error:: ' + errMsg);
@@ -756,7 +832,7 @@ function getFormData() {
 	add(reqcall, 'body');
 	addEntries(reqcall, 'parameters');
 	addEntries(reqcall, 'run-parameters');
-
+	addCheckpoints(reqcall,'post-steps');
 	return reqcall;
 }
 
@@ -767,7 +843,7 @@ function execute() {
 		maskUI: true,
 		type: "POST",
 		url: "/executeRequest",
-		data: JSON.stringify([JSON.stringify(reqcall), JSON.stringify(reqcall['run-parameters'] || {})]),
+		data: JSON.stringify([JSON.stringify(reqcall), JSON.stringify(reqcall['run-parameters']) || '{}']),
 		contentType: "application/json; charset=utf-8",
 		//dataType : "json",
 		success: function(data, status, xhr) {
@@ -778,6 +854,12 @@ function execute() {
 				window['innerLayout'].open('south');
 			} else {
 				log(data);
+			}
+			var postSteps = reqcall['post-steps'];
+			if(postSteps && postSteps.length>0){
+				//for(step of postSteps){
+					executeBddSteps(postSteps);
+				//}
 			}
 			$("#execute span").toggleClass('ajax-loading');
 		},
@@ -881,13 +963,17 @@ function ajaxMaskUI(settings) {
 
 	return dfd.promise();
 }
-function log(message) {
+function log(message, isHtml) {
 	if (typeof message === 'object')
 		message = JSON.stringify(message);
 
 	var console = $('#console #logs');
-	console.append('<p><pre>[' + new Date().toLocaleTimeString() + '] ' + message + '</pre></p>');
-	$("#logs p:last")[0].scrollIntoView();
+	if(!isHtml){
+		console.append('<div class="log-line">[' + new Date().toLocaleTimeString() + '] ' + formatedRes(message) + '</div>');
+	}else{
+		console.append('<div  class="log-line">[' + new Date().toLocaleTimeString() + '] ' + message + '</div>');
+	}
+	$("#logs div:last")[0].scrollIntoView();
 }
 function showResponse(data) {
 	if ($("#response #tabs").length <= 0) {
@@ -915,6 +1001,8 @@ function showResponse(data) {
 	} else if (mediaType.indexOf('json') >= 0) {
 		$("#tabs-2").html('<pre></pre>');
 		$("#tabs-2 pre").text(data["messageBody"]);
+			console.log(JSON.parse(body));
+
 		//$("#tabs-2").html('<pre>'+JSON.stringify(data["messageBody"],null,'\t')+'</pre>');
 	}
 	else {
@@ -937,6 +1025,16 @@ function add(m, f) {
 		m[f] = val.trim();
 	}
 }
+function addCheckpoints(m, f) {
+	var checkpoints = [];
+	$("#tblcheckpoints tr input").each(function() {
+		var checkpoint =$(this).val().trim();
+		if(checkpoint.length>0){
+			checkpoints.push(checkpoint);
+		}
+	});
+	m[f] = checkpoints;
+}
 function addEntries(m, f) {
 	var entries = {};
 	$("#tbl" + toId(f) + " tr").each(
@@ -958,13 +1056,14 @@ function addEntry(f) {
 	$.tmpl(kvTemplate, { "": "" }).appendTo("#" + f);
 	if (f === "tblheaders") {
 		$('table#tblheaders > tbody  > tr:last').each(function(index, tr) {
-			console.log(index);
-			console.log(tr);
 			var keyVal = $(tr).find('input');
 			setAutocomplete(keyVal[0], keyVal[1]);
 		});
 	}
-
+}
+function addCheckpoint() {
+	$.tmpl(checkpointsInputTemplate).appendTo("#tblcheckpoints");
+	$("table#tblcheckpoints input:last").autocomplete({source: (stpesList),position: {  collision: "flip"  }});
 }
 function removeEntry(f) {
 	$(f).parent().parent().remove();
