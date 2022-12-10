@@ -197,9 +197,9 @@ $(document).ready(function() {
 				},
 				'check_callback': function(o, n, p, i, m) {
 					if (m && m.dnd && m.pos !== 'i') { return false; }
-					if (o === "move_node" || o === "copy_node") {
+					/*if (o === "move_node" || o === "copy_node") {
 						if (this.get_node(n).parent === this.get_node(p).id) { return false; }
-					}
+					}*/
 					return true;
 				},
 				'themes': {
@@ -241,7 +241,7 @@ $(document).ready(function() {
 						return null;
 					}
 					delete tmp.create.action;
-					if (node.text.endsWith('.wsc')) {
+					if (node.text.endsWith('.wsc')||node.text.endsWith('.wscj')) {
 						tmp.create.label = "New Request Call";
 
 						tmp.create.action = function(data) {
@@ -275,10 +275,10 @@ $(document).ready(function() {
 									var inst = $.jstree.reference(data.reference),
 										obj = inst.get_node(data.reference);
 									inst.get_node()
-									var created = inst.create_node(obj, { type: "file-wsc", text: "newrepo.wsc" }, "last");
+									var created = inst.create_node(obj, { type: "file-wsc", text: "newrepo.wscj" }, "last");
 									console.log(created);
 									if (!created) {
-										inst.create_node(obj, { type: "file-wsc", text: "newrepo" + $.now() + ".wsc" }, "last");
+										inst.create_node(obj, { type: "file-wsc", text: "newrepo" + $.now() + ".wscj" }, "last");
 									}
 								}
 							},
@@ -288,10 +288,10 @@ $(document).ready(function() {
 									var inst = $.jstree.reference(data.reference),
 										obj = inst.get_node(data.reference);
 									inst.get_node()
-									var created = inst.create_node(obj, { type: "file-loc", text: "newrepo.loc" }, "last");
+									var created = inst.create_node(obj, { type: "file-loc", text: "newrepo.locj" }, "last");
 									console.log(created);
 									if (!created) {
-										inst.create_node(obj, { type: "file-loc", text: "newrepo" + $.now() + ".loc" }, "last");
+										inst.create_node(obj, { type: "file-loc", text: "newrepo" + $.now() + ".locj" }, "last");
 									}
 								}
 							}
@@ -307,7 +307,9 @@ $(document).ready(function() {
 				'default': { 'icon': 'file' },
 				'folder': { 'icon': 'folder' },
 				'file-wsc': { 'icon': 'file-wsc' },
+				'file-wscj': { 'icon': 'file-wsc' },
 				'file-loc': { 'icon': 'file-loc' },
+				'file-locj': { 'icon': 'file-loc' },
 				'file-proto': { 'icon': 'file-proto' },
 				'file': { 'valid_children': [], 'icon': 'file' },
 				'node': { 'valid_children': [], 'icon': 'node' },
@@ -316,7 +318,7 @@ $(document).ready(function() {
 			'unique': {
 				'duplicate': function(name, counter) {
 					console.log(name + counter);
-					if (name.endsWith(".wsc") || name.endsWith(".loc")) {
+					if (name.endsWith(".wsc") || name.endsWith(".loc") || name.endsWith(".wscj") || name.endsWith(".locj")) {
 						var l = name.length;
 						var ext = name.substring(l - 4);
 						return name.substring(0, l - 4) + counter + ext;
@@ -431,7 +433,7 @@ $(document).ready(function() {
 						});
 					}
 
-				} else if (node.text.endsWith(".loc")) {
+				} else if (node.text.endsWith(".loc") || node.text.endsWith(".locj")) {
 					var path = data.instance.get_path(node, "/");
 					$.get('/repo-editor?operation=get_content', { 'path': path }).done(function(d) {
 						createRepoEditor(d, path);
@@ -474,13 +476,6 @@ $(document).ready(function() {
 			stpesList = res;
 			$("#bddstep").autocomplete({source: (stpesList),position: {  collision: "flip"  }});
 		});
-	/* $( "#bddstep").keypress(function() {
-			console.log( "Handler for .keypress() called.");
-			  if ( event.which == 13 ) {
-					event.preventDefault();
-			executeStep();
-			}
-	});*/
 	if (!Array.prototype.last){
     Array.prototype.last = function(){
         return this[this.length - 1];
@@ -669,7 +664,9 @@ function loadWSCView(data) {
 		//dataType : "json",
 		success: function(res) {
 			if (res.result) {
-				$("#wsc-view pre").text(JSON.stringify(res.result, null, '  '));
+				result = JSON.parse(res.result);
+				console.log(res.result);
+				$("#wsc-view pre").text(JSON.stringify(result, null, '   '));
 			} else {
 				log('Unexpected response: ' + JSON.stringify(res));
 				$("#wsc-view pre").text(JSON.stringify(data, null, '  '));
