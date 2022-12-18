@@ -30,30 +30,30 @@
 var pageLayout;
 var stpesList;
 var checkpointTemplate = '<pre class="prettyprint" style="border: none !important; margin-bottom:0">'
-		+ '<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'
-		+ '<div {{if subCheckPoints}}onclick="$(this).closest(\'.checkpoint\').children(\'.subcheckpoints\').toggle();$(this).children(\'span\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');" {{/if}}>'
-		+ '<span class="ui-icon {{if subCheckPoints.length > 0}} ui-icon-triangle-1-e {{else}} ${getIcon(type)} {{/if}}" style="float:left;margin-top:0.0em;margin-left:5px;" title="${type}"></span>'
-		+ '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html escapHtml(message)}}'
-		+ '{{if screenshot}}<a class="screenshot" href="${screenshot}" target="_blank" style="width:auto;margin-top:0.0em;vertical-align:middle;" title="Screenshot">📷</a>'
-		+ '{{/if}}'
-		+ '{{if duration}}'
-		+ '[{{if threshold}}'
-		+ '{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#FF9900" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}'
-		+ '<span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span> {{/if}} {{else}}${duration/1000.0}s {{/if}}] {{/if}}'
-		+ '</span>'
-		+ '</div>'
-		+ '{{if subCheckPoints}}'
-		+ '<div style="display:none;" class="subcheckpoints">'
-		+ '{{tmpl(subCheckPoints) "checkpointTemplate"}}'
-		+ '</div>'
-		+ '{{/if}}' + '</div>' + '</pre>';
+	+ '<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'
+	+ '<div {{if subCheckPoints}}onclick="$(this).closest(\'.checkpoint\').children(\'.subcheckpoints\').toggle();$(this).children(\'span\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');" {{/if}}>'
+	+ '<span class="ui-icon {{if subCheckPoints.length > 0}} ui-icon-triangle-1-e {{else}} ${getIcon(type)} {{/if}}" style="float:left;margin-top:0.0em;margin-left:5px;" title="${type}"></span>'
+	+ '<span style="vertical-align:top;margin-left:25px;display:block;word-wrap: break-word;">{{html escapHtml(message)}}'
+	+ '{{if screenshot}}<a class="screenshot" href="${screenshot}" target="_blank" style="width:auto;margin-top:0.0em;vertical-align:middle;" title="Screenshot">📷</a>'
+	+ '{{/if}}'
+	+ '{{if duration}}'
+	+ '[{{if threshold}}'
+	+ '{{if (threshold>0) && (threshold*1000<duration)}}<span class="step-threshold" style="color:#FF9900" title="threshold: ${threshold}s&#13;exceeded: ${duration/1000.0 - threshold}s">${duration/1000.0}s</span>{{else}}'
+	+ '<span class="step-threshold" title="threshold: ${threshold}s&#13;outstanding: ${threshold - duration/1000.0}s">${duration/1000.0}s</span> {{/if}} {{else}}${duration/1000.0}s {{/if}}] {{/if}}'
+	+ '</span>'
+	+ '</div>'
+	+ '{{if subCheckPoints}}'
+	+ '<div style="display:none;" class="subcheckpoints">'
+	+ '{{tmpl(subCheckPoints) "checkpointTemplate"}}'
+	+ '</div>'
+	+ '{{/if}}' + '</div>' + '</pre>';
 
 var commandLogTemplate =
-		'<div class="command-log" style="display:block;margin-left: 30px;font-size:small; color:gray" {{if subLogs.length > 0}}onclick="$(this).children(\'.command-log\').toggle();$(this).children(\'span.ui-icon\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');"{{/if}}>'
-		+ '{{if subLogs.length > 0}}<span class="ui-icon ui-icon-triangle-1-s" style="float:left;margin-top:0.0em;margin-left:5px;"></span>{{/if}}'
-		+ '<b>${commandName}</b> : ${args} : <span style="color:gray;">${result}</span>'
-		+ '{{if subLogs}}{{tmpl(subLogs) "commandLogTemplate"}}{{/if}}'
-		+ '</div>';
+	'<div class="command-log" style="display:block;margin-left: 30px;font-size:small; color:gray" {{if subLogs.length > 0}}onclick="$(this).children(\'.command-log\').toggle();$(this).children(\'span.ui-icon\').toggleClass(\'ui-icon-triangle-1-e ui-icon-triangle-1-s\');"{{/if}}>'
+	+ '{{if subLogs.length > 0}}<span class="ui-icon ui-icon-triangle-1-s" style="float:left;margin-top:0.0em;margin-left:5px;"></span>{{/if}}'
+	+ '<b>${commandName}</b> : ${args} : <span style="color:gray;">${result}</span>'
+	+ '{{if subLogs}}{{tmpl(subLogs) "commandLogTemplate"}}{{/if}}'
+	+ '</div>';
 
 $.template("checkpointTemplate", checkpointTemplate);
 $.template("commandLogTemplate", commandLogTemplate);
@@ -120,7 +120,7 @@ var wscFormTemplate = '<div class="ui-layout-south">'
 	+ getKVTmpl('Default values', 'parameters', 5)
 	+ getKVTmpl('Run Params', 'run-parameters', 6)
 	+ '<div  id="tabs-7">'
-	+'<table id="tblcheckpoints"><tbody>'
+	+ '<table id="tblcheckpoints"><tbody>'
 	+ '{{if (typeof $data["post-steps"] != \'undefined\') }}'
 	+ '{{each(i,checkpoint) $data["post-steps"]}}'
 	+ checkpointsInputTemplate
@@ -185,7 +185,6 @@ $(document).ready(function() {
 			slideTrigger_open: "mouseover"
 		}
 	});
-
 	tree = $('#tree')
 		.jstree({
 			'core': {
@@ -214,24 +213,55 @@ $(document).ready(function() {
 			'contextmenu': {
 				'items': function(node) {
 					var tmp = $.jstree.defaults.contextmenu.items();
-					if (this.get_type(node) === "folder"){
-						tmp.load={
+					if (this.get_type(node) === "folder") {
+						tmp.refresh = {
+							"label": "Refresh",
+							"action":function(data){var inst = $.jstree.reference(data.reference);inst.refresh_node(node);}
+						};
+						tmp.load = {
 							"label": "Load",
-							"action":function(data) {
+							"action": function(data) {
 								console.log(data);
 								var inst = $.jstree.reference(data.reference),
-								obj = inst.get_node(data.reference);
-								$.get('/repo-editor?operation=load_resource', {'path': inst.get_path(node, "/")});
+									obj = inst.get_node(data.reference);
+								$.get('/repo-editor?operation=load_resource', { 'path': inst.get_path(node, "/") });
 							}
 						};
-					}else{
-						tmp.duplicate={
+						tmp.import = {
+							"label": "Import",
+							"submenu": {
+								"ImportOpenApi": {
+									"label": "Import Open API Spec",
+									"action": function(data) {
+										var inst = $.jstree.reference(data.reference);
+										var file = prompt("Please enter file", "");
+										if(null!= file){
+											executeBddSteps(["importOpenAPISpec"], [file,inst.get_path(node, "/")]);
+											inst.refresh_node(node);
+										}
+									}
+								},
+								"ImportPostmanCollection": {
+									"label": "Import Postman Collection",
+									"action": function(data) {
+										var inst = $.jstree.reference(data.reference);
+										var file = prompt("Please enter file", "");
+										if(null!= file){
+											executeBddSteps(["importPostmanColletion"], [file,inst.get_path(node, "/")]);
+											inst.refresh_node(node);
+										}
+									}
+								}
+							}
+						};
+					} else {
+						tmp.duplicate = {
 							"label": "Duplicate",
-							"action":function(data) {
+							"action": function(data) {
 								console.log(data);
 								var inst = $.jstree.reference(data.reference),
-								obj = inst.get_node(data.reference);
-								$.get('/repo-editor?operation=duplicate_node', {'path': obj.id }).done(function() {
+									obj = inst.get_node(data.reference);
+								$.get('/repo-editor?operation=duplicate_node', { 'path': obj.id }).done(function() {
 									inst.refresh_node(obj.parent);
 								});
 							}
@@ -241,7 +271,7 @@ $(document).ready(function() {
 						return null;
 					}
 					delete tmp.create.action;
-					if (node.text.endsWith('.wsc')||node.text.endsWith('.wscj')) {
+					if (node.text.endsWith('.wsc') || node.text.endsWith('.wscj')) {
 						tmp.create.label = "New Request Call";
 
 						tmp.create.action = function(data) {
@@ -474,13 +504,13 @@ $(document).ready(function() {
 	$.get('/repo-editor?operation=step_list')
 		.done(function(res) {
 			stpesList = res;
-			$("#bddstep").autocomplete({source: (stpesList),position: {  collision: "flip"  }});
+			$("#bddstep").autocomplete({ source: (stpesList), position: { collision: "flip" } });
 		});
-	if (!Array.prototype.last){
-    Array.prototype.last = function(){
-        return this[this.length - 1];
-    };
-};
+	if (!Array.prototype.last) {
+		Array.prototype.last = function() {
+			return this[this.length - 1];
+		};
+	};
 });
 function clearConsole() {
 	$('#clear-console').animate({ opacity: 0.4 }, 0);
@@ -579,27 +609,27 @@ function createGrpcReqForm(data, node, path) {
 
 	}
 }
-var contentTypes=["text/plain", "text/json","text/css", "text/csv", "text/html", "text/xml",
-		"application/vnd.android.package-archive","application/vnd.oasis.opendocument.text",
-		"application/vnd.oasis.opendocument.spreadsheet","application/vnd.oasis.opendocument.presentation",
-		"application/vnd.oasis.opendocument.graphics","application/vnd.ms-excel",
-		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-		"application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation",
-		"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-		"application/vnd.mozilla.xul+xml",
-		"multipart/mixed","multipart/alternative","multipart/form-data",
-		"application/java-archive","application/EDI-X12","application/EDIFACT",
-		"application/javascript","application/octet-stream","application/ogg","application/pdf","application/xhtml+xml",
-		"application/x-shockwave-flash","application/json",
-		"application/ld+json","application/xml","application/zip",
-		"application/x-www-form-urlencoded"
-	]
+var contentTypes = ["text/plain", "text/json", "text/css", "text/csv", "text/html", "text/xml",
+	"application/vnd.android.package-archive", "application/vnd.oasis.opendocument.text",
+	"application/vnd.oasis.opendocument.spreadsheet", "application/vnd.oasis.opendocument.presentation",
+	"application/vnd.oasis.opendocument.graphics", "application/vnd.ms-excel",
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	"application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+	"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"application/vnd.mozilla.xul+xml",
+	"multipart/mixed", "multipart/alternative", "multipart/form-data",
+	"application/java-archive", "application/EDI-X12", "application/EDIFACT",
+	"application/javascript", "application/octet-stream", "application/ogg", "application/pdf", "application/xhtml+xml",
+	"application/x-shockwave-flash", "application/json",
+	"application/ld+json", "application/xml", "application/zip",
+	"application/x-www-form-urlencoded"
+]
 var headerSugessions = {
-	"Accept": contentTypes, "Accept-Charset": ["utf-8"], "Accept-Encoding": ["gzip", "deflate","compress","identity","br","*"], "Accept-Datetime": [], "Accept-Language": [], "Access-Control-Request-Method": [], "Access-Control-Request-Headers": [],
-	"Authorization": ["Basic <credentials>","Bearer <token>"], "Cache-Control": ["no-cache"], "Connection": ["keep-alive", "Upgrade"], "Content-Encoding": ["gzip"],
+	"Accept": contentTypes, "Accept-Charset": ["utf-8"], "Accept-Encoding": ["gzip", "deflate", "compress", "identity", "br", "*"], "Accept-Datetime": [], "Accept-Language": [], "Access-Control-Request-Method": [], "Access-Control-Request-Headers": [],
+	"Authorization": ["Basic <credentials>", "Bearer <token>"], "Cache-Control": ["no-cache"], "Connection": ["keep-alive", "Upgrade"], "Content-Encoding": ["gzip"],
 	"Content-Type": contentTypes,
 	"Content-MD5": [],
-	"X-API-Key":[]
+	"X-API-Key": []
 }
 function setAutocomplete(keyInput, valInput) {
 	console.log(Object.keys(headerSugessions));
@@ -611,20 +641,31 @@ function setAutocomplete(keyInput, valInput) {
 	$(valInput).autocomplete({
 		source: function(request, response) {
 			//response(headerSugessions[$(keyInput).val()]);
-			
-		  var matcher = new RegExp(  $.ui.autocomplete.escapeRegex( request.term ), "i" );
-          response( $.grep( headerSugessions[$(keyInput).val()], function( item ){
-              return matcher.test( item );
-          }) );
+
+			var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+			response($.grep(headerSugessions[$(keyInput).val()], function(item) {
+				return matcher.test(item);
+			}));
 		}
 	});
 }
+
+function toLowerCaseKey(obj) {
+	//const entries = Object.entries(obj);
+	return Object.fromEntries(
+		Object.entries(obj).map(([key, value]) => {
+			return [key.toLowerCase(), value];
+		}),
+	);
+}
+
 //form functions
 function createReqForm(data, node, path) {
 	resetContentPane();
 
 	try {
-		$.tmpl(wscFormTemplate, data).appendTo("#editor");
+
+		$.tmpl(wscFormTemplate, toLowerCaseKey(data)).appendTo("#editor");
 		if (node) {
 			$('#save').removeAttr('disabled');
 			$("#save").click(function() { saveReqForm(node, path); });
@@ -643,7 +684,7 @@ function createReqForm(data, node, path) {
 			var keyVal = $(tr).find('input');
 			setAutocomplete(keyVal[0], keyVal[1]);
 		});
-		$("table#tblcheckpoints input").each(function(){$(this).autocomplete({source: (stpesList),position: {  collision: "flip"  }});});
+		$("table#tblcheckpoints input").each(function() { $(this).autocomplete({ source: (stpesList), position: { collision: "flip" } }); });
 		loadWSCView(data);
 
 	} catch (e) {
@@ -678,12 +719,11 @@ function loadWSCView(data) {
 		}
 	});
 }
-
 function executeStep() {
 	var bddstep = $('input#bddstep').val().trim();
 	executeBddSteps([bddstep]);
 }
-function executeBddSteps(bddstep) {
+function executeBddSteps(bddstep,vargs) {
 	//var bddstep = $('input#bddstep').val().trim();
 	var ignore = $("input#bddstep").is(":disabled") || bddstep.length <= 0;
 	if (!ignore) {
@@ -692,12 +732,13 @@ function executeBddSteps(bddstep) {
 		log('Executing Step:: ' + bddstep);
 		var stepcall = {
 			step: bddstep.shift(),
-			args: []
+			args: vargs||[]
 		}
 		ajaxMaskUI({
 			maskUI: true,
 			type: "POST",
 			url: "/executeStep",
+			async: false,
 			data: JSON.stringify(stepcall),
 			contentType: "application/json; charset=utf-8",
 			//dataType : "json",
@@ -711,19 +752,19 @@ function executeBddSteps(bddstep) {
 							//$("#logs div.checkpoint:last")[0]
 							$.tmpl(commandLogTemplate, res.seleniumLog[0].subLogs).appendTo('#console #logs div.checkpoint:last');
 						}
-					}else if (res.checkPoints) {
+					} else if (res.checkPoints) {
 						$.tmpl(checkpointTemplate, res.checkPoints).appendTo('#console #logs');
 						$.tmpl(commandLogTemplate, res.seleniumLog[0].subLogs).appendTo('#console #logs div.checkpoint:last');
 					} else {
 						if (res.error) {
-							log('<span class="fail">[ERROR]: ' + res.error+"</span>", true);
-						}else{
+							log('<span class="fail">[ERROR]: ' + res.error + "</span>", true);
+						} else {
 							log('response: ' + JSON.stringify(res));
 						}
 					}
 					$("input#bddstep").prop("disabled", false);
 					$("#executeStepBtn").toggleClass('ajax-loading');
-					if(bddstep.length>0){
+					if (bddstep.length > 0) {
 						executeBddSteps(bddstep);
 					}
 				} catch (e) {
@@ -829,7 +870,7 @@ function getFormData() {
 	add(reqcall, 'body');
 	addEntries(reqcall, 'parameters');
 	addEntries(reqcall, 'run-parameters');
-	addCheckpoints(reqcall,'post-steps');
+	addCheckpoints(reqcall, 'post-steps');
 	return reqcall;
 }
 
@@ -853,9 +894,9 @@ function execute() {
 				log(data);
 			}
 			var postSteps = reqcall['post-steps'];
-			if(postSteps && postSteps.length>0){
+			if (postSteps && postSteps.length > 0) {
 				//for(step of postSteps){
-					executeBddSteps(postSteps);
+				executeBddSteps(postSteps);
 				//}
 			}
 			$("#execute span").toggleClass('ajax-loading');
@@ -935,7 +976,7 @@ function ajaxMaskUI(settings) {
 		$('html').removeClass('hourGlass');
 	}
 
-	if (settings.maskUI  == true) settings.maskUI = 'transparent';
+	if (settings.maskUI == true) settings.maskUI = 'transparent';
 
 	if (!!settings.maskUI) {
 		maskPageOn(settings.maskUI);
@@ -965,9 +1006,9 @@ function log(message, isHtml) {
 		message = JSON.stringify(message);
 
 	var console = $('#console #logs');
-	if(!isHtml){
+	if (!isHtml) {
 		console.append('<div class="log-line">[' + new Date().toLocaleTimeString() + '] ' + formatedRes(message) + '</div>');
-	}else{
+	} else {
 		console.append('<div  class="log-line">[' + new Date().toLocaleTimeString() + '] ' + message + '</div>');
 	}
 	$("#logs div:last")[0].scrollIntoView();
@@ -998,7 +1039,7 @@ function showResponse(data) {
 	} else if (mediaType.indexOf('json') >= 0) {
 		$("#tabs-2").html('<pre></pre>');
 		$("#tabs-2 pre").text(data["messageBody"]);
-			console.log(JSON.parse(body));
+		console.log(JSON.parse(body));
 
 		//$("#tabs-2").html('<pre>'+JSON.stringify(data["messageBody"],null,'\t')+'</pre>');
 	}
@@ -1025,8 +1066,8 @@ function add(m, f) {
 function addCheckpoints(m, f) {
 	var checkpoints = [];
 	$("#tblcheckpoints tr input").each(function() {
-		var checkpoint =$(this).val().trim();
-		if(checkpoint.length>0){
+		var checkpoint = $(this).val().trim();
+		if (checkpoint.length > 0) {
 			checkpoints.push(checkpoint);
 		}
 	});
@@ -1060,7 +1101,7 @@ function addEntry(f) {
 }
 function addCheckpoint() {
 	$.tmpl(checkpointsInputTemplate).appendTo("#tblcheckpoints");
-	$("table#tblcheckpoints input:last").autocomplete({source: (stpesList),position: {  collision: "flip"  }});
+	$("table#tblcheckpoints input:last").autocomplete({ source: (stpesList), position: { collision: "flip" } });
 }
 function removeEntry(f) {
 	$(f).parent().parent().remove();
