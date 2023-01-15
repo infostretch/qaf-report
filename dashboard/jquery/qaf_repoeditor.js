@@ -609,6 +609,7 @@ function createGrpcReqForm(data, node, path) {
 
 	}
 }
+var methodSugessions = ["GET", "PUT", "POST", "PATCH", "DELETE", "HEAD", "OPTIONS"];
 var contentTypes = ["text/plain", "text/json", "text/css", "text/csv", "text/html", "text/xml",
 	"application/vnd.android.package-archive", "application/vnd.oasis.opendocument.text",
 	"application/vnd.oasis.opendocument.spreadsheet", "application/vnd.oasis.opendocument.presentation",
@@ -632,8 +633,8 @@ var headerSugessions = {
 	"X-API-Key": []
 }
 function setAutocomplete(keyInput, valInput) {
-	console.log(Object.keys(headerSugessions));
-	console.log($(keyInput));
+	//console.log(Object.keys(headerSugessions));
+	//console.log($(keyInput));
 
 	$(keyInput).autocomplete({
 		source: Object.keys(headerSugessions)
@@ -679,7 +680,7 @@ function createReqForm(data, node, path) {
 		window['innerLayout'] = $("#editor").layout(layoutSettings_Inner);
 		$('#wsc-tabs').tabs();
 		$('#editor button').each(function() { $(this).button(); });
-
+		$( "input[name=method]" ).autocomplete({ source: methodSugessions });
 		$('table#tblheaders > tbody  > tr').each(function(index, tr) {
 			var keyVal = $(tr).find('input');
 			setAutocomplete(keyVal[0], keyVal[1]);
