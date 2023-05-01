@@ -15,7 +15,7 @@
 		<testSuiteFile>config/testrun_config.xml</testSuiteFile>
 		<sourceVersion>1.8</sourceVersion>
 		<targetVersion>1.8</targetVersion>
-		<qaf.version>3.2.0b</qaf.version>
+		<qaf.version>3.2.0</qaf.version>
 		<selenium.version>4.1.0</selenium.version>
 		<test.results.dir>test-results</test.results.dir>
 		<run.time>${maven.build.timestamp}</run.time>
@@ -52,6 +52,22 @@
 			<groupId>com.qmetry</groupId>
 			<artifactId>qaf-support-ws</artifactId>
 			<version>${qaf.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.swagger.parser.v3/swagger-parser -->
+		<dependency>
+			<groupId>io.swagger.parser.v3</groupId>
+			<artifactId>swagger-parser</artifactId>
+			<version>2.1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.oai</groupId>
+			<artifactId>swagger-request-validator-core</artifactId>
+			<version>2.32.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.14.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.qmetry</groupId>
