@@ -53,6 +53,11 @@
 			<artifactId>qaf-support-ws</artifactId>
 			<version>${qaf.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.qmetry</groupId>
+			<artifactId>qaf-support-openapi</artifactId>
+			<version>${qaf.version}</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.swagger.parser.v3/swagger-parser -->
 		<dependency>
 			<groupId>io.swagger.parser.v3</groupId>
