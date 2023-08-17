@@ -1212,7 +1212,7 @@ function getTotalDuration(entries) {
 }
 
 function mehodheaderClick(ele) {
-	details = $(ele).parent().children('.details');
+	details = $(ele).first().parent().children('.details');
 	toggleTestDetails(details);
 	setChecked('#ocollapse', false);
 	setChecked('#oexpand', false);
