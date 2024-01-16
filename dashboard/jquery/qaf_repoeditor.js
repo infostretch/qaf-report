@@ -178,11 +178,11 @@ $(document).ready(function() {
 			size: 250,
 			spacing_closed: 22,
 			togglerLength_closed: 140,
-			togglerAlign_closed: "center",
+			//togglerAlign_closed: "center",
 			togglerContent_closed: "R<BR>e<BR>p<BR>o<BR>s",
 			togglerTip_closed: "Browse Repositories",
 			sliderTip: "Slide Open Repositories",
-			slideTrigger_open: "mouseover"
+			//slideTrigger_open: "mouseover"
 		}
 	});
 	tree = $('#tree')
@@ -474,11 +474,11 @@ $(document).ready(function() {
 					console.log(type);
 					if (data.instance.get_type(node) === "default") {
 						var path = data.instance.get_path(node, "/");
-						var btns = '<button id="save" onclick="saveFile(\'' + path + '\');" disabled="true">Save</button>';
+						var btns = '<div style="position:fixed; right:30px"><button id="save" onclick="saveFile(\'' + path + '\');" disabled="true">Save</button>';
 						if (path.endsWith(".properties")) {
 							btns = btns + ' <button id="loadFile" onclick="loadFile(\'' + path + '\');" >Load</button>';
 						}
-						var html = btns + '<br/><textarea cols="100" id="file-editor" onchange="$(\'#save\').removeAttr(\'disabled\')"></textarea>';
+						var html = btns + '</div><br/><div><textarea cols="100" id="file-editor" onchange="$(\'#save\').removeAttr(\'disabled\')"></textarea></div>';
 						$('#editor').html(html);
 						$.ajax({ url: path, dataType: "text" }).done(function(content) {
 							$("#file-editor").val(content);
@@ -571,26 +571,26 @@ layoutSettings_Inner = {
 	applyDefaultStyles: true // basic styling for testing & demo purposes
 
 	, south: {
-		size: 150,
+		size: "60%",
 		spacing_closed: 22,
-		closable: true,
+		//closable: true,
 		resizable: true,
 		togglerAlign_closed: "left",
-		togglerAlign_open: "center",
+		//togglerAlign_open: "center",
 		togglerLength_closed: 140,
 		togglerContent_closed: "Response",
-		slideTrigger_open: "mouseover",
+		//slideTrigger_open: "mouseover",
 		initClosed: true
 	},
 	east: {
-		size: 450,
+		size: "35%",
 		spacing_closed: 22,
 		togglerLength_closed: 140,
-		togglerAlign_closed: "center",
-		togglerContent_closed: "R<BR>e<BR>p<BR>o<BR>s",
-		togglerTip_closed: "Browse Repositories",
-		sliderTip: "Slide Open Repositories",
-		slideTrigger_open: "mouseover"
+		//togglerAlign_closed: "center",
+		togglerContent_closed: "R<BR>e<BR>q<BR>u<BR>e<BR>s<BR>t",
+		//togglerTip_closed: "Browse Repositories",
+		//sliderTip: "Slide Open Repositories",
+		//slideTrigger_open: "mouseover"
 	}
 }
 
@@ -679,7 +679,7 @@ function createReqForm(data, node, path) {
 		//$.extend( layoutSettings_Inner, layoutState.load(window['innerLayout']));
 		window['innerLayout'] = $("#editor").layout(layoutSettings_Inner);
 		$('#wsc-tabs').tabs();
-		$('#editor button').each(function() { $(this).button(); });
+		//$('#editor button').each(function() { $(this).button(); });
 		$( "input[name=method]" ).autocomplete({ source: methodSugessions });
 		$('table#tblheaders > tbody  > tr').each(function(index, tr) {
 			var keyVal = $(tr).find('input');
@@ -708,10 +708,19 @@ function loadWSCView(data) {
 			if (res.result) {
 				result = JSON.parse(res.result);
 				console.log(res.result);
-				$("#wsc-view pre").text(JSON.stringify(result, null, '   '));
+				try{
+					$('#wsc-view pre').jsonViewer(result);
+				}catch(e){
+					$("#wsc-view pre").text(JSON.stringify(result, null, '   '));
+				}
+				
 			} else {
 				log('Unexpected response: ' + JSON.stringify(res));
-				$("#wsc-view pre").text(JSON.stringify(data, null, '  '));
+				try{
+					$('#wsc-view pre').jsonViewer(data);
+				}catch(e){
+					$("#wsc-view pre").text(JSON.stringify(data, null, '  '));
+				}
 			}
 		},
 		failure: function(errMsg) {
@@ -828,7 +837,8 @@ function createRepoEditor(data, path) {
 				log(JSON.stringify(data));
 			},
 			failure: function(errMsg) {
-				alert(errMsg);
+				console.log(errMsg);
+				//alert("Something went wrong. Check console for details.");
 			}
 		});
 	});
@@ -854,7 +864,8 @@ function save(nodename, path, data) {
 			log(JSON.stringify(data));
 		},
 		failure: function(errMsg) {
-			alert(errMsg);
+			console.log(errMsg);
+			//alert('Something went wrong. Check console for details.');
 		}
 	});
 }
@@ -1034,20 +1045,39 @@ function showResponse(data) {
 		}).join('<br/>'));
 	}
 
-	var mediaType = data['mediaType'] || "";
-	if (mediaType.indexOf('html') >= 0) {
-		$("#tabs-2").html(data["messageBody"]);
-	} else if (mediaType.indexOf('json') >= 0) {
-		$("#tabs-2").html('<pre></pre>');
-		$("#tabs-2 pre").text(data["messageBody"]);
-		console.log(JSON.parse(body));
-
-		//$("#tabs-2").html('<pre>'+JSON.stringify(data["messageBody"],null,'\t')+'</pre>');
+	if (body) {
+		$("#tabs-2").html('<div class="copyBtn" style="float:right"><button>Copy</button></div><pre id="body-renderer"></pre>');
+		$(".copyBtn button").eq(0).button({
+			icon: "ui-icon-copy",
+			showLabel: false,
+		}).on("click", function() {
+			navigator.clipboard.writeText(body);
+			$(this).prop("title", "Copied!");
+		});
+		var mediaType = data['mediaType'] || "";
+		if (mediaType.indexOf('html') >= 0) {
+			$("#tabs-2").html(data["messageBody"]);
+		} else if (mediaType.indexOf('json') >= 0) {
+			try {
+				$('#tabs-2 pre').jsonViewer(JSON.parse(body), { collapsed: false, rootCollapsable: false, withQuotes: false, withLinks: true });
+			} catch (e) {
+				console.log(e);
+				$("#tabs-2 pre").text(body);
+			}
+		} else if (mediaType.indexOf('xml') >= 0) {
+			try {
+				$("#tabs-2 pre").empty().simpleXML({ xmlString: body });
+			} catch (e) {
+				console.log(e);
+				$("#tabs-2 pre").text(body);
+			}
+		} else {
+			$("#tabs-2 pre").text(body);
+		}
+	} else {
+		$("#tabs-2").html('<pre id="body-renderer"></pre>');
 	}
-	else {
-		$("#tabs-2").html('<pre></pre>');
-		$("#tabs-2 pre").text(body);
-	}
+	
 	delete data["headers"];
 	delete data["messageBody"];
 	delete data["body"];
@@ -1056,7 +1086,14 @@ function showResponse(data) {
 		return '<b>' + (key) + '</b>: ' +
 			(JSON.stringify(data[key], null, '\t'));
 	}).join('<br/>'));
-
+	var isOK = [ "OK", "CREATED", "ACCEPTED", "NO_CONTENT", "NOT_MODIFIED","FOUND"];
+	if(isOK.includes(data['status'])){
+		$("#editor .ui-layout-resizer-south").css('background', 'lime');
+		$("#editor .ui-layout-toggler-south").css('background', 'green');
+	}else{
+		$("#editor .ui-layout-resizer-south").css('background', 'orange');
+		$("#editor .ui-layout-toggler-south").css('background', 'red');
+	}
 }
 function add(m, f) {
 	var val = $("[name=" + f + "]").val();

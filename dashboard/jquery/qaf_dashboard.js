@@ -862,10 +862,12 @@ function loadDetails(file, container) {
 	return $.ajax({
 		dataType : "json",
 		url : file,
-		async : false
-	}).success(function(data) {
-		loadDetailsTemplate(data, container);
-	});
+		async : false,
+		success: function(data) {
+			loadDetailsTemplate(data, container);
+		}
+		})
+		
 }
 
 function toggleTab(ele, contentCss) {

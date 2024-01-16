@@ -138,6 +138,12 @@ $(function() {
             case 'addT':
                 addTable();
                 break;
+                
+            case 'testLocator':
+            	$("#editor #save").click();
+            	loc = $(`#json_table_${counter_id} tr[counter-id=${counter_id}]`).eq(clicked_row+1).find(`td[counter-id=1]`).eq(0).text();
+                executeBddSteps(["assert '"+loc +"' is present" ])
+                break;
         }  
 
         },
@@ -155,6 +161,7 @@ $(function() {
             "sep3": "---------",
             "copyRow": {name: "Copy current row", icon: "fas fa-arrows-alt-h"},
             "pasteRow": {name: "Insert copied row", icon: "fas fa-arrows-alt-h"},
+            "testLocator": {name: "Validate locator", icon: "fas fa-arrows-alt-h"},
         }
     });
 
