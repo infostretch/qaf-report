@@ -11,8 +11,8 @@ font-size: 11pt;
 border-collapse: separate; 
 border-spacing: 8px;
 }
-ui-icon.ajax-loading{
-background-image: url("./dashboard/images/ajax-loader-000.gif");
+.ui-icon.ajax-loading{
+background-image: url("./dashboard/images/ajax-loader-000.gif") !important;
 }
 table[id^="tbl"] td{
 padding: 2px;
@@ -82,19 +82,22 @@ background-color: #fff;
 .pass,.teststeppass{color: #090;}
 .fail,.teststepfail{color: #900;}
 .teststep{color: #009;}
+button.ui-button {
+padding :.2em .6em .2em .2em; margin:0 .4em;
+}
+
 
 </style>
 <link rel="shortcut icon" href="./dashboard/images/favicon.ico" />
-
-<link rel="stylesheet"
-	href="./dashboard/jquery/layout/layout-default-latest.css" />
 	
-    <link href="./dashboard/css/stylesheet_master.css" media="screen" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="./dashboard/jquery/ui/css/smoothness/jquery-ui-1.9.0.custom.min.css" />
 
 <!--[if lt IE 9]><script src="//static.jstree.com/3.3.12/assets/html5.js"></script><![endif]-->
 
 	<link rel="stylesheet" href="http://static.jstree.com/3.3.12/assets/dist/themes/default/style.min.css" />
+	<link rel="stylesheet" href="./dashboard/jquery/layout/layout-default-latest.css" />
+	<link rel="stylesheet" href="./dashboard/jquery/ui/css/smoothness/jquery-ui.min.css" />
+	<link href="./dashboard/css/stylesheet_master.css" media="screen" rel="stylesheet" type="text/css" />    
+	
 	<!-- 	<link rel="stylesheet" href="//static.jstree.com/3.3.12/assets/bootstrap/css/bootstrap.min.css" />
 	
 	<link rel="stylesheet" href="//static.jstree.com/3.3.12/assets/docs.css" />  -->
@@ -104,14 +107,13 @@ background-color: #fff;
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
 	
-	<script type="text/javascript" src="./dashboard/jquery/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="./dashboard/jquery/ui/jquery-ui-1.9.1.min.js"></script>
+	<script type="text/javascript" src="./dashboard/jquery/jquery-3.7.0.min.js"></script>
+	<script type="text/javascript" src="./dashboard/jquery/jquery-migrate-3.4.1.min.js"></script>
+	<script type="text/javascript" src="./dashboard/jquery/ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmpl.min.js"></script>
     <script type="text/javascript" src="./dashboard/jquery/tmpl/jquery.tmplPlus.min.js"></script>
-    <script type="text/javascript" src="./dashboard/jquery/layout/jquery.layout-latest.min.js"></script>
-	<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
-
+    <script type="text/javascript" src="./dashboard/jquery/layout/jquery.layout_and_plugins.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
 	<!--[if lt IE 9]><script src="//static.jstree.com/3.3.12/assets/respond.js"></script><![endif]-->
 	
     
@@ -131,6 +133,12 @@ background-color: #fff;
     <link href="./dashboard/css/prettify.css"  rel="stylesheet" />
     <script src="./dashboard/jquery/prettify.js"></script>
     <script src="./dashboard/jquery/vkbeautify.0.99.00.beta.js"></script>
+    
+    <!-- response body viewer -->
+    <script src="./dashboard/jquery/json-viewer/jquery.json-viewer.js"></script>
+	<link href="./dashboard/jquery/json-viewer/jquery.json-viewer.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="./dashboard/jquery/tree-xml-viewer-formatter/js/simpleXML.js"></script>
+	<link type="text/css" rel="stylesheet"  href="./dashboard/jquery/tree-xml-viewer-formatter/css/simpleXML.css"/>
 </head>
 <body>
 	<div class="ui-layout-west">
