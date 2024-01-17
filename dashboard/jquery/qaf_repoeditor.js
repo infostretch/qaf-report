@@ -1046,33 +1046,54 @@ function showResponse(data) {
 	}
 
 	if (body) {
-		$("#tabs-2").html('<div class="copyBtn" style="float:right"><button>Copy</button></div><pre id="body-renderer"></pre>');
-		$(".copyBtn button").eq(0).button({
+		$("#tabs-2").html('<div class="tools" style="float:right"><button id="toggle">Format</button><button class="copyBtn">Copy</button></div><pre id="body-renderer"></pre>');
+		$(".tools .copyBtn").eq(0).button({
 			icon: "ui-icon-copy",
 			showLabel: false,
 		}).on("click", function() {
-			navigator.clipboard.writeText(body);
+			navigator.clipboard.writeText($("#plainText").text());
 			$(this).prop("title", "Copied!");
+			if ($('.success-messages').length === 0  ) {
+				$(".tools").prepend('<span class="success-messages" style="color:lime"> ✔ Copied!</span>');
+				$(".success-messages").fadeOut(3000, function() { 
+					$('.success-messages').remove();
+				}); 
+			}
 		});
+		$("#toggle").button({
+			icon:"ui-icon-shuffle ",
+			showLabel: false,
+		});
+		$("#toggle").on("click", function(){
+			$("#plainText").toggle();
+			$("#body-renderer").toggle();
+		});
+		
+		$("#tabs-2").append(`<pre id="plainText"></pre>`);
+		$("#plainText").text(body);
+		$("#plainText").toggle();
 		var mediaType = data['mediaType'] || "";
 		if (mediaType.indexOf('html') >= 0) {
-			$("#tabs-2").html(data["messageBody"]);
+			$("#tabs-2 #body-renderer").empty().html(body);
 		} else if (mediaType.indexOf('json') >= 0) {
 			try {
-				$('#tabs-2 pre').jsonViewer(JSON.parse(body), { collapsed: false, rootCollapsable: false, withQuotes: false, withLinks: true });
+				$('#tabs-2 #body-renderer').jsonViewer(JSON.parse(body), { collapsed: false, rootCollapsable: false, withQuotes: false, withLinks: true });
 			} catch (e) {
 				console.log(e);
-				$("#tabs-2 pre").text(body);
+				$("#toggle").toggle();
+				$("#plainText").toggle();
 			}
 		} else if (mediaType.indexOf('xml') >= 0) {
 			try {
-				$("#tabs-2 pre").empty().simpleXML({ xmlString: body });
+				$("#tabs-2 #body-renderer").empty().simpleXML({ xmlString: body });
 			} catch (e) {
 				console.log(e);
-				$("#tabs-2 pre").text(body);
+				$("#toggle").toggle();
+				$("#plainText").toggle();
 			}
 		} else {
-			$("#tabs-2 pre").text(body);
+			$("#toggle").toggle();
+			$("#plainText").toggle();
 		}
 	} else {
 		$("#tabs-2").html('<pre id="body-renderer"></pre>');
