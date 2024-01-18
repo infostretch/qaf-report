@@ -474,16 +474,40 @@ $(document).ready(function() {
 					console.log(type);
 					if (data.instance.get_type(node) === "default") {
 						var path = data.instance.get_path(node, "/");
-						var btns = '<div style="position:fixed; right:30px"><button id="save" onclick="saveFile(\'' + path + '\');" disabled="true">Save</button>';
+						var btns = '<div id="toolbar"><button id="save" onclick="saveFile(\'' + path + '\');" disabled="true">Save</button>';
 						if (path.endsWith(".properties")) {
 							btns = btns + ' <button id="loadFile" onclick="loadFile(\'' + path + '\');" >Load</button>';
 						}
-						var html = btns + '</div><br/><div><textarea cols="100" id="file-editor" onchange="$(\'#save\').removeAttr(\'disabled\')"></textarea></div>';
+						btns = btns + '<button id="undo">Undo</button><button id="redo">Redo</button></div><br/><div>';
+						//var html = btns + <textarea cols="100" id="file-editor" onchange="$(\'#save\').removeAttr(\'disabled\')"></textarea></div>';
+						var html = btns + '<pre id="file-editor" contenteditable="true"></pre>';
 						$('#editor').html(html);
+						$('#editor button').eq(0).button({ icon: "ui-icon-arrowthickstop-1-n"})
+							.end().eq(1).button({
+								icon: "ui-icon-gear","showLabel": false
+							}).end().eq(2).button({
+								icon: "ui-icon-arrowreturnthick-1-w","showLabel": false
+							}).end().eq(3).button({
+								icon: "ui-icon-arrowreturnthick-1-e","showLabel": false
+							});
+						$('#file-editor').on("keypress", function(){$('#save').button("enable");});
 						$.ajax({ url: path, dataType: "text" }).done(function(content) {
-							$("#file-editor").val(content);
-							$("#file-editor").height('auto').height($("#file-editor").prop('scrollHeight') + 'px');
+							$("#file-editor").text(content);
+							//$("#file-editor").val(content);
+							//$("#file-editor").height('auto').height($("#file-editor").prop('scrollHeight') + 'px');
 						});
+						
+						var basicControls = ["#undo", "#redo"];
+						    //$( ".toolbar" ).controlgroup();
+						$( basicControls.join( ", " ) ).on("click",
+							function() {
+								document.execCommand(
+									this.id,
+									false,
+									$("#file-editor")
+								);
+							});
+							  
 					}
 				}
 			}
@@ -518,12 +542,15 @@ function clearConsole() {
 	$('#clear-console').animate({ 'opacity': 0.8 }, 500);
 }
 function loadFile(path) {
+	if(!$("#save" ).button( "option", "disabled" )){
+		saveFile(path);
+	}
 	$.ajax("/repo-editor?operation=load_resource&path=" + path);
 }
 
 function saveFile(path) {
-	$('#save').attr('disabled', 'disabled');
-	var content = $("#file-editor").val();
+	$('#save').button('disable');
+	var content = $("#file-editor").text();
 	console.log(content);
 	//save_file
 	$.ajax({

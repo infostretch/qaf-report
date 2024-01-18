@@ -5,88 +5,154 @@
 <title>QAF Repository Editor</title>
 <style type="text/css">
 body {
-font-size: 11pt;
+	font-size: 11pt;
 }
-.wscTable{
-border-collapse: separate; 
-border-spacing: 8px;
+
+.wscTable {
+	border-collapse: separate;
+	border-spacing: 8px;
 }
-.ui-icon.ajax-loading{
-background-image: url("./dashboard/images/ajax-loader-000.gif") !important;
+
+.ui-icon.ajax-loading {
+	background-image: url("./dashboard/images/ajax-loader-000.gif")
+		!important;
 }
-table[id^="tbl"] td{
-padding: 2px;
+
+table[id^="tbl"] td {
+	padding: 2px;
 }
-#wsc-tabs{
-min-height: 325px;
+
+#wsc-tabs {
+	min-height: 325px;
 }
-.ui-tabs-nav li a{
-font-size:10pt;
+
+.ui-tabs-nav li a {
+	font-size: 10pt;
 }
+
 a.ui-icon {
-display: inline-flex;
-cursor: pointer;
-margin: 5px;
-margin-left: 10px;	
-border: 1px solid #eee;
-padding: 8px;
-vertical-align: bottom;
-float: right;
+	display: inline-flex;
+	cursor: pointer;
+	margin: 5px;
+	margin-left: 10px;
+	border: 1px solid #eee;
+	padding: 8px;
+	vertical-align: bottom;
+	float: right;
+}
 
+#clear-console {
+	position: fixed;
+	right: 10px;
+	padding: 0px;
+	margin: 0;
+	opacity: 0.8;
 }
-#clear-console{
-position:fixed;
-right:10px;
-padding: 0px;
-margin:0;
-opacity: 0.8;
 
+#clear-console:hover {
+	opacity: 1;
 }
-#clear-console:hover{
-opacity: 1;
+
+.ui-icon {
+	transform: scale(1.8);
+	margin-left: 10px;
 }
-.ui-icon{
-transform: scale(1.8);
-margin-left: 10px;
+
+a.ui-icon:hover {
+	border: 1px solid #ccc;
+	margin-left: 10px;
 }
-a.ui-icon:hover{
-border: 1px solid #ccc;
-margin-left: 10px;
+
+#req-call-actions {
+	display: inline;
+	float: right;
 }
-#req-call-actions{
-display: inline;
-float: right;
+
+button.ui-state-default {
+	background-color: #fff;
 }
-button.ui-state-default{
-background-color: #fff;
-}
+
 .ui-autocomplete {
-		max-height: 300px;
-		overflow-y: auto;
-		/* prevent horizontal scrollbar */
-		overflow-x: hidden;
-		z-index: 10 !important;
-	}
+	max-height: 300px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	z-index: 10 !important;
+}
 
 /* #tree { float:left; min-width:279px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
  */
-#tree .file { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png') -32px -96px no-repeat; transform: scale(1.8);}
-#tree .folder { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_orange.png') 0 -96px no-repeat; transform: scale(1.8);}
+#tree .file {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png')
+		-32px -96px no-repeat;
+	transform: scale(1.8);
+}
 
-#tree .file-wsc, #tree .file-proto, #tree .file-loc { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png') -64px -96px no-repeat;  transform: scale(1.8);}
-#tree .node { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -112px -80px no-repeat; transform: scale(1.8);}
+#tree .folder {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_orange.png') 0
+		-96px no-repeat;
+	transform: scale(1.8);
+}
+
+#tree .file-wsc, #tree .file-proto, #tree .file-loc {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png')
+		-64px -96px no-repeat;
+	transform: scale(1.8);
+}
+
+#tree .node {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png')
+		-112px -80px no-repeat;
+	transform: scale(1.8);
+}
 /*
 #tree .file-loc { background:url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png') -160px -112px no-repeat; transform: scale(1.8);}
 #logs *:nth-child(even) {background: #CDCDCD27}
 */
-.pass,.teststeppass{color: #090;}
-.fail,.teststepfail{color: #900;}
-.teststep{color: #009;}
-button.ui-button {
-padding :.2em .6em .2em .2em; margin:0 .4em;
+.pass, .teststeppass {
+	color: #090;
 }
 
+.fail, .teststepfail {
+	color: #900;
+}
 
+.teststep {
+	color: #009;
+}
+
+button.ui-button {
+	padding: .2em .6em .2em .2em;
+	margin: 0 .4em;
+}
+
+.ui-tabs .ui-widget-header {
+	border: 1px solid #ddd;
+	background: #efefef;
+}
+
+#toolbar {
+	position: fixed;
+	right: 30px;
+	padding: 0;
+}
+
+#toolbar button {
+	margin: 1px
+}
+
+#file-editor {
+	padding: 10px;
+	margin-top: 10px;
+	border: 1px solid #888;
+	box-shadow: 7px 7px 3px #ccc;
+	outline: 0px solid transparent;
+	min-height: calc(100vh - 200px);
+}
 </style>
 <link rel="shortcut icon" href="./dashboard/images/favicon.ico" />
 	
