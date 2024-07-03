@@ -1,0 +1,2 @@
+Sample run notes: synthetic data for dashboard demo.
+No external URLs or customer content.

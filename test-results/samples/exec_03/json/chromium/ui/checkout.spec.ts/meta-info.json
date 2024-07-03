@@ -1,0 +1,67 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Stable checkout smoke",
+        "sign": "checkout.spec.ts.Stable checkout smoke()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "StableCheckout",
+        "testID": "SAMPLE-TC-STABLE",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774673439868,
+      "duration": 3100,
+      "result": "pass",
+      "passPer": 100
+    },
+    {
+      "index": 2,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Flaky cart assertion",
+        "sign": "checkout.spec.ts.Flaky cart assertion()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "FlakyCart",
+        "testID": "SAMPLE-TC-FLAKY",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774673439968,
+      "duration": 2800,
+      "result": "pass",
+      "passPer": 100
+    },
+    {
+      "index": 3,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Optional promotional banner",
+        "sign": "checkout.spec.ts.Optional promotional banner()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "OptionalBanner",
+        "testID": "SAMPLE-TC-OPTIONAL",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774673440068,
+      "duration": 120,
+      "result": "skip",
+      "passPer": 0
+    }
+  ]
+}

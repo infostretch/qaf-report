@@ -1,0 +1,46 @@
+{
+  "name": "qaf-report-playwright",
+  "version": "1.0.0",
+  "description": "Playwright reporter and JSON converter for QAF-shaped test-results (uses qaf-report-core)",
+  "main": "index.js",
+  "bin": {
+    "qaf-report-playwright": "cli.js"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./reporter": "./reporter.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "qaf-report-core": "*"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": false
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "reporter.js",
+    "lib"
+  ],
+  "keywords": [
+    "playwright",
+    "qaf",
+    "test-results"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  },
+  "author": "Chirag Jayswal, QAF team"
+}

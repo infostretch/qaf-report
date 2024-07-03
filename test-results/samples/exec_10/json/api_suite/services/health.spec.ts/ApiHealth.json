@@ -1,0 +1,11 @@
+{
+  "errorTrace": "java.net.ConnectException: Connection refused (Connection refused)\n\tat sample.ApiHealthTest.getHealth(ApiHealthTest.java:15)",
+  "errorMessage": "java.net.ConnectException: Connection refused (Connection refused)",
+  "checkPoints": [
+    {
+      "message": "GET /health",
+      "type": "fail",
+      "duration": 2100
+    }
+  ]
+}

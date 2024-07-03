@@ -1,0 +1,14 @@
+{
+  "checkPoints": [
+    {
+      "message": "Load home page",
+      "type": "pass",
+      "duration": 180
+    },
+    {
+      "message": "Dismiss optional banner",
+      "type": "pass",
+      "duration": 90
+    }
+  ]
+}

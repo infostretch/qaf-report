@@ -1,0 +1,46 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "PRJ-2 stable path",
+        "sign": "checkout.spec.ts.PRJ-2 stable path()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "Prj2Stable",
+        "testID": "SAMPLE-PRJ2-STABLE",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774200639163,
+      "duration": 700,
+      "result": "pass",
+      "passPer": 100
+    },
+    {
+      "index": 2,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "PRJ-2 optional feature",
+        "sign": "checkout.spec.ts.PRJ-2 optional feature()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "Prj2Optional",
+        "testID": "SAMPLE-PRJ2-OPT",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774200639203,
+      "duration": 400,
+      "result": "pass",
+      "passPer": 100
+    }
+  ]
+}

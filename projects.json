@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "id": "",
+      "label": "Default",
+      "description": "test-results at repository root"
+    },
+    {
+      "id": "prj-1",
+      "label": "PRJ-1",
+      "description": "Reference sample layout — see README (PRJ-1 structure)"
+    },
+    {
+      "id": "prj-2",
+      "label": "PRJ-2",
+      "description": "Second compact sample project"
+    }
+  ]
+}

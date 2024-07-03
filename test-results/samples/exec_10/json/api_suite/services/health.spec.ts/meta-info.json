@@ -1,0 +1,25 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Health probe returns 200",
+        "sign": "health.spec.ts.Health probe()",
+        "reference": "services/health.spec.ts",
+        "resultFileName": "ApiHealth",
+        "testID": "SAMPLE-TC-API",
+        "module": "services",
+        "platform": "api"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1775270739368,
+      "duration": 2100,
+      "result": "fail",
+      "passPer": 0
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "total": 2,
+  "pass": 1,
+  "fail": 0,
+  "skip": 1,
+  "classes": [
+    "ui/checkout.spec.ts"
+  ]
+}

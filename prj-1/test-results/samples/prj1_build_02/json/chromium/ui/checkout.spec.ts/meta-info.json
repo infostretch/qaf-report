@@ -1,0 +1,46 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "PRJ-1 core smoke",
+        "sign": "checkout.spec.ts.PRJ-1 core smoke()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "Prj1Core",
+        "testID": "SAMPLE-PRJ1-CORE",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774410339249,
+      "duration": 900,
+      "result": "pass",
+      "passPer": 100
+    },
+    {
+      "index": 2,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "PRJ-1 integration pair",
+        "sign": "checkout.spec.ts.PRJ-1 integration pair()",
+        "reference": "ui/checkout.spec.ts",
+        "resultFileName": "Prj1Pairing",
+        "testID": "SAMPLE-PRJ1-PAIR",
+        "module": "ui",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1774410339299,
+      "duration": 1100,
+      "result": "fail",
+      "passPer": 0
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Sample legacy-style run (QAF paths)",
+  "status": "pass",
+  "tests": [
+    "smoke_suite"
+  ],
+  "total": 1,
+  "pass": 1,
+  "fail": 0,
+  "skip": 0,
+  "startTime": 1776500498868,
+  "endTime": 1776500698868
+}

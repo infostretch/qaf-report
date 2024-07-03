@@ -1,0 +1,9 @@
+{
+  "checkPoints": [
+    {
+      "message": "Banner feature disabled for this build",
+      "type": "skip",
+      "duration": 50
+    }
+  ]
+}

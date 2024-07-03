@@ -1,0 +1,41 @@
+{
+  "seleniumLog": [
+    {
+      "command": "open",
+      "target": "/",
+      "value": ""
+    },
+    {
+      "command": "click",
+      "target": "css=.sign-in-guest",
+      "value": ""
+    },
+    {
+      "command": "type",
+      "target": "id=email",
+      "value": "demo-user@example.com"
+    },
+    {
+      "command": "click",
+      "target": "css=.checkout-cta",
+      "value": ""
+    }
+  ],
+  "checkPoints": [
+    {
+      "message": "Open store front",
+      "type": "pass",
+      "duration": 120
+    },
+    {
+      "message": "Sign in as guest shopper",
+      "type": "pass",
+      "duration": 240
+    },
+    {
+      "message": "Reach checkout",
+      "type": "pass",
+      "duration": 310
+    }
+  ]
+}

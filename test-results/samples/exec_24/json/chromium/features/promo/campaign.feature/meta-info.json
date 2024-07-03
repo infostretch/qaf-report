@@ -1,0 +1,24 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Campaign banner visible",
+        "sign": "campaign.feature.Campaign banner visible()",
+        "reference": "features/promo/campaign.feature",
+        "resultFileName": "CampaignBanner",
+        "testID": "SAMPLE-TC-PROMO",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1776500500268,
+      "duration": 340,
+      "result": "pass",
+      "passPer": 100
+    }
+  ]
+}

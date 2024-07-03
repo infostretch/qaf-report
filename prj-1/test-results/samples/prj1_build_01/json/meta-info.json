@@ -1,0 +1,13 @@
+{
+  "name": "PRJ-1 · Build 01",
+  "status": "pass",
+  "tests": [
+    "chromium"
+  ],
+  "total": 2,
+  "pass": 2,
+  "fail": 0,
+  "skip": 0,
+  "startTime": 1774492839049,
+  "endTime": 1774492919049
+}

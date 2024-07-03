@@ -1,0 +1,14 @@
+{
+  "checkPoints": [
+    {
+      "message": "GET /health",
+      "type": "pass",
+      "duration": 40
+    },
+    {
+      "message": "Verify status line",
+      "type": "pass",
+      "duration": 20
+    }
+  ]
+}

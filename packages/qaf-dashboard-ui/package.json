@@ -1,0 +1,22 @@
+{
+  "name": "qaf-dashboard-ui",
+  "version": "1.0.0",
+  "description": "Static QAF execution dashboard UI (works standalone or with qaf-report-core server)",
+  "files": [
+    "index.html",
+    "js",
+    "css",
+    "assets"
+  ],
+  "exports": {
+    ".": "./index.html",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "qaf",
+    "dashboard",
+    "test-report"
+  ],
+  "license": "MIT",
+  "author": "Chirag Jayswal, QAF team"
+}

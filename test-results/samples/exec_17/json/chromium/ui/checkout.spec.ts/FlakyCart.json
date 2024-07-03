@@ -1,0 +1,14 @@
+{
+  "checkPoints": [
+    {
+      "message": "Add item to cart",
+      "type": "pass",
+      "duration": 200
+    },
+    {
+      "message": "Open cart drawer",
+      "type": "pass",
+      "duration": 150
+    }
+  ]
+}

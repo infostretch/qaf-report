@@ -1,0 +1,29 @@
+{
+  "reports": [
+    {
+      "name": "Sample run · Apr 18 (latest)",
+      "dir": "test-results/samples/exec_24/json",
+      "startTime": 1776500498868
+    },
+    {
+      "name": "Sample legacy-style run (QAF paths)",
+      "dir": "test-results/samples/exec_legacy_qaf/json",
+      "startTime": 1776500498868
+    },
+    {
+      "name": "Sample run · Apr 11 (recovery)",
+      "dir": "test-results/samples/exec_17/json",
+      "startTime": 1775916398868
+    },
+    {
+      "name": "Sample run · Apr 04 (regression)",
+      "dir": "test-results/samples/exec_10/json",
+      "startTime": 1775270738868
+    },
+    {
+      "name": "Sample run · Mar 28 (baseline)",
+      "dir": "test-results/samples/exec_03/json",
+      "startTime": 1774673438868
+    }
+  ]
+}

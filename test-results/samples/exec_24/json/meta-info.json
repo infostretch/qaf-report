@@ -1,0 +1,14 @@
+{
+  "name": "Sample run · Apr 18 (latest)",
+  "status": "fail",
+  "tests": [
+    "chromium",
+    "api_suite"
+  ],
+  "total": 6,
+  "pass": 5,
+  "fail": 1,
+  "skip": 0,
+  "startTime": 1776500498868,
+  "endTime": 1776500624268
+}

@@ -1,0 +1,10 @@
+{
+  "total": 4,
+  "pass": 3,
+  "fail": 0,
+  "skip": 1,
+  "classes": [
+    "ui/checkout.spec.ts",
+    "features/promo/campaign.feature"
+  ]
+}

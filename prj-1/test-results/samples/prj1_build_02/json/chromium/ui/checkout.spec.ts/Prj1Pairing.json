@@ -1,0 +1,21 @@
+{
+  "errorTrace": "java.lang.AssertionError: Expected cart total 42.00 but was 19.99\n\tat com.example.tests.CartTest.verifyTotal(CartTest.java:88)",
+  "errorMessage": "java.lang.AssertionError: Expected cart total 42.00 but was 19.99",
+  "checkPoints": [
+    {
+      "message": "Add item to cart",
+      "type": "pass",
+      "duration": 200
+    },
+    {
+      "message": "Assert cart total",
+      "type": "fail",
+      "duration": 100
+    },
+    {
+      "message": "Capture cart state",
+      "type": "info",
+      "screenshot": "attachments/0_cart.png"
+    }
+  ]
+}

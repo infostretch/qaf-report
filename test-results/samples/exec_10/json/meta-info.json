@@ -1,0 +1,14 @@
+{
+  "name": "Sample run · Apr 04 (regression)",
+  "status": "fail",
+  "tests": [
+    "chromium",
+    "api_suite"
+  ],
+  "total": 5,
+  "pass": 1,
+  "fail": 3,
+  "skip": 1,
+  "startTime": 1775270738868,
+  "endTime": 1775270863368
+}

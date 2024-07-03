@@ -1,0 +1,14 @@
+{
+  "checkPoints": [
+    {
+      "message": "Load home page",
+      "type": "pass",
+      "duration": 150
+    },
+    {
+      "message": "Verify campaign strip",
+      "type": "pass",
+      "duration": 90
+    }
+  ]
+}

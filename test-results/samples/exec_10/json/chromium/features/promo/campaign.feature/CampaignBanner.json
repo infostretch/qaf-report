@@ -1,0 +1,16 @@
+{
+  "errorTrace": "java.lang.AssertionError: Expected campaign element visible but was hidden\n\tat sample.CampaignTest.verifyBanner(CampaignTest.java:22)",
+  "errorMessage": "java.lang.AssertionError: Expected campaign element visible but was hidden",
+  "checkPoints": [
+    {
+      "message": "Load home page",
+      "type": "pass",
+      "duration": 150
+    },
+    {
+      "message": "Verify campaign strip",
+      "type": "fail",
+      "duration": 800
+    }
+  ]
+}

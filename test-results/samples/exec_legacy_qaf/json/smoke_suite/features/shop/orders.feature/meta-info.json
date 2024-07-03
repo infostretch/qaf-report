@@ -1,0 +1,25 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": null,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "Place order happy path",
+        "sign": "orders.feature.Place order happy path()",
+        "reference": "features/shop/orders.feature",
+        "resultFileName": "OrderHappyPath",
+        "testID": "SAMPLE-TC-LEGACY",
+        "module": "shop",
+        "platform": "web"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1776500498868,
+      "duration": 12000,
+      "result": "pass",
+      "passPer": 100
+    }
+  ]
+}

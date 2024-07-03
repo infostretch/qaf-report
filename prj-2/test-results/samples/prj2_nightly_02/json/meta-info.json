@@ -1,0 +1,13 @@
+{
+  "name": "PRJ-2 · Nightly 02",
+  "status": "pass",
+  "tests": [
+    "chromium"
+  ],
+  "total": 2,
+  "pass": 2,
+  "fail": 0,
+  "skip": 0,
+  "startTime": 1774200639063,
+  "endTime": 1774200709063
+}

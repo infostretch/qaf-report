@@ -1,0 +1,15 @@
+{
+  "checkPoints": [
+    {
+      "message": "Select catalog item",
+      "type": "pass",
+      "duration": 400
+    },
+    {
+      "message": "Review order screen",
+      "type": "pass",
+      "duration": 220,
+      "screenshot": "../img/legacy_checkpoint.png"
+    }
+  ]
+}

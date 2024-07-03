@@ -1,0 +1,33 @@
+{
+  "errorTrace": "Error: expect(locator).toBeVisible() failed\nLocator: getByRole('button', { name: 'Pay now' })\nTimeout: 5000ms",
+  "errorMessage": "Error: expect(locator).toBeVisible() failed",
+  "checkPoints": [
+    {
+      "message": "Load payment step",
+      "type": "pass",
+      "duration": 260
+    },
+    {
+      "message": "Wait for primary action",
+      "type": "fail",
+      "duration": 5000
+    },
+    {
+      "message": "Screenshot at failure",
+      "type": "fail",
+      "screenshot": "attachments/0_failure.png"
+    }
+  ],
+  "attachments": [
+    {
+      "name": "network.har",
+      "path": "attachments/1_network.har",
+      "contentType": "application/json"
+    },
+    {
+      "name": "session-notes.txt",
+      "path": "attachments/2_notes.txt",
+      "contentType": "text/plain"
+    }
+  ]
+}
