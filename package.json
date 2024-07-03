@@ -1,0 +1,28 @@
+{
+  "name": "test-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo: qaf-report-core, qaf-dashboard-ui, qaf-report-playwright",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "npm run start -w qaf-report-core",
+    "serve": "npm run serve -w qaf-report-core",
+    "build-index": "npm run build-index -w qaf-report-core",
+    "build-workspace-index": "node packages/qaf-report-core/scripts/build-test-history-index.js --workspace .",
+    "seed-samples": "npm run seed-samples -w qaf-report-core",
+    "sync-meta": "npm run sync-meta -w qaf-report-core",
+    "sync-meta:projects": "node packages/qaf-report-core/scripts/sync-projects-meta.js --projects --no-executions",
+    "sync-meta:all": "node packages/qaf-report-core/scripts/sync-projects-meta.js --projects",
+    "sync-meta:index": "node packages/qaf-report-core/scripts/sync-projects-meta.js --build-index",
+    "sync-meta:all:index": "node packages/qaf-report-core/scripts/sync-projects-meta.js --projects --build-index",
+    "cleanup-old-executions": "npm run cleanup-old-executions -w qaf-report-core",
+    "cleanup-old-executions:index": "node packages/qaf-report-core/scripts/cleanup-old-executions.js --build-index",
+    "qaf-import:junit": "node packages/qaf-report-core/scripts/qaf-import/cli.js junit",
+    "qaf-import:playwright": "node packages/qaf-report-core/scripts/qaf-import/cli.js playreport",
+    "qaf-import:cucumber": "node packages/qaf-report-core/scripts/qaf-import/cli.js cucumber",
+    "test": "npm run test -w qaf-report-core && npm run test -w qaf-report-playwright"
+  },
+  "author": "Chirag Jayswal, QAF team"
+}

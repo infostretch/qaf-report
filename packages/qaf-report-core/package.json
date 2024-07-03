@@ -1,0 +1,63 @@
+{
+  "name": "qaf-report-core",
+  "version": "1.0.0",
+  "description": "QAF execution tree emit, HTTP server, CLI, and imports (JUnit, Cucumber; Playwright via optional qaf-report-playwright)",
+  "main": "index.js",
+  "bin": {
+    "qaf-serve": "./scripts/server.js",
+    "qaf-import": "./scripts/qaf-import/cli.js"
+  },
+  "files": [
+    "lib",
+    "scripts",
+    "index.js",
+    "test"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./lib/emit": "./lib/emit.js",
+    "./lib/paths": "./lib/paths.js",
+    "./lib/merge-root": "./lib/merge-root.js",
+    "./lib/result-builder": "./lib/result-builder.js",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "qaf-dashboard-ui": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "qaf-dashboard-ui": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "busboy": "^1.6.0",
+    "fast-xml-parser": "^4.5.0",
+    "graceful-fs": "^4.2.11",
+    "tar": "^7.4.3",
+    "unzipper": "^0.12.3"
+  },
+  "scripts": {
+    "start": "node scripts/server.js",
+    "serve": "node scripts/proxy-with-serve.js",
+    "build-index": "node scripts/build-test-history-index.js",
+    "build-workspace-index": "node scripts/build-test-history-index.js --workspace ../..",
+    "seed-samples": "node scripts/seed-sample-test-results.js",
+    "sync-meta": "node scripts/sync-projects-meta.js",
+    "cleanup-old-executions": "node scripts/cleanup-old-executions.js",
+    "qaf-import:junit": "node scripts/qaf-import/cli.js junit",
+    "qaf-import:playwright": "node scripts/qaf-import/cli.js playreport",
+    "qaf-import:cucumber": "node scripts/qaf-import/cli.js cucumber",
+    "test": "node --test test/*.test.js scripts/qaf-import/*.test.js"
+  },
+  "keywords": [
+    "qaf",
+    "test-results",
+    "dashboard"
+  ],
+  "license": "MIT",
+  "author": "Chirag Jayswal, QAF team"
+}

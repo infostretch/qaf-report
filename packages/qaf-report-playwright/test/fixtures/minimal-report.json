@@ -1,0 +1,43 @@
+{
+  "config": {},
+  "suites": [
+    {
+      "title": "",
+      "file": "example.spec.ts",
+      "line": 0,
+      "column": 0,
+      "specs": [
+        {
+          "title": "should pass",
+          "ok": true,
+          "tests": [
+            {
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "location": { "file": "example.spec.ts", "line": 10, "column": 1 },
+              "titlePath": ["should pass"],
+              "title": "should pass",
+              "annotations": [{ "type": "testId", "description": "TC-1" }],
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 123,
+                  "startTime": 1700000000000,
+                  "retry": 0,
+                  "errors": [],
+                  "attachments": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": 1700000000000,
+    "endTime": 1700000000123
+  }
+}

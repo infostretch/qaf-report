@@ -1,0 +1,5 @@
+# Local dashboard/sample output (belongs at monorepo root; use npm run seed-samples from repo root)
+/test-results/
+/prj-1/
+/prj-2/
+/projects.json

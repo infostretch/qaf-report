@@ -1,0 +1,24 @@
+{
+  "methods": [
+    {
+      "index": 1,
+      "retryCount": 0,
+      "type": "test",
+      "args": [],
+      "metaData": {
+        "name": "should pass",
+        "sign": "example.spec.ts.should pass()",
+        "reference": "example.spec.ts",
+        "resultFileName": "shouldpass",
+        "testID": "TC-1",
+        "platform": "chromium"
+      },
+      "dependsOn": [],
+      "doc": null,
+      "startTime": 1700000000000,
+      "duration": 123,
+      "result": "pass",
+      "passPer": 100
+    }
+  ]
+}
