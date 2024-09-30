@@ -31,6 +31,7 @@ var pageLayout;
 var stepKeyWords = '(Given|When|Then|And)';
 var step = new RegExp('^' + stepKeyWords, 'i');
 var stepKeyWord = new RegExp(stepKeyWords, 'i');
+var scenariosDir;
 
 var stpesList;
 var checkpointTemplate = '<pre class="prettyprint" style="border: none !important; margin-bottom:0">'
@@ -189,6 +190,7 @@ $(document).ready(function() {
 			//slideTrigger_open: "mouseover"
 		}
 	});
+	scenariosDir = getProperty("scenario.file.loc","scenarios").split(";")[0].split("/")[0];
 	tree = $('#tree')
 		.jstree({
 			'core': {
@@ -369,6 +371,7 @@ $(document).ready(function() {
 				});
 		})
 		.on('create_node.jstree', function(e, data) {
+			if(data.node.id ===scenariosDir) return;
 			$.get('?operation=create_node', { 'type': data.node.type, 'id': data.node.parent, 'text': data.node.text })
 				.done(function(d) {
 					data.instance.set_id(data.node, d.id);
@@ -479,7 +482,7 @@ $(document).ready(function() {
 					$.ajax({ url: path, dataType: "text" }).done(function(content) {
 						var lines = content.split("\n");
 						$(lines).each(function(i,line){
-							$("#step-executor").append("<span>"+(i+1)+" </span>");
+							$("#step-executor").append("<span style=\"display: inline-block;min-width: 30px; margin-right:5px; text-align:center; border-right:1px solid #aaa;\">"+(i+1)+" </span>");
 
 							if(step.test(line.trim())){
 								//
@@ -567,6 +570,7 @@ $(document).ready(function() {
 			return this[this.length - 1];
 		};
 	};
+	$('#tree').jstree(true).create_node("#", { type: "folder", id:scenariosDir, text: scenariosDir,children:true });
 });
 function clearConsole() {
 	$('#clear-console').animate({ opacity: 0.4 }, 0);
@@ -750,6 +754,35 @@ function createReqForm(data, node, path) {
 	} catch (e) {
 		console.log(e);
 	}
+}
+
+function getProperty(key, defaultValue){
+	key="${"+key+"}";
+	var value;
+	var stepcall = {
+		step: 'resolveWSCwithData',
+		args: [{"endPoint":key}, {}]
+	}
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: "/executeStep",
+		data: JSON.stringify(stepcall),
+		contentType: "application/json; charset=utf-8",
+		//dataType : "json",
+		success: function(res) {
+			if (res.result) {
+				result = JSON.parse(res.result);
+				value = (result.endPoint===key)? defaultValue : result.endPoint;
+			} else {
+				log('Unexpected response: ' + JSON.stringify(res));
+			}
+		},
+		failure: function(errMsg) {
+			log('Error:: ' + errMsg);
+		}
+	});
+	return value;
 }
 
 function loadWSCView(data) {
