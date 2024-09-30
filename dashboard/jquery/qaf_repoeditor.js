@@ -28,6 +28,10 @@
  ******************************************************************************/
 
 var pageLayout;
+var stepKeyWords = '(Given|When|Then|And)';
+var step = new RegExp('^' + stepKeyWords, 'i');
+var stepKeyWord = new RegExp(stepKeyWords, 'i');
+
 var stpesList;
 var checkpointTemplate = '<pre class="prettyprint" style="border: none !important; margin-bottom:0">'
 	+ '<div class="checkpoint ${getContainerClass(type)}" style="border:none;">'
@@ -468,6 +472,34 @@ $(document).ready(function() {
 					$.get('/repo-editor?operation=get_content', { 'path': path }).done(function(d) {
 						createRepoEditor(d, path);
 					});
+				} else if (node.text.endsWith(".feature")) {
+					var path = data.instance.get_path(node, "/");
+					var html = '<pre class="prettyprint linenums" id="step-executor"></pre>';
+					$('#editor').html(html);
+					$.ajax({ url: path, dataType: "text" }).done(function(content) {
+						var lines = content.split("\n");
+						$(lines).each(function(i,line){
+							$("#step-executor").append("<span>"+(i+1)+" </span>");
+
+							if(step.test(line.trim())){
+								//
+								var stepLine = $( '<span> </span>');
+								var newdiv1 = $( '<span contenteditable="true"></span>');
+								var executeBtn = $( '<span style="cursor: pointer;" title="execute" class="ui-icon ui-icon-play" ></span>');
+								$(executeBtn).click(function(){
+									$('input#bddstep').val($(this).parent().text().trim());
+									executeStep();
+								});
+								$(newdiv1).append(line);
+								$(stepLine).append(executeBtn,newdiv1);
+								$("#step-executor").append(stepLine);
+
+							}else{
+								$("#step-executor").append("<span>"+line+"</span>");
+							}
+						});
+						PR.prettyPrint();
+					});
 				} else {
 					resetContentPane();
 					var type = data.instance.get_type(node);
@@ -758,6 +790,9 @@ function loadWSCView(data) {
 }
 function executeStep() {
 	var bddstep = $('input#bddstep').val().trim();
+	if(step.test(bddstep)){
+		bddstep = bddstep.replace(stepKeyWord,"").trim();
+	}
 	executeBddSteps([bddstep]);
 }
 function executeBddSteps(bddstep,vargs) {
