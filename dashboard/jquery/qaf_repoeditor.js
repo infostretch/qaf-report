@@ -774,6 +774,7 @@ function getProperty(key, defaultValue){
 			if (res.result) {
 				result = JSON.parse(res.result);
 				value = (result.endPoint===key)? defaultValue : result.endPoint;
+				console.log(value);
 			} else {
 				log('Unexpected response: ' + JSON.stringify(res));
 			}
