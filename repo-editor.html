@@ -22,6 +22,20 @@ table[id^="tbl"] td {
 	padding: 2px;
 }
 
+.json_table thead{
+	position:sticky;
+	top:-15px;
+}
+.json_table th:nth-child(1), .json_table td:nth-child(1){
+	position:sticky;
+	left:-15px;
+}
+.json_table th div{
+	resize:horizontal;
+	display:block;  
+	overflow: auto;
+	text-transform: uppercase;
+}
 #wsc-tabs {
 	min-height: 325px;
 }
@@ -84,7 +98,7 @@ button.ui-state-default {
  */
 #tree .file {
 	background:
-		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png')
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_777620_256x240.png')
 		-32px -96px no-repeat;
 	transform: scale(1.8);
 }
@@ -96,13 +110,31 @@ button.ui-state-default {
 	transform: scale(1.8);
 }
 
-#tree .file-wsc, #tree .file-proto, #tree .file-loc {
+#tree .file-proto, #tree .file-loc {
 	background:
-		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_222222_256x240.png')
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_777620_256x240.png')
 		-64px -96px no-repeat;
 	transform: scale(1.8);
 }
+#tree .file-wsc {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_777620_256x240.png')
+		-96px -80px no-repeat;
+	transform: scale(1.8);
+}
 
+#tree .file-bdd {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_777620_256x240.png')
+		-128px -96px no-repeat;
+	transform: scale(1.8);
+}
+#tree .file-locale {
+	background:
+		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_777620_256x240.png')
+		-112px -112px no-repeat;
+	transform: scale(1.8);
+}
 #tree .node {
 	background:
 		url('dashboard/jquery/ui/css/smoothness/images/ui-icons_2e83ff_256x240.png')

@@ -190,7 +190,7 @@ $(document).ready(function() {
 			//slideTrigger_open: "mouseover"
 		}
 	});
-	scenariosDir = getProperty("scenario.file.loc","scenarios").split(";")[0].split("/")[0];
+	//scenariosDir = getProperty("scenario.file.loc","scenarios").split(";")[0].split("/")[0];
 	tree = $('#tree')
 		.jstree({
 			'core': {
@@ -344,6 +344,9 @@ $(document).ready(function() {
 				'folder': { 'icon': 'folder' },
 				'file-wsc': { 'icon': 'file-wsc' },
 				'file-wscj': { 'icon': 'file-wsc' },
+				'file-feature': { 'icon': 'file-bdd' },
+				'file-locale': { 'icon': 'file-locale' },
+				'file-bdd': { 'icon': 'file-bdd' },
 				'file-loc': { 'icon': 'file-loc' },
 				'file-locj': { 'icon': 'file-loc' },
 				'file-proto': { 'icon': 'file-proto' },
@@ -371,7 +374,7 @@ $(document).ready(function() {
 				});
 		})
 		.on('create_node.jstree', function(e, data) {
-			if(data.node.id ===scenariosDir) return;
+			//if(data.node.id ===scenariosDir) return;
 			$.get('?operation=create_node', { 'type': data.node.type, 'id': data.node.parent, 'text': data.node.text })
 				.done(function(d) {
 					data.instance.set_id(data.node, d.id);
@@ -470,11 +473,12 @@ $(document).ready(function() {
 						});
 					}
 
-				} else if (node.text.endsWith(".loc") || node.text.endsWith(".locj")) {
+				} else if (node.text.endsWith(".loc") || node.text.endsWith(".locj") ||node.type.endsWith("locale")) {
 					var path = data.instance.get_path(node, "/");
-					$.get('/repo-editor?operation=get_content', { 'path': path }).done(function(d) {
-						createRepoEditor(d, path);
-					});
+					var multi = node.type.endsWith("locale");
+					$.get('/repo-editor?operation=get_content', { 'path': path, 'multi':multi }).done(function(d) {
+						createRepoEditor(d, path, multi);
+					});//locale
 				} else if (node.text.endsWith(".feature")) {
 					var path = data.instance.get_path(node, "/");
 					var html = '<pre class="prettyprint linenums" id="step-executor"></pre>';
@@ -570,7 +574,7 @@ $(document).ready(function() {
 			return this[this.length - 1];
 		};
 	};
-	$('#tree').jstree(true).create_node("#", { type: "folder", id:scenariosDir, text: scenariosDir,children:true });
+	//$('#tree').jstree(true).create_node("#", { type: "folder", id:scenariosDir, text: scenariosDir,children:true });
 });
 function clearConsole() {
 	$('#clear-console').animate({ opacity: 0.4 }, 0);
@@ -907,7 +911,7 @@ var locRepoEditorTmpl = '<div class="header">'
 	+ '</div>'
 	+ '<div id="loc-editor-container"> </div>';
 
-function createRepoEditor(data, path) {
+function createRepoEditor(data, path, multi=false) {
 	resetContentPane();
 	$.tmpl(locRepoEditorTmpl).appendTo("#editor");
 	if (!data || data.length <= 0) {
@@ -925,7 +929,7 @@ function createRepoEditor(data, path) {
 
 		$.ajax({
 			type: "POST",
-			url: "/repo-editor?operation=save_loc&path=" + path,
+			url: "/repo-editor?operation=save_loc&path=" + path+"&multi="+multi,
 			data: JSON.stringify(makeJson()),
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
@@ -1279,3 +1283,31 @@ var testdata = {
 function toId(str) {
 	return str.replace(/[^a-zA-Z]/g, "");
 } 
+
+$( document ).on( "ajaxStart", function() {
+  console.log( "Triggered ajaxStart handler." );
+  var div = $('#maskPageDiv');
+  		if (div.length === 0) {
+  			$(document.body).append('<div id="maskPageDiv" style="position:fixed;width:100%;height:100%;left:0;top:0;display:none"></div>'); // create it
+  			div = $('#maskPageDiv');
+  		}
+  		if (div.length !== 0) {
+  			div[0].style.zIndex = 2147483647;
+  			//div[0].style.backgroundColor = #ccc;
+  			div[0].style.display = 'inline';
+  		}
+		if ($('style:contains("html.hourGlass")').length < 1) $('<style>').text('html.hourGlass, html.hourGlass * { cursor: wait !important; }').appendTo('head');
+		$('html').addClass('hourGlass');
+
+} );
+
+$( document ).on( "ajaxStop", function() {
+  console.log( "Triggered ajaxComplete handler." );
+  var div = $('#maskPageDiv');
+  		if (div.length !== 0) {
+  			div[0].style.display = 'none';
+  			div[0].style.zIndex = 'auto';
+  		}
+		$('html').removeClass('hourGlass');
+
+} );
